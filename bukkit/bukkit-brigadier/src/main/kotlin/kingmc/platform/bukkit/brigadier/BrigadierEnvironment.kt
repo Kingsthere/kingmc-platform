@@ -8,7 +8,7 @@ import kingmc.common.environment.RuntimeDependency
  * Shaded mojang brigadier api environment
  *
  * @since 0.0.5
- * @author kingsthere, tr7zw
+ * @author kingsthere
  */
 @RuntimeDependency(
     value = "com!.mojang:brigadier:1.0.18",

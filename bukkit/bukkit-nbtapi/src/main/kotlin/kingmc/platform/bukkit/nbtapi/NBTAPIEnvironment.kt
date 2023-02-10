@@ -8,7 +8,7 @@ import kingmc.common.environment.RuntimeDependency
  * Shaded nbt api environment
  *
  * @since 0.0.5
- * @author kingsthere, tr7zw
+ * @author kingsthere
  */
 @RuntimeDependency(
     value = "de!.tr7zw:item-nbt-api:2.11.1",

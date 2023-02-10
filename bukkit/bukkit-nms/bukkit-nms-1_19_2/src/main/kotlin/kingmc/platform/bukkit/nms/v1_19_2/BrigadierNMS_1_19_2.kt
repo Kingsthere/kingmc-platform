@@ -4,7 +4,9 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.*
 import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
+import kingmc.common.application.Application
 import kingmc.common.application.application
+import kingmc.common.application.suspendApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.condition.ConditionalOnBean
@@ -22,6 +24,8 @@ import kingmc.platform.command.model.Node
 import kingmc.platform.command.parameter.*
 import kingmc.platform.command.rootHandler
 import kingmc.platform.version.ConditionalOnVersion
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import net.minecraft.commands.CommandSourceStack
 import org.bukkit.Location
 import org.bukkit.World
@@ -99,8 +103,12 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                     executes { css ->
                         try {
                             val parameters = Parameters.EMPTY
-                            val commandContext = this@BrigadierNMS_1_19_2.application { CommandContext(getCommandSender(css), parameters, css.input) }
-                            return@executes handler(commandContext).asInt()
+                            return@executes runBlocking {
+                                this@BrigadierNMS_1_19_2.suspendApplication {
+                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    coroutineScope { handler.invoke(commandContext).asInt() }
+                                }
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                             return@executes 0
@@ -137,8 +145,13 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                     executes { css ->
                         try {
                             val parameters = Parameters.EMPTY
-                            val commandContext = this@BrigadierNMS_1_19_2.application { CommandContext(getCommandSender(css), parameters, css.input) }
-                            return@executes handler(commandContext).asInt()
+
+                            return@executes runBlocking {
+                                this@BrigadierNMS_1_19_2.suspendApplication {
+                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    coroutineScope { handler.invoke(commandContext).asInt() }
+                                }
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                             return@executes 0
@@ -167,8 +180,12 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                 executes { css ->
                     try {
                         val parameters = Parameters.EMPTY
-                        val commandContext = this@BrigadierNMS_1_19_2.application { CommandContext(getCommandSender(css), parameters, css.input) }
-                        return@executes handler(commandContext).asInt()
+                        return@executes runBlocking {
+                            this@BrigadierNMS_1_19_2.suspendApplication {
+                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                coroutineScope { handler.invoke(commandContext).asInt() }
+                            }
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         return@executes 0
@@ -186,12 +203,18 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         deserializing: CommandParameter<*>,
         index: Int
     ): ArgumentBuilder<CommandSourceStack, *> {
-        return deserializeCommandParameter(deserializing).apply {
+        return deserializeCommandParameter(deserializing, this@BrigadierNMS_1_19_2.application).apply {
                     executes { css ->
                         try {
                             val parameters = BrigadierParameters_1_19_2(css, listed.subList(0, index + 1))
-                            val commandContext = this@BrigadierNMS_1_19_2.application { CommandContext(getCommandSender(css), parameters, css.input) }
-                            return@executes handler(commandContext).asInt()
+                            return@executes runBlocking {
+                                this@BrigadierNMS_1_19_2.suspendApplication {
+                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    coroutineScope {
+                                        handler.invoke(commandContext).asInt()
+                                    }
+                                }
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                             return@executes 0
@@ -205,12 +228,12 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
 
     }
 
-    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>): RequiredArgumentBuilder<CommandSourceStack, TValue> {
+    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application<*>): RequiredArgumentBuilder<CommandSourceStack, TValue> {
         return RequiredArgumentBuilder
             .argument<CommandSourceStack, TValue>(parameter.name, getArgumentType(parameter))
             .apply {
                 if (parameter.suggestion != null) {
-                    suggests(WrappedSuggestionProvider_1_19_2(parameter.suggestion!!, this@BrigadierNMS_1_19_2))
+                    suggests(WrappedSuggestionProvider_1_19_2(parameter.suggestion!!, this@BrigadierNMS_1_19_2, outerApplication = application))
                 }
             }
     }

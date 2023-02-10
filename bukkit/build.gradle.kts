@@ -61,7 +61,7 @@ allprojects {
         implementation("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
         implementation("net.kyori:adventure-platform-bukkit:4.2.0")
         implementation("com.mojang:brigadier:1.0.18")
-        implementation("com.kingmc.platform:common:0.0.4")
+        implementation(project(":common"))
         implementation("io.papermc:paperlib:1.0.7")
         testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     }

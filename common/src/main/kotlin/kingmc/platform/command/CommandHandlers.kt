@@ -1,9 +1,7 @@
 package kingmc.platform.command
 
 import kingmc.common.application.WithApplication
-import kingmc.common.application.application
 import kingmc.common.application.currentApplication
-import kingmc.common.application.currentApplicationOrNull
 import kingmc.platform.command.model.BlockingHandler
 import kingmc.platform.command.model.CommandExecutor
 import kingmc.platform.command.model.Handler
@@ -77,17 +75,10 @@ fun Node.handler(name: String, configurer: @WithApplication Handler.() -> Unit =
  * Set the executor of current handler
  */
 @WithApplication
-fun <THandler : Handler> THandler.execute(executor: @WithApplication (CommandContext) -> CommandResult) =
+fun <THandler : Handler> THandler.execute(executor: @WithApplication suspend (CommandContext) -> CommandResult) =
     this.apply {
-        val keepApplication = currentApplicationOrNull()
-        if (keepApplication != null) {
-            this.executor = CommandExecutor { context: CommandContext ->
-                application(keepApplication) { executor(context) }
-            }
-        } else {
-            this.executor = CommandExecutor { context: CommandContext ->
-                executor(context)
-            }
+        this.executor = CommandExecutor { context: CommandContext ->
+            executor(context)
         }
     }
 
