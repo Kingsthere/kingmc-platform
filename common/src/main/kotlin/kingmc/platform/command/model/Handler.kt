@@ -1,6 +1,7 @@
 package kingmc.platform.command.model
 
 import kingmc.common.application.Application
+import kingmc.common.application.WithApplication
 import kingmc.platform.command.CommandContext
 import kingmc.platform.command.CommandResult
 import kingmc.platform.command.parameter.CommandParameter
@@ -50,5 +51,6 @@ interface Handler {
     /**
      * Invoke this handler
      */
-    operator fun invoke(commandContext: CommandContext): CommandResult
+    @WithApplication
+    suspend operator fun invoke(commandContext: CommandContext): CommandResult
 }

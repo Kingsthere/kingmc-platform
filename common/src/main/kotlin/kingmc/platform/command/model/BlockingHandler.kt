@@ -4,7 +4,6 @@ import kingmc.common.application.Application
 import kingmc.platform.command.CommandContext
 import kingmc.platform.command.CommandResult
 import kingmc.platform.command.parameter.CommandParameter
-import kotlinx.coroutines.runBlocking
 
 /**
  * A default implementation of [Handler]
@@ -20,9 +19,7 @@ open class BlockingHandler internal constructor(
     override var executor: CommandExecutor = CommandExecutor.EMPTY, override val application: Application<*>
 ) : Handler {
 
-    override fun invoke(commandContext: CommandContext): CommandResult {
-        return runBlocking {
-            return@runBlocking this@BlockingHandler.executor.invoke(commandContext)
-        }
+    override suspend fun invoke(commandContext: CommandContext): CommandResult {
+        return this@BlockingHandler.executor.invoke(commandContext)
     }
 }
