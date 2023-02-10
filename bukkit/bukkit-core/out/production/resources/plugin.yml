@@ -1,0 +1,7 @@
+main: kingmc.platform.BukkitJavaPlugin
+version: 0.0.4
+name: KingMC
+description: A plugin framework for minecraft
+website: "https://www.kingmc.com"
+load: POSTWORLD
+api-version: 1.13
