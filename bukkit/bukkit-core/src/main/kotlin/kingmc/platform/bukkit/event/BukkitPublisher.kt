@@ -1,7 +1,9 @@
 package kingmc.platform.bukkit.event
 
+import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
+import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Awake
 import kingmc.platform.PlatformImplementation
@@ -33,19 +35,19 @@ import org.bukkit.plugin.RegisteredListener
 @Component("bukkitProxy")
 @PlatformImplementation
 @Scope(BeanScope.SINGLETON)
-class BukkitPublisher : Proxy(), Listener, Releasable {
+class BukkitPublisher : Proxy(), Listener, Releasable, ContextAware {
+    override lateinit var context: Context
 
     @Awake(3)
     fun init() {
         // Add bukkit event hook
         Bukkit.getPluginManager().registerEvents(this@BukkitPublisher, bukkitPluginInstance)
         val registeredListener =
-            RegisteredListener(this@BukkitPublisher, { _, event ->
-                this@BukkitPublisher.callEvent(event)
-                                                 }, EventPriority.MONITOR, bukkitPluginInstance, false)
+            RegisteredListener(this@BukkitPublisher, { _, event -> this@BukkitPublisher.callEvent(event) }, EventPriority.MONITOR, bukkitPluginInstance, false)
         for (handler in HandlerList.getHandlerLists()) {
             handler.register(registeredListener)
         }
+        AsyncPlayerChatEvent.getHandlerList().register(registeredListener)
         infoColored("<dark_grey>Hooked into bukkit events successfully")
     }
 

@@ -52,5 +52,5 @@ interface Handler {
      * Invoke this handler
      */
     @WithApplication
-    suspend operator fun invoke(commandContext: CommandContext): CommandResult
+    operator fun invoke(commandContext: CommandContext): CommandResult
 }

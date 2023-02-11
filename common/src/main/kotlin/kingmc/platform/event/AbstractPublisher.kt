@@ -7,10 +7,7 @@ import com.ktil.reflect.findFunctionsByAnnotation
 import kingmc.common.application.application
 import kingmc.common.application.suspendApplication
 import kingmc.common.context.ConditionCapableContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.coroutines.coroutineContext
 import kotlin.reflect.KClass
@@ -37,14 +34,19 @@ abstract class AbstractPublisher : Publisher {
                 listener.handlers
                     .filter { eventType.isSubclassOf(it.key) }
                     .forEach { handles ->
-                        handles.value.forEach {
-                            runBlocking {
+                        runBlocking {
+                            handles.value.forEach {
                                 if (checkEventCancellable(event)) {
                                     if (!(isEventCancelled(event) && !it.ignoreCancelled)) {
-                                        it.invoke(event)
+                                        launch {
+                                            it.invoke(event)
+                                        }
                                     }
                                 } else {
-                                    it.invoke(event)
+                                    launch {
+                                        println("Invoking")
+                                        it.invoke(event)
+                                    }
                                 }
                             }
                         }

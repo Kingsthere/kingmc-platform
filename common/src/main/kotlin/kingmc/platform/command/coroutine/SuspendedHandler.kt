@@ -23,7 +23,7 @@ abstract class SuspendedHandler : Handler {
      */
     abstract var coroutineContext: CoroutineContext?
 
-    override suspend fun invoke(commandContext: CommandContext): CommandResult {
+    override fun invoke(commandContext: CommandContext): CommandResult {
         val context = coroutineContext
         requireNotNull(context) { "You must specify a coroutine context to call suspended handlers" }
         val coroutineScope = CoroutineScope(context)

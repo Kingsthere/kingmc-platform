@@ -75,7 +75,7 @@ fun Node.handler(name: String, configurer: @WithApplication Handler.() -> Unit =
  * Set the executor of current handler
  */
 @WithApplication
-fun <THandler : Handler> THandler.execute(executor: @WithApplication suspend (CommandContext) -> CommandResult) =
+fun <THandler : Handler> THandler.execute(executor: @WithApplication (CommandContext) -> CommandResult) =
     this.apply {
         this.executor = CommandExecutor { context: CommandContext ->
             executor(context)

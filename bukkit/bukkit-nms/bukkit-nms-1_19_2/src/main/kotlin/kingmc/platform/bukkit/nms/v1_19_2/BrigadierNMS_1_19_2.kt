@@ -24,8 +24,7 @@ import kingmc.platform.command.model.Node
 import kingmc.platform.command.parameter.*
 import kingmc.platform.command.rootHandler
 import kingmc.platform.version.ConditionalOnVersion
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import net.minecraft.commands.CommandSourceStack
 import org.bukkit.Location
 import org.bukkit.World
@@ -103,11 +102,9 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                     executes { css ->
                         try {
                             val parameters = Parameters.EMPTY
-                            return@executes runBlocking {
-                                this@BrigadierNMS_1_19_2.suspendApplication {
-                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                    coroutineScope { handler.invoke(commandContext).asInt() }
-                                }
+                            application(commandHeader.application) {
+                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                handler.invoke(commandContext).asInt()
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -120,7 +117,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
             }
             node.handlers.forEach {
                 if (it.name != ".root") {
-                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it).build()
+                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it, node).build()
                     then(deserializedCommandNode)
                     it.aliases.forEach { alias ->
                         then(AliasesCommandNode(alias, deserializedCommandNode))
@@ -145,12 +142,9 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                     executes { css ->
                         try {
                             val parameters = Parameters.EMPTY
-
-                            return@executes runBlocking {
-                                this@BrigadierNMS_1_19_2.suspendApplication {
-                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                    coroutineScope { handler.invoke(commandContext).asInt() }
-                                }
+                            application(commandNode.application) {
+                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                handler.invoke(commandContext).asInt()
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -163,7 +157,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
             }
             node.handlers.forEach {
                 if (it.name != ".root") {
-                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it).build()
+                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it, node).build()
                     then(deserializedCommandNode)
                     it.aliases.forEach { alias ->
                         then(AliasesCommandNode(alias, deserializedCommandNode))
@@ -173,18 +167,16 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         }
     }
 
-    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler): HandlerArgumentBuilder<CommandSourceStack> {
+    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler, owner: Node): HandlerArgumentBuilder<CommandSourceStack> {
         return HandlerArgumentBuilder<CommandSourceStack>(commandHandler).apply {
             if (handler.parameters.size == 0) {
                 // Insert empty root parameters executor
                 executes { css ->
                     try {
                         val parameters = Parameters.EMPTY
-                        return@executes runBlocking {
-                            this@BrigadierNMS_1_19_2.suspendApplication {
-                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                coroutineScope { handler.invoke(commandContext).asInt() }
-                            }
+                        application(owner.application) {
+                            val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                            handler.invoke(commandContext).asInt()
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

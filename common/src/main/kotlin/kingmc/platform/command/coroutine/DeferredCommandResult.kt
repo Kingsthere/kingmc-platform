@@ -14,7 +14,7 @@ import kotlinx.coroutines.Deferred
  * @since 0.0.3
  * @author kingsthere
  */
-class DeferredCommandResult(val coroutineScope: CoroutineScope, val deferred: Deferred<CommandResult>) : CommandResult {
+open class DeferredCommandResult(val coroutineScope: CoroutineScope, val deferred: Deferred<CommandResult>) : CommandResult {
     /**
      * Forward this command's invocation and parameter to the specified
      * command

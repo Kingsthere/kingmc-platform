@@ -19,7 +19,7 @@ open class BlockingHandler internal constructor(
     override var executor: CommandExecutor = CommandExecutor.EMPTY, override val application: Application<*>
 ) : Handler {
 
-    override suspend fun invoke(commandContext: CommandContext): CommandResult {
+    override fun invoke(commandContext: CommandContext): CommandResult {
         return this@BlockingHandler.executor.invoke(commandContext)
     }
 }
