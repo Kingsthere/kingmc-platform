@@ -14,4 +14,9 @@ interface ClassRegisteredListener : RegisteredListener {
      * The class of this listener
      */
     val type: KClass<*>
+
+    /**
+     * The instance of this listener
+     */
+    val instance: Any
 }

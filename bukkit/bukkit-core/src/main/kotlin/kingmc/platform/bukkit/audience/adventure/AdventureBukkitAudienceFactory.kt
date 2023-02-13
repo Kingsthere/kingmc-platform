@@ -21,9 +21,9 @@ import java.util.function.Predicate
  * @since 0.0.3
  * @author kingsthere
  */
-@Component("bukkitAudienceFactory")
+@Component
 @PlatformImplementation
-object BukkitAudiences : BukkitAudienceFactory {
+object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
     private val playerCache: Cache<UUID, Player> = Caffeine.newBuilder()
         .build()
     private val players = AllBukkitPlayer

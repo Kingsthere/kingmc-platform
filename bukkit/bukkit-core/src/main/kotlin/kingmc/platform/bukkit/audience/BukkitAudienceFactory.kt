@@ -1,5 +1,6 @@
 package kingmc.platform.bukkit.audience
 
+import kingmc.common.context.annotation.Component
 import kingmc.platform.audience.AudienceFactory
 import kingmc.platform.audience.CommandSender
 import kingmc.platform.audience.Player
@@ -7,13 +8,14 @@ import kingmc.platform.audience.Player
 /**
  * Represent a audience factory use
  * in bukkit servers. This interface is
- * not implement default, current using:
- *  + [Adventure api implement][kingmc.platform.bukkit.compat.adventure.BukkitAudiences]
+ * not implement default, such as:
+ *  + [Adventure api implement][kingmc.platform.bukkit.audience.adventure.AdventureBukkitAudienceFactory]
  *
  * @since 0.0.3
  * @author kingsthere
  * @see AudienceFactory
  */
+@Component
 interface BukkitAudienceFactory : AudienceFactory {
     /**
      * Convert a bukkit command sender into audience type

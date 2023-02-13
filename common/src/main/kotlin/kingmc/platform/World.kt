@@ -1,5 +1,6 @@
 package kingmc.platform
 
+import kingmc.common.application.WithApplication
 import kingmc.platform.audience.AudienceFactory
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.ParticleRecipient
@@ -44,6 +45,7 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param z Z-coordinate of the chunk
      * @return Chunk at the given coordinates
      */
+    @WithApplication
     fun getChunkAt(x: Int, z: Int): Chunk
 
     /**
@@ -52,6 +54,7 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param location Location of the chunk
      * @return Chunk at the given location
      */
+    @WithApplication
     fun getChunkAt(location: Location): Chunk
 
     /**
@@ -62,6 +65,7 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param y Y-coordinate of the chunk
      * @return Chunk at the given location
      */
+    @WithApplication
     fun getBlockAt(x: Int, y: Int, z: Int): Block
 
     /**
@@ -70,6 +74,7 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param location Location of the block
      * @return Block at the given location
      */
+    @WithApplication
     fun getBlockAt(location: Location): Block
 
     /**

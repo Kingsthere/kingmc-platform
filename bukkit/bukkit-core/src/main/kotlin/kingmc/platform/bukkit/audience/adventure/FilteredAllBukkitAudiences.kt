@@ -27,5 +27,5 @@ class FilteredAllBukkitAudiences(private val filter: Predicate<Audience>) : Forw
      * @since 4.0.0
      */
     override fun audiences(): Iterable<Audience> =
-        (Bukkit.getOnlinePlayers().map { BukkitAudiences.player(it) } + BukkitAudiences.console()).filter { filter.test(it) }
+        (Bukkit.getOnlinePlayers().map { AdventureBukkitAudienceFactory.player(it) } + AdventureBukkitAudienceFactory.console()).filter { filter.test(it) }
 }

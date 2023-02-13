@@ -3,6 +3,7 @@ package kingmc.platform.bukkit.material
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Material
 import kingmc.platform.MaterialProvider
+import kingmc.platform.PlatformImplementation
 
 /**
  * A [MaterialProvider] implementation for bukkit
@@ -10,8 +11,9 @@ import kingmc.platform.MaterialProvider
  * @since 0.0.5
  * @author kingsthere
  */
-@Component("bukkitMaterialProvider")
-class BukkitMaterialProvider : MaterialProvider {
+@Component
+@PlatformImplementation
+object BukkitMaterialProvider : MaterialProvider {
     /**
      * Get a Material by the name
      *

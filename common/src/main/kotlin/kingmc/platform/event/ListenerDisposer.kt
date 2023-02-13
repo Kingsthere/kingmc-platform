@@ -8,7 +8,6 @@ import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Releasable
 import kingmc.platform.listeners
-import kingmc.platform.platform
 
 /**
  * This `ListenerDisposer` is responsible for dispose commands when context [release]
@@ -25,6 +24,6 @@ class ListenerDisposer : Releasable, ContextAware {
      * Release
      */
     override fun release() {
-        currentApplication().platform.listeners.close()
+        currentApplication().listeners.close()
     }
 }

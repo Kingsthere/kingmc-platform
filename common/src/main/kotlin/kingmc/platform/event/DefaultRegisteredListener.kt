@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 open class DefaultRegisteredListener(
     override val publisher: Publisher,
     override val handlers: HandlerList,
-    override val type: KClass<*>
+    override val type: KClass<*>, override val instance: Any
 ) : ClassRegisteredListener, RegisteredListener {
 
     /**

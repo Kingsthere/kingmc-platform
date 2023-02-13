@@ -4,10 +4,8 @@ import kingmc.platform.Location
 import kingmc.platform.Material
 import kingmc.platform.block.Block
 import kingmc.platform.block.BlockState
-import kingmc.platform.bukkit.bukkitPlatform
 import kingmc.platform.bukkit.fromBukkit
 import kingmc.platform.bukkit.material.BukkitMaterialProvider
-import kingmc.platform.materials
 
 class BukkitBlockState(override val block: Block, private val _bukkitBlockState: OriginalBukkitBlockState) : BlockState {
     /**
@@ -22,5 +20,5 @@ class BukkitBlockState(override val block: Block, private val _bukkitBlockState:
      * The material of this holder
      */
     override val material: Material
-        get() = (bukkitPlatform.materials as BukkitMaterialProvider).getFromBukkit(_bukkitBlockState.type)
+        get() = BukkitMaterialProvider.getFromBukkit(_bukkitBlockState.type)
 }

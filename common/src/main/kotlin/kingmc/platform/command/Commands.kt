@@ -5,7 +5,6 @@ import kingmc.common.application.currentApplication
 import kingmc.platform.command.coroutine.CoroutineContextSuspendHandler
 import kingmc.platform.command.model.*
 import kingmc.platform.commands
-import kingmc.platform.platform
 import kingmc.util.KingMCDsl
 
 /**
@@ -18,7 +17,7 @@ import kingmc.util.KingMCDsl
 @WithApplication
 @KingMCDsl
 fun commands(run: @WithApplication CommandManager.() -> Unit) =
-    currentApplication().platform.commands.apply(run)
+    currentApplication().commands.apply(run)
 
 /**
  * Create and configure a child node from current node
@@ -37,7 +36,7 @@ fun Node(name: String, config: @WithApplication Node.() -> Unit): Node {
  * @return the Header created
  */
 @WithApplication
-fun Header(name: String, namespace: String = currentApplication().platform.commands.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
+fun Header(name: String, namespace: String = currentApplication().commands.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
     return SimpleHeader(name = name, namespace = namespace, application = currentApplication()).apply(config)
 }
 

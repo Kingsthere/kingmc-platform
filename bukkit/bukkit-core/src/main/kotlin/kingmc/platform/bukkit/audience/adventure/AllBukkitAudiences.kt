@@ -26,5 +26,5 @@ object AllBukkitAudiences : ForwardingAudience {
      * @since 4.0.0
      */
     override fun audiences(): Iterable<Audience> =
-        Bukkit.getOnlinePlayers().map { BukkitAudiences.player(it) } + BukkitAudiences.console()
+        Bukkit.getOnlinePlayers().map { AdventureBukkitAudienceFactory.player(it) } + AdventureBukkitAudienceFactory.console()
 }

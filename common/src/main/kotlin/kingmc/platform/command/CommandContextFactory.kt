@@ -7,7 +7,6 @@ import kingmc.platform.PlatformExposed
 import kingmc.platform.audience.CommandSender
 import kingmc.platform.command.parameter.Parameters
 import kingmc.platform.invocations
-import kingmc.platform.platform
 
 /**
  * Cast a command sender to [CommandContext]
@@ -18,7 +17,7 @@ import kingmc.platform.platform
  */
 @WithApplication
 fun CommandContext(commandSender: CommandSender, parameters: Parameters, source: String): CommandContext {
-    return currentApplication().platform.invocations.create(
+    return currentApplication().invocations.create(
         commandSender = commandSender,
         parameters = parameters,
         source = source

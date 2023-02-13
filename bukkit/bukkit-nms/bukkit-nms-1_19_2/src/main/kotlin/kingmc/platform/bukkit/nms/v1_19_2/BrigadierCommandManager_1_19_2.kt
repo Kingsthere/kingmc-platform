@@ -10,6 +10,7 @@ import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.common.context.condition.ConditionalOnBean
 import kingmc.platform.Platform
+import kingmc.platform.PlatformImplementation
 import kingmc.platform.bukkit.brigadier.AliasesCommandNode
 import kingmc.platform.bukkit.brigadier.BrigadierCommandManager
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
@@ -26,6 +27,7 @@ const val NAMESPACE_SEPARATOR = ":"
 @ConditionalOnVersion("1.19.2")
 @ConditionalOnBean(BrigadierNMS::class)
 @Scope(BeanScope.SINGLETON)
+@PlatformImplementation
 class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
 
     @Autowired

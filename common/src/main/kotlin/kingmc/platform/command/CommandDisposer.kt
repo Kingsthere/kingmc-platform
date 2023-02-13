@@ -8,7 +8,6 @@ import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Releasable
 import kingmc.platform.commands
-import kingmc.platform.platform
 
 /**
  * This `CommandDisposer` is responsible for dispose commands when context [release]
@@ -25,6 +24,6 @@ class CommandDisposer : Releasable, ContextAware {
      * Release
      */
     override fun release() {
-        currentApplication().platform.commands.close()
+        currentApplication().commands.close()
     }
 }

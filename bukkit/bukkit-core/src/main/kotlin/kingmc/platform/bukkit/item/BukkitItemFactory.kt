@@ -9,7 +9,6 @@ import kingmc.platform.item.Item
 import kingmc.platform.item.ItemBuilder
 import kingmc.platform.item.ItemFactory
 import kingmc.platform.item.ItemStack
-import kingmc.platform.materials
 
 /**
  * A `ItemFactory` for bukkit
@@ -63,7 +62,7 @@ object BukkitItemFactory : ItemFactory {
     fun createItemStackForBukkit(bukkitItemStack: OriginalBukkitItemStack): ItemStack {
         return BukkitItemStack(
             bukkitItemStack.amount,
-            (platform.materials as BukkitMaterialProvider).getFromBukkit(bukkitItemStack.type),
+            BukkitMaterialProvider.getFromBukkit(bukkitItemStack.type),
             bukkitItemStack
         )
     }

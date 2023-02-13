@@ -1,5 +1,7 @@
 package kingmc.platform.bukkit
 
+import kingmc.common.application.WithApplication
+import kingmc.common.application.currentApplication
 import kingmc.platform.ChunkSnapshot
 import kingmc.platform.Material
 import kingmc.platform.bukkit.material.BukkitMaterialProvider
@@ -14,8 +16,9 @@ class BukkitChunkSnapshot(val originalBukkitChunkSnapshot: OriginalBukkitChunkSn
      * @param z 0-15
      * @return block material type
      */
+    @WithApplication
     override fun getBlockType(x: Int, y: Int, z: Int): Material {
-        return (bukkitPlatform.materials as BukkitMaterialProvider).getFromBukkit(originalBukkitChunkSnapshot.getBlockType(x, y, z))
+        return (currentApplication().materials as BukkitMaterialProvider).getFromBukkit(originalBukkitChunkSnapshot.getBlockType(x, y, z))
     }
 
     override fun equals(other: Any?): Boolean {

@@ -1,5 +1,7 @@
 package kingmc.platform
 
+import kingmc.common.application.WithApplication
+
 /**
  * An immutable, thread-safe snapshot of chunk of blocks, you can read
  * a chunk quickly using this inference
@@ -31,5 +33,6 @@ interface ChunkSnapshot {
      * @param z 0-15
      * @return block material type
      */
+    @WithApplication
     fun getBlockType(x: Int, y: Int, z: Int): Material
 }

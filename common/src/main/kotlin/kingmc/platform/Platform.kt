@@ -11,9 +11,7 @@ import kingmc.platform.event.ListenerManager
 import kingmc.platform.event.Publisher
 
 /**
- * A platform, subclasses of this class provide implementation the things
- * that kingmc-platform module needed so you can use them cross-platform with
- * kingmc api
+ * A superinterface designed to represent a kind of platform the runs current application
  *
  * @since 0.0.3
  * @author kingsthere
@@ -51,43 +49,43 @@ interface Platform : ContextAware {
 /**
  * The command manager supports this platform
  */
-val Platform.commands: CommandManager
+val Application<*>.commands: CommandManager
     get() = this.context.getBean(CommandManager::class)
 
 /**
  * The default event publisher supports this platform
  */
-val Platform.publisher: Publisher
+val Application<*>.publisher: Publisher
     get() = this.context.getBean(Publisher::class)
 
 /**
  * The listener manager supports this platform
  */
-val Platform.listeners: ListenerManager
+val Application<*>.listeners: ListenerManager
     get() = this.context.getBean(ListenerManager::class)
 
 /**
  * The world provider supports this platform
  */
-val Platform.worlds: WorldProvider
+val Application<*>.worlds: WorldProvider
     get() = this.context.getBean(WorldProvider::class)
 
 /**
  * The command context factory supports this platform
  */
-val Platform.invocations: CommandContextFactory
+val Application<*>.invocations: CommandContextFactory
     get() = this.context.getBean(CommandContextFactory::class)
 
 /**
  * The audience factory supports this platform
  */
-val Platform.audiences: AudienceFactory
+val Application<*>.audiences: AudienceFactory
     get() = this.context.getBean(AudienceFactory::class)
 
 /**
  * The materials support this platform
  */
-val Platform.materials: MaterialProvider
+val Application<*>.materials: MaterialProvider
     get() = this.context.getBean(MaterialProvider::class)
 
 /**

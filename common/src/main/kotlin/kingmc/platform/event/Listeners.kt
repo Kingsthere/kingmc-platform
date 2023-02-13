@@ -3,7 +3,6 @@ package kingmc.platform.event
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.platform.listeners
-import kingmc.platform.platform
 import kotlin.reflect.KClass
 
 /**
@@ -54,7 +53,7 @@ fun <E : Any> ListenerScope<E>.handler(consumer: suspend (E) -> Unit): ListenerS
  */
 @WithApplication
 fun listeners(block: @WithApplication ListenerManager.() -> Unit) {
-    currentApplication().platform.listeners.block()
+    currentApplication().listeners.block()
 }
 
 inline fun <reified E : Any> ListenerManager.register(configure: ListenerScope<E>.() -> Unit): RegisteredListener {

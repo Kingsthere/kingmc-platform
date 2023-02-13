@@ -12,7 +12,7 @@ import kingmc.common.context.annotation.Component
  */
 @WithApplication
 fun World(name: String): World {
-    return currentApplication().platform.worlds.getWorld(name)
+    return currentApplication().worlds.getWorld(name)
 }
 
 /**

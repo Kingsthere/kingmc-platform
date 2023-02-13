@@ -45,12 +45,12 @@ interface Publisher {
     fun cancel(listener: RegisteredListener)
 
     /**
-     * To remove a registered listener by the class
+     * To remove a registered listener by the instance
      *
      * @since 0.0.1
      * @see Listener
      */
-    fun cancel(clazz: KClass<*>)
+    fun cancel(listener: Any)
 
     /**
      * Clear all event listener registered in this publisher

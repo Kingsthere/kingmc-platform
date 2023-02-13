@@ -10,6 +10,7 @@ import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.text.Text
 import kingmc.platform.block.Block
 import kingmc.platform.bukkit.audience.*
+import kingmc.platform.bukkit.audience.adventure.AdventureBukkitAudienceFactory
 import kingmc.platform.bukkit.block.BukkitBlock
 import org.bukkit.WorldBorder
 import java.util.*
@@ -92,19 +93,19 @@ class BukkitWorld(
             is BukkitPlayerIdentifier -> {
                 if (identifier.name != null) {
                     return try {
-                        platform.audiences.player(identifier.name!!) as? T
+                        AdventureBukkitAudienceFactory.player(identifier.name!!) as? T
                     } catch (exception: IllegalArgumentException) {
                         null
                     }
                 } else if (identifier.uuid != null) {
                     return try {
-                        platform.audiences.player(identifier.uuid!!) as? T
+                        AdventureBukkitAudienceFactory.player(identifier.uuid!!) as? T
                     } catch (exception: IllegalArgumentException) {
                         null
                     }
                 } else if (identifier.player != null) {
                     return try {
-                        (platform.audiences as BukkitAudienceFactory).player(identifier.player) as? T
+                        (AdventureBukkitAudienceFactory as BukkitAudienceFactory).player(identifier.player) as? T
                     } catch (exception: IllegalArgumentException) {
                         null
                     }
@@ -115,13 +116,13 @@ class BukkitWorld(
             is PlayerIdentifier -> {
                 return if (identifier.name != null) {
                     try {
-                        platform.audiences.player(identifier.name!!) as? T
+                        AdventureBukkitAudienceFactory.player(identifier.name!!) as? T
                     } catch (exception: IllegalArgumentException) {
                         null
                     }
                 } else if (identifier.uuid != null) {
                     try {
-                        platform.audiences.player(identifier.uuid!!) as? T
+                        AdventureBukkitAudienceFactory.player(identifier.uuid!!) as? T
                     } catch (exception: IllegalArgumentException) {
                         null
                     }
@@ -137,7 +138,7 @@ class BukkitWorld(
      * Gets the audiences to forward to
      */
     override fun audiences(): Iterable<Audience> =
-        originalBukkitWorld.players.map { (platform.audiences as BukkitAudienceFactory).player(it) } + console()
+        originalBukkitWorld.players.map { (AdventureBukkitAudienceFactory as BukkitAudienceFactory).player(it) } + console()
 
     /**
      * Gets a block command sender
@@ -154,7 +155,7 @@ class BukkitWorld(
      * @since 0.0.3
      */
     override fun console(): Console =
-        platform.audiences.console()
+        AdventureBukkitAudienceFactory.console()
 
     /**
      * Gets the [Block] at the given [Location]
@@ -300,10 +301,10 @@ class BukkitWorld(
     }
 
     override fun player(uuid: UUID): Player? =
-        platform.audiences.player(uuid)
+        AdventureBukkitAudienceFactory.player(uuid)
 
     override fun player(name: String): Player? =
-        platform.audiences.player(name)
+        AdventureBukkitAudienceFactory.player(name)
 
     /**
      * Gets an [Player] for all online players

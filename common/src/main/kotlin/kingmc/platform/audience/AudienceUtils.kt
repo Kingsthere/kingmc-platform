@@ -6,7 +6,6 @@ import kingmc.common.application.currentApplication
 import kingmc.platform.audience.text.Text
 import kingmc.platform.audience.text.TextDisplayable
 import kingmc.platform.audiences
-import kingmc.platform.platform
 import java.util.*
 import java.util.function.Predicate
 
@@ -28,7 +27,7 @@ fun player(): PlayerIdentifier =
  */
 @WithApplication
 fun playerWith(playerIdentifier: PlayerIdentifier) =
-    currentApplication().platform.audiences.audience(playerIdentifier)
+    currentApplication().audiences.audience(playerIdentifier)
 
 
 /**
@@ -53,7 +52,7 @@ fun PlayerIdentifier.named(name: String) =
  */
 @WithApplication
 fun players(): Players =
-    currentApplication().platform.audiences.players()
+    currentApplication().audiences.players()
 
 /**
  * Gets a player named [name]
@@ -63,7 +62,7 @@ fun players(): Players =
  */
 @WithApplication
 fun playerNamed(name: String) =
-    currentApplication().platform.audiences.player(name)
+    currentApplication().audiences.player(name)
 
 /**
  * Gets a player with uuid [uuid]
@@ -73,7 +72,7 @@ fun playerNamed(name: String) =
  */
 @WithApplication
 fun playerWithUUID(uuid: UUID) =
-    currentApplication().platform.audiences.player(uuid)
+    currentApplication().audiences.player(uuid)
 
 /**
  * Gets an [Audience] refer all audiences (include players & console)
@@ -83,7 +82,7 @@ fun playerWithUUID(uuid: UUID) =
  */
 @WithApplication
 fun all(): Audience =
-    currentApplication().platform.audiences.all()
+    currentApplication().audiences.all()
 
 /**
  * Gets an [Audience] refer all filtered audiences (include players & console)
@@ -93,7 +92,7 @@ fun all(): Audience =
  */
 @WithApplication
 fun all(predicate: Predicate<Audience>): Audience =
-    currentApplication().platform.audiences.all(predicate)
+    currentApplication().audiences.all(predicate)
 
 /**
  * Gets all online audiences, includes online players and console
@@ -103,7 +102,7 @@ fun all(predicate: Predicate<Audience>): Audience =
  */
 @WithApplication
 fun onlineAudiences(): List<Audience> =
-    currentApplication().platform.audiences.toList()
+    currentApplication().audiences.toList()
 
 /**
  * Get all players from the player factory from current
@@ -114,7 +113,7 @@ fun onlineAudiences(): List<Audience> =
  */
 @WithApplication
 fun onlinePlayers(): List<Player> =
-    currentApplication().platform.audiences.filterIsInstance<Player>()
+    currentApplication().audiences.filterIsInstance<Player>()
 
 /**
  * Get all players name from the player factory from
@@ -137,7 +136,7 @@ fun onlinePlayerNames(): List<String> =
  */
 @WithApplication
 fun console(): Console =
-    currentApplication().platform.audiences.console()
+    currentApplication().audiences.console()
 
 /**
  * Get a player by name from current audience factory
@@ -147,7 +146,7 @@ fun console(): Console =
  */
 @WithApplication
 fun Player(name: String) =
-    currentApplication().platform.audiences.player(name)
+    currentApplication().audiences.player(name)
 
 /**
  * Get a player by uuid from current audience factory
@@ -157,7 +156,7 @@ fun Player(name: String) =
  */
 @WithApplication
 fun Player(uuid: UUID) =
-    currentApplication().platform.audiences.player(uuid)
+    currentApplication().audiences.player(uuid)
 
 /**
  * Broadcast a text to all players that defined in this audience

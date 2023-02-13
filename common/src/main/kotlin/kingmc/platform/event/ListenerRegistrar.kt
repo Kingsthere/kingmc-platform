@@ -6,7 +6,6 @@ import kingmc.common.application.application
 import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.process.BeanProcessor
-import kingmc.platform.platform
 import kingmc.platform.publisher
 
 /**
@@ -27,10 +26,10 @@ object ListenerRegistrar : BeanProcessor {
                 if (annotation.publisher != Publisher::class) {
                     // Use specified publisher
                     val publisher = context.getBean(annotation.publisher)
-                    publisher.cancel(bean::class)
+                    publisher.cancel(bean)
                 } else {
                     // Use default publisher defined by "defaultEventPublisher"
-                    bean.application.platform.publisher.cancel(bean::class)
+                    bean.application.publisher.cancel(bean)
                 }
             } catch (e: Exception) {
                 throw ListenerInitializeException("Unable to register listener ${beanClass.qualifiedName}", e)
@@ -49,7 +48,7 @@ object ListenerRegistrar : BeanProcessor {
                     publisher.register(bean)
                 } else {
                     // Use default publisher defined by "defaultEventPublisher"
-                    bean.application.platform.publisher.register(bean)
+                    bean.application.publisher.register(bean)
                 }
             } catch (e: Exception) {
                 throw ListenerInitializeException("Unable to register listener ${beanClass.qualifiedName}", e)

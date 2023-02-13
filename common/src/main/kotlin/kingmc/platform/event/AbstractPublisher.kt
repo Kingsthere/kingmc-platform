@@ -22,7 +22,7 @@ import kotlin.reflect.full.isSubclassOf
  * @see Publisher
  */
 abstract class AbstractPublisher : Publisher {
-    private val listeners: MutableSet<RegisteredListener> = mutableSetOf()
+    protected val listeners: MutableSet<RegisteredListener> = mutableSetOf()
 
     override fun <T : Any> callEvent(event: T): T {
         // Get the event type
@@ -93,7 +93,7 @@ abstract class AbstractPublisher : Publisher {
     override fun register(listener: Any): RegisteredListener {
         val listenerType = listener::class
         val handlers = HandlerList()
-        val registeredListener = DefaultRegisteredListener(this, handlers, listenerType)
+        val registeredListener = DefaultRegisteredListener(this, handlers, listenerType, listener)
         // Load the event handlers in the listener
         listenerType.findFunctionsByAnnotation<Subscribe>().forEach {
             val eventType = it.parameters[1].type.classifier as KClass<*>
@@ -177,8 +177,8 @@ abstract class AbstractPublisher : Publisher {
         this.listeners.remove(listener)
     }
 
-    override fun cancel(clazz: KClass<*>) {
-        this.listeners.removeIf { it is ClassRegisteredListener && it.type == clazz }
+    override fun cancel(listener: Any) {
+        this.listeners.removeIf { it is ClassRegisteredListener && it.instance == listener }
     }
 
     override fun clear() {

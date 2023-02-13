@@ -10,7 +10,6 @@ import kingmc.util.key.Keyed
 /**
  * Field name corresponds to minecraft material names
  *
- * @param T the type of material data of this
  * @since 0.0.1
  * @author kingsthere
  */
@@ -89,4 +88,4 @@ interface MaterialProvider {
  */
 @WithApplication
 fun Material(name: String) =
-    currentApplication().platform.materials.getByName(name)
+    currentApplication().materials.getByName(name)
