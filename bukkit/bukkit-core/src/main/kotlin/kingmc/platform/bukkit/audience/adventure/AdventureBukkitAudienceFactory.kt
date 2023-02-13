@@ -78,7 +78,7 @@ object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
     }
 
     /**
-     * Gets a audience from original bukkit block
+     * Gets an audience from original bukkit block
      *
      * @since 0.0.5
      * @see OriginalBukkitBlock

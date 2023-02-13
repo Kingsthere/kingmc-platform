@@ -34,31 +34,31 @@ open class StringReader : ImmutableStringReader {
         this.string = string
     }
 
-    open override val totalLength: Int
+    override val totalLength: Int
         get() = string.length
 
-    open override val read: String
+    override val read: String
         get() = string.substring(0, cursor)
 
-    open override val remainingLength: Int
+    override val remainingLength: Int
         get() = string.length - cursor
 
-    open override val remaining: String
+    override val remaining: String
         get() = string.substring(cursor)
 
-    open override fun canRead(length: Int): Boolean {
+    override fun canRead(length: Int): Boolean {
         return cursor + length <= string.length
     }
 
-    open override fun canRead(): Boolean {
+    override fun canRead(): Boolean {
         return canRead(1)
     }
 
-    open override fun peek(): Char {
+    override fun peek(): Char {
         return string[cursor]
     }
 
-    open override fun peek(offset: Int): Char {
+    override fun peek(offset: Int): Char {
         return string[cursor + offset]
     }
 

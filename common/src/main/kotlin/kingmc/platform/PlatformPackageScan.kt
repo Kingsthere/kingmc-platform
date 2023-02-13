@@ -6,5 +6,4 @@ import kingmc.common.structure.annotation.PackageScan
     included = ["kingmc.platform"],
     excluded = []
 )
-object PlatformPackageScan {
-}
+object PlatformPackageScan

@@ -5,7 +5,7 @@ import kingmc.util.builder.Buildable
 
 /**
  * A superinterface represent a resolver to resolve/deserialize
- * [LiteralText] from special string
+ * [text] from special string
  *
  * @since 0.0.3
  * @author kingsthere
@@ -13,14 +13,14 @@ import kingmc.util.builder.Buildable
 @Component
 interface TextResolver {
     /**
-     * Resolve from a [String] to a [LiteralText]
+     * Resolve from a [String] to a [text]
      *
      * @since 0.0.3
      */
     fun resolve(string: String): Text
 
     /**
-     * Restore a [LiteralText] to [String]
+     * Restore a [text] to [String]
      *
      * @since 0.0.3
      */

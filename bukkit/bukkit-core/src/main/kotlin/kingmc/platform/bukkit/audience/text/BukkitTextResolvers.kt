@@ -11,8 +11,7 @@ object BukkitTextResolvers {
         application {
             val miniMessage: MiniMessage = MiniMessage.builder()
                 .build()
-            val textResolver = textBuilders()
-                .enableMiniMessage()
+            val textResolver = enableMiniMessage()
                 .miniMessage(miniMessage)
                 .build()
             // Returns

@@ -58,7 +58,7 @@ open class AdventureOnlineBukkitPlayer(
      *
      *
      * If the player has never played before, this will return 0. Otherwise,
-     * it will be the amount of milliseconds since midnight, January 1, 1970
+     * it will be the amount of milliseconds since midnight, January 1, 1970,
      * UTC
      *
      * @return Date of first log-in for this player, or 0
@@ -78,7 +78,7 @@ open class AdventureOnlineBukkitPlayer(
      *
      *
      * If the player has never played before, this will return 0. Otherwise,
-     * it will be the amount of milliseconds since midnight, January 1, 1970
+     * it will be the amount of milliseconds since midnight, January 1, 1970,
      * UTC
      *
      * @return Date of last log-in for this player, or 0

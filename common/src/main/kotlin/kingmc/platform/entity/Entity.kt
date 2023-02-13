@@ -11,6 +11,4 @@ import kingmc.platform.audience.text.TextDisplayable
  * @since 0.0.1
  * @author kingsthere
  */
-interface Entity : Physical, TextDisplayable, HoverEventDisplayable {
-    
-}
+interface Entity : Physical, TextDisplayable, HoverEventDisplayable

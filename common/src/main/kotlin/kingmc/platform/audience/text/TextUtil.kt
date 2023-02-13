@@ -8,7 +8,7 @@ import kingmc.platform.audience.capable.TextCapable
  * @since 0.0.2
  * @author kingsthere
  */
-fun TextCapable.LiteralText(obj: TextDisplayable) {
+fun TextCapable.text(obj: TextDisplayable) {
     this.text(obj.asText())
 }
 
@@ -18,6 +18,6 @@ fun TextCapable.LiteralText(obj: TextDisplayable) {
  * @since 0.0.2
  * @author kingsthere
  */
-fun TextCapable.LiteralText(obj: TextDisplayable, vararg marks: Mark) {
+fun TextCapable.text(obj: TextDisplayable, vararg marks: Mark) {
     this.text(obj.asText(), *marks)
 }

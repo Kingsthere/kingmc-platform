@@ -4,7 +4,7 @@ import kingmc.platform.*
 import kingmc.platform.audience.capable.MinecraftIdentityCapable
 import kingmc.platform.audience.particle.*
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.LiteralText
+import kingmc.platform.audience.text.text
 import kingmc.platform.block.Block
 import kingmc.platform.messaging.OutputMessage
 import kingmc.platform.messaging.PluginMessageRecipient
@@ -113,10 +113,10 @@ interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, Com
     }
 
     /**
-     * Convert this object into a [LiteralText]
+     * Convert this object into a [text]
      */
     override fun asText(): Text =
-        LiteralText {
+        text {
             audiences().forEach {
                 append(it.displayName)
                 append(Text.text(","))
@@ -216,7 +216,7 @@ interface OfflinePlayer : MinecraftIdentityCapable {
      *
      *
      * If the player has never played before, this will return 0. Otherwise,
-     * it will be the amount of milliseconds since midnight, January 1, 1970
+     * it will be the amount of milliseconds since midnight, January 1, 1970,
      * UTC
      *
      * @return Date of first log-in for this player, or 0
@@ -229,7 +229,7 @@ interface OfflinePlayer : MinecraftIdentityCapable {
      *
      *
      * If the player has never played before, this will return 0. Otherwise,
-     * it will be the amount of milliseconds since midnight, January 1, 1970
+     * it will be the amount of milliseconds since midnight, January 1, 1970,
      * UTC
      *
      * @return Date of last log-in for this player, or 0

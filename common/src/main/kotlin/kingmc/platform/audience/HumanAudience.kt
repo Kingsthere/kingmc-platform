@@ -3,9 +3,7 @@ package kingmc.platform.audience
 import kingmc.platform.MutablePhysical
 
 /**
- * Represent an audience, an audience is a virtual
- * object, an audience must is a human entity, audience
- * receive the packages from a [Tunnel]
+ * Represent an audience behaved similar to a human
  *
  * @since 0.0.3
  * @see Audience

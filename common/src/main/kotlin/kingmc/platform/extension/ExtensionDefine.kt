@@ -1,7 +1,7 @@
 package kingmc.platform.extension
 
 /**
- * A data class to define the basic informations of an extension
+ * A data class to define the basic information of an extension
  *
  * @since 0.0.3
  * @author kingsthere

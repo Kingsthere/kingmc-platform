@@ -5,34 +5,6 @@ import kingmc.common.application.application
 import kingmc.common.application.currentApplication
 
 /**
- * Create a location by the approximate position
- *
- * @since 0.0.1
- */
-@Suppress("DEPRECATION")
-@Deprecated(
-    message = "Use Platform.vectors.Vector() instead for using platform api in current application's platform",
-    replaceWith = ReplaceWith("Vector")
-)
-fun VectorImpl(x: Int, y: Int, z: Int): Vector {
-    return vectorProvider.of(x, y, z)
-}
-
-/**
- * Create a location by the exact position
- *
- * @since 0.0.1
- */
-@Suppress("DEPRECATION")
-@Deprecated(
-    message = "Use Platform.vectors.Vector() instead for using platform api in current application's platform",
-    replaceWith = ReplaceWith("Vector")
-)
-fun VectorImpl(x: Double, y: Double, z: Double): Vector {
-    return vectorProvider.of(x, y, z)
-}
-
-/**
  * Create a location by the exact position
  *
  * @since 0.0.1

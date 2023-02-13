@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Contract
 fun style(builder: StyleBuilder.() -> Unit): Style = Style.style(builder)
 
 /**
- * Allows editing using [Style.Builder] as the receiver parameter.
+ * Allows editing using [StyleBuilder] as the receiver parameter.
  *
  * @param consumer the consumer to edit this style with
  * @return a new style, with the changes applied from this builder

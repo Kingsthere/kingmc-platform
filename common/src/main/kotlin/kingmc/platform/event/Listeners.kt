@@ -32,8 +32,7 @@ open class ListenerScope<E : Any>(
      *
      * @since 0.0.3
      */
-    var priority: Byte) {
-}
+    var priority: Byte)
 
 /**
  * Set the handler of current listener scope

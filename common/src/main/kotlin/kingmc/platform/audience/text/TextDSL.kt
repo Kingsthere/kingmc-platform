@@ -55,24 +55,24 @@ fun Selector(builder: SelectorTextBuilder.() -> Unit): SelectorText = Text.selec
 fun StorageNBT(builder: StorageNBTTextBuilder.() -> Unit): StorageNBTText = Text.storageNBT(builder)
 
 /**
- * Builds a new [LiteralText] from the specified [builder].
+ * Builds a new [text] from the specified [builder].
  *
  * @param builder the builder to apply values from
- * @return a new [LiteralText]
+ * @return a new [text]
  * @since 4.6.0
  */
-fun LiteralText(builder: LiteralTextBuilder.() -> Unit = {  }): LiteralText
+fun text(builder: LiteralTextBuilder.() -> Unit = {  }): LiteralText
     = Text.text(builder)
 
 /**
- * Builds a new [LiteralText] with default content set from
+ * Builds a new [text] with default content set from
  * the specified [builder].
  *
  * @param builder the builder to apply values from
- * @return a new [LiteralText]
+ * @return a new [text]
  * @since 4.6.0
  */
-fun LiteralText(content: String, builder: LiteralTextBuilder.() -> Unit = {  }): LiteralText =
+fun text(content: String, builder: LiteralTextBuilder.() -> Unit = {  }): LiteralText =
     Text.text {
         it.content(content)
         it.builder()

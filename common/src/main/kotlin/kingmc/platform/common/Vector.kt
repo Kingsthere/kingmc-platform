@@ -84,7 +84,7 @@ data class VectorImpl(
      * @return the magnitude
      */
     override fun lengthSquared(): Double =
-        NumberConversions.square(x) + NumberConversions.square(y) + NumberConversions.square(z);
+        NumberConversions.square(x) + NumberConversions.square(y) + NumberConversions.square(z)
 
     /**
      * Get the distance between this vector and another. The value of this
@@ -123,6 +123,7 @@ data class VectorImpl(
         return acos(dot).toFloat()
     }
 
+    @Suppress("SameParameterValue", "SameParameterValue")
     private fun constrainToRange(value: Double, min: Double, max: Double): Double {
         if (min <= max) {
             return value.coerceAtLeast(min).coerceAtMost(max)

@@ -129,7 +129,7 @@ val Item.displayLore: List<Text>
 
 /**
  * Is this item is unbreakable, if this item is unbreakable
- * then the duration of this item will not lost when
+ * then the duration of this item will not lose when
  * this item use
  *
  * @since 0.0.1
@@ -142,7 +142,7 @@ val Item.unbreakable: Boolean
     }
 
 /**
- * The durability of this item, it display as a bar
+ * The durability of this item, it displays as a bar
  * with color from red to green in the bottom of
  * item, some items don't show that bar
  *
@@ -219,7 +219,7 @@ var ItemStack.displayLore: List<Text>
 
 /**
  * Is this item is unbreakable, if this item is unbreakable
- * then the duration of this item will not lost when
+ * then the duration of this item will not lose when
  * this item use
  *
  * @since 0.0.1
@@ -235,7 +235,7 @@ var ItemStack.unbreakable: Boolean
     }
 
 /**
- * The durability of this item, it display as a bar
+ * The durability of this item, it displays as a bar
  * with color from red to green in the bottom of
  * item, some items don't show that bar
  *

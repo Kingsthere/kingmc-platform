@@ -1,3 +1,8 @@
+@file:Suppress("BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted"
+)
+
 package kingmc.platform.event
 
 import com.esotericsoftware.reflectasm.MethodAccess
@@ -21,6 +26,10 @@ import kotlin.reflect.full.isSubclassOf
  * @author kingsthere
  * @see Publisher
  */
+@Suppress("BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted"
+)
 abstract class AbstractPublisher : Publisher {
     protected val listeners: MutableSet<RegisteredListener> = mutableSetOf()
 

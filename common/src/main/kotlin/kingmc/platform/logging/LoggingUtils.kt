@@ -3,14 +3,14 @@ package kingmc.platform.logging
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.logging.*
-import kingmc.platform.audience.text.LiteralText
+import kingmc.platform.audience.text.text
 import kingmc.platform.audience.text.TextResolver
 import kingmc.platform.audience.text.textResolver
 import kingmc.util.KingMCDsl
 import kingmc.util.format.EnableFormat
 
 /**
- * Log a info level [LiteralText] resolved from [TextResolver]
+ * Log a info level [text] resolved from [TextResolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -23,7 +23,7 @@ fun infoColored(msg: String) {
 }
 
 /**
- * Log a warn level [LiteralText] resolved from [TextResolver]
+ * Log a warn level [text] resolved from [TextResolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -36,7 +36,7 @@ fun warnColored(msg: String) {
 }
 
 /**
- * Log a error level [LiteralText] resolved from [TextResolver]
+ * Log a error level [text] resolved from [TextResolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -49,7 +49,7 @@ fun errorColored(msg: String) {
 }
 
 /**
- * Log a debug level [LiteralText] resolved from [TextResolver]
+ * Log a debug level [text] resolved from [TextResolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -62,7 +62,7 @@ fun debugColored(msg: String) {
 }
 
 /**
- * Log a trace level [LiteralText] resolved from [TextResolver]
+ * Log a trace level [text] resolved from [TextResolver]
  *
  * @since 0.0.4
  * @author kingsthere

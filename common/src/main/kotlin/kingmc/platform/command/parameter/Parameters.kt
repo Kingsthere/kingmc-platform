@@ -26,7 +26,7 @@ interface Parameters {
             get() = EmptyParameters
 
         /**
-         * Returns a [Parameters] reference with no values but it can
+         * Returns a [Parameters] reference with no values, but it can
          * return you default values of parameters
          */
         val EMPTY_WITH_DEFAULT: Parameters

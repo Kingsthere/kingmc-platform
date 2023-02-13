@@ -155,7 +155,7 @@ class BukkitPublisher : Proxy(), Listener, Releasable, ContextAware {
      * Clear all bukkit handles
      */
     fun clearBukkitHandle() {
-        registeredHandledBukkitEvent.forEach { eventClass, registeredListener ->
+        registeredHandledBukkitEvent.forEach { (eventClass, registeredListener) ->
             (eventClass.findFunction("getHandlerList")!!.call() as HandlerList).unregister(registeredListener)
         }
         registeredHandledBukkitEvent.clear()

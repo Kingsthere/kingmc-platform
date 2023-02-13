@@ -29,11 +29,11 @@ class BukkitPluginMessagingChannel(name: String) : IncomingPluginMessagingChanne
         mutableMapOf()
 
     /**
-     * Register a listener into this [PluginMessagingChannel]
+     * Register a listener into this `PluginMessagingChannel`
      */
     override fun registerListener(listener: Any): PluginMessageListenerRegistration {
         val listenerClass = listener::class
-        val subChannelHandlers = buildList() {
+        val subChannelHandlers = buildList {
             listenerClass.findFunctionsByAnnotation<SubscribeSubChannel>().forEach {
                 val annotation = it.getAnnotation<SubscribeSubChannel>()!!
                 if (it.isSuspend) {
@@ -49,7 +49,7 @@ class BukkitPluginMessagingChannel(name: String) : IncomingPluginMessagingChanne
     }
 
     /**
-     * Unregister a listener from this [PluginMessagingChannel]
+     * Unregister a listener from this `PluginMessagingChannel`
      */
     override fun unregisterListener(listener: Any) {
         registeredListeners.remove(listener)

@@ -5,15 +5,15 @@ import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.text.LiteralText
 import kingmc.platform.audience.text.Mark
 import kingmc.platform.audience.text.Text
+import kingmc.platform.audience.text.text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import java.util.*
 
 /**
- * Represent a receiver could receive [LiteralText]
+ * Represent a receiver could receive [text]
  *
  * @since 0.0.3
  * @author kingsthere
@@ -24,7 +24,7 @@ interface TextCapable {
      * Send a text to this receivable
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      */
     fun text(text: Text /* = net.kyori.adventure.text.Component */)
 
@@ -33,7 +33,7 @@ interface TextCapable {
      * tags
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      * @see Mark
      */
     fun text(text: Text /* = net.kyori.adventure.text.Component */, vararg marks: Mark)
@@ -102,9 +102,9 @@ interface TitleCapable {
 @AudienceCapable
 interface ActionBarCapable {
     /**
-     * Send a actionbar to this audience
+     * Send an actionbar to this audience
      *
-     * @see LiteralText
+     * @see text
      * @since 0.0.3
      */
     fun actionBar(text: Text)
@@ -158,7 +158,7 @@ interface MinecraftIdentityCapable {
      * The displaying name of this receiver
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      */
     var displayName: Text
 

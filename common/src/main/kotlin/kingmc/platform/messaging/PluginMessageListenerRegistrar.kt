@@ -10,27 +10,18 @@ import kingmc.common.context.process.BeanProcessor
 object PluginMessageListenerRegistrar : BeanProcessor {
     val openedPluginMessagingChannels = mutableListOf<String>()
 
-    /**
-     * The lifecycle where this processor start to work, this
-     * only work when you use it to process a [LifecycleContext]
-     *
-     * @see Lifecycle
-     */
     override val lifecycle: Int
         get() = 1
-
-    /**
-     * The priority of this processor to process beans
-     */
-    override val priority: Byte
-        get() = 0
 
     override fun process(context: Context, bean: Any): Boolean {
         val beanType = bean::class
         if (beanType.hasAnnotation<PluginMessageListener>()) {
             // Gets the messenger from context
-            val messenger = context.getBean(Messenger::class)
-                ?: throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not defined")
+            val messenger = try {
+                context.getBean(Messenger::class)
+            } catch (e: Exception) {
+                throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not available", e)
+            }
             val pluginMessageListenerAnnotation = beanType.getAnnotation<PluginMessageListener>()!!
             val pluginMessagingChannel = messenger.getIncomingPluginMessagingChannel(pluginMessageListenerAnnotation.name)
             // Active the channel
@@ -48,8 +39,11 @@ object PluginMessageListenerRegistrar : BeanProcessor {
     }
 
     override fun end(context: Context) {
-        val messenger = context.getBean(Messenger::class)
-            ?: throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not defined")
+        val messenger = try {
+            context.getBean(Messenger::class)
+        } catch (e: Exception) {
+            throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not available", e)
+        }
         openedPluginMessagingChannels.forEach { messenger.openOutgoingPluginMessagingChannel(it) }
     }
 
@@ -57,8 +51,11 @@ object PluginMessageListenerRegistrar : BeanProcessor {
         val beanType = bean::class
         if (beanType.hasAnnotation<PluginMessageListener>()) {
             // Gets the plugin messaging channel factory from context
-            val factory = context.getBean(Messenger::class)
-                ?: throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not defined")
+            val factory = try {
+                context.getBean(Messenger::class)
+            } catch (e: Exception) {
+                throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not available", e)
+            }
             val pluginMessageListenerAnnotation = beanType.getAnnotation<PluginMessageListener>()!!
             val pluginMessagingChannel = factory.getIncomingPluginMessagingChannel(pluginMessageListenerAnnotation.name)
             // Active the channel
@@ -68,8 +65,11 @@ object PluginMessageListenerRegistrar : BeanProcessor {
         }
         if (beanType.hasAnnotation<OpenPluginMessagingChannel>()) {
             // Gets the messenger from context
-            val messenger = context.getBean(Messenger::class)
-                ?: throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not defined")
+            val messenger = try {
+                context.getBean(Messenger::class)
+            } catch (e: Exception) {
+                throw IllegalStateException("Unable to register plugin messaging channel, because PluginMessagingChannelFactory is not available", e)
+            }
             val annotation = beanType.getAnnotation<OpenPluginMessagingChannel>()!!
             annotation.channel.forEach {
                 if (openedPluginMessagingChannels.contains(it)) {

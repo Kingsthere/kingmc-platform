@@ -8,5 +8,4 @@ import kingmc.platform.item.ItemStack
  * @since 0.0.3
  * @author kingsthere
  */
-interface Inventory : Iterable<ItemStack> {
-}
+interface Inventory : Iterable<ItemStack>

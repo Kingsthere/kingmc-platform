@@ -6,7 +6,6 @@ package kingmc.platform.audience.particle
  *
  * @since 0.0.3
  * @author kingsthere
- * @param id the id of this particle in packets
  */
 enum class ParticleType {
     EXPLOSION_NORMAL,

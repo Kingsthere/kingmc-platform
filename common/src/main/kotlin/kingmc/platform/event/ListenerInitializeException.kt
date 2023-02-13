@@ -1,7 +1,7 @@
 package kingmc.platform.event
 
 /**
- * Thrown when a exception thrown trying to initialize a listener
+ * Thrown when an exception thrown trying to initialize a listener
  *
  * @since 0.0.1
  * @author kingsthere

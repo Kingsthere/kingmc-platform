@@ -7,7 +7,7 @@ import kingmc.platform.context.PlatformContext
 import kingmc.util.format.FormatContext
 
 /**
- * A implementation of context serves for extensions
+ * An implementation of context serves for extensions
  *
  * @since 0.0.3
  * @author kingsthere

@@ -4,7 +4,7 @@ import kingmc.util.key.Key
 import kingmc.util.key.Keyed
 
 /**
- * Warp all versioned things so it can support
+ * Warp all versioned things, so it can support
  * many version of bukkit, kingmc split the wrappers
  * by their type, for example:
  *  + Audience

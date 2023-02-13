@@ -13,7 +13,4 @@ open class NodeArgumentBuilder<S>(
     val aliases: Set<String>
         get() = node.aliases
 
-    override fun build(): LiteralCommandNode<S> {
-        return super.build()
-    }
 }

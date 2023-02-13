@@ -24,6 +24,5 @@ object ReleasableProcessor : BeanProcessor {
         }
     }
 
-    override val priority: Byte = 0
     override val lifecycle: Int = 1
 }

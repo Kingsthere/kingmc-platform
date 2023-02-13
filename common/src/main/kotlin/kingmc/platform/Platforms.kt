@@ -3,7 +3,7 @@ package kingmc.platform
 import kingmc.common.context.Context
 
 /**
- * The main class for kingmc.platform package
+ * The main class for `kingmc.platform` package
  *
  * @since 0.0.5
  * @author kingsthere

@@ -5,9 +5,9 @@ import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.text.LiteralText
 import kingmc.platform.audience.text.Mark
 import kingmc.platform.audience.text.Text
+import kingmc.platform.audience.text.text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import kingmc.util.InternalAPI
@@ -34,7 +34,7 @@ interface ForwardingAudience : Audience {
      * Send a text to this receivable
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      */
     override fun text(text: Text) {
         this.audiences().forEach { it.text(text) }
@@ -45,7 +45,7 @@ interface ForwardingAudience : Audience {
      * tags
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      * @see Mark
      */
     override fun text(text: Text, vararg marks: Mark) {
@@ -126,9 +126,9 @@ interface ForwardingAudience : Audience {
     }
 
     /**
-     * Send a actionbar to this audience
+     * Send an actionbar to this audience
      *
-     * @see LiteralText
+     * @see text
      * @since 0.0.3
      */
     override fun actionBar(text: Text) {
@@ -167,7 +167,7 @@ interface ForwardingAudience : Audience {
      * The displaying name of this receiver
      *
      * @since 0.0.3
-     * @see LiteralText
+     * @see text
      */
     override var displayName: Text
         get() = this.audiences().first().displayName

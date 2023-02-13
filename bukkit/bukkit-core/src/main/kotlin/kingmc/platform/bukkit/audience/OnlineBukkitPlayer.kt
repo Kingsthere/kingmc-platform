@@ -9,7 +9,6 @@ import kingmc.platform.audience.text.Text
  * @since 0.0.3
  * @author kingsthere
  * @param player the player in original bukkit
- * @see BukkitTunnel
  * @see BukkitPlayer
  * @see OriginalBukkitPlayer
  */

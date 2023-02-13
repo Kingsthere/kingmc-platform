@@ -1,7 +1,7 @@
 package kingmc.platform.audience.bossbar
 
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.LiteralText
+import kingmc.platform.audience.text.text
 import kingmc.util.builder.Buildable
 import net.kyori.adventure.util.Index
 
@@ -19,7 +19,7 @@ interface BossBar : Buildable<BossBar, BossBar.Builder> {
      * @since 0.0.3
      * @throws IllegalArgumentException if the setting value
      *                                  is invalid
-     * @see LiteralText
+     * @see text
      */
     var name: Text
 
@@ -71,7 +71,7 @@ interface BossBar : Buildable<BossBar, BossBar.Builder> {
          * @since 0.0.3
          * @throws IllegalArgumentException if the setting value
          *                                  is invalid
-         * @see LiteralText
+         * @see text
          */
         var name: Text
 

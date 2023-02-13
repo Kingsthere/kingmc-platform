@@ -70,7 +70,7 @@ object SuccessSingleton : Success {
 }
 
 /**
- * Implement of command result with an specifies integer
+ * Implement of command result with a specifies integer
  *
  * @since 0.0.3
  * @author kingsthere

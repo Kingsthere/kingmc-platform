@@ -3,7 +3,7 @@ package kingmc.platform.audience.particle
 import kingmc.util.builder.Buildable
 
 /**
- * Represent a in-game particle that could send to a [ParticleRecipient]
+ * Represent an in-game particle that could send to a [ParticleRecipient]
  * and display on players client
  *
  * @since 0.0.3

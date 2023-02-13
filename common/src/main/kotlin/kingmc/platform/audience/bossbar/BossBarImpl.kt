@@ -1,7 +1,7 @@
 package kingmc.platform.audience.bossbar
 
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.LiteralText
+import kingmc.platform.audience.text.text
 
 /**
  * The default implement of [BossBar]
@@ -62,7 +62,7 @@ class BossBarImpl(
          * @since 0.0.3
          * @throws IllegalArgumentException if the setting value
          *                                  is invalid
-         * @see LiteralText
+         * @see text
          */
         override lateinit var name: Text
 

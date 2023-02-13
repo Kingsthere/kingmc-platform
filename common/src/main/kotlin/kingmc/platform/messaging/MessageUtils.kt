@@ -21,7 +21,7 @@ fun arrayDataInputMessage(player: Player, channel: String, data: ByteArray) =
  *
  * @since 0.0.4
  * @author kingsthere
- * @param byteArray the byte array to input data from
+ * @param subChannel the sub channel to the message
  */
 @Suppress("UnstableApiUsage")
 fun newDataOutputMessage(subChannel: String) =
@@ -32,7 +32,7 @@ fun newDataOutputMessage(subChannel: String) =
  *
  * @since 0.0.4
  * @author kingsthere
- * @param byteArray the byte array to input data from
+ * @param subChannel the sub channel to the message
  */
 @Suppress("UnstableApiUsage")
 fun buildDataOutputMessage(subChannel: String, builder: OutputMessage.() -> Unit) =

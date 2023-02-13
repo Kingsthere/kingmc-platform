@@ -16,10 +16,6 @@ open class PlatformApplicationImpl(platformOn: Platform, override val context: P
 ) : PlatformApplication<PlatformContext>, LoggerCapableApplication {
     override val platform = platformOn
 
-    init {
-
-    }
-
     override val name: String
         get() = "platform"
 

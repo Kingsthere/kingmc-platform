@@ -55,7 +55,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
         get() = throw UnsupportedOperationException()
 
     /**
-     * Send a actionbar to this audience
+     * Send an actionbar to this audience
      *
      * @see Text
      * @since 0.0.3

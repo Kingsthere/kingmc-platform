@@ -197,7 +197,7 @@ class BukkitPlugin(private val bukkitPluginInstance: BukkitJavaPlugin, private v
                     }
                 }
                 resourceNames.forEach { res ->
-                    loadExtensionDefaultResourcesFromFile(resourcesLoader.getResource(res)!!, ExtensionFile(res.substringAfter("default/")))
+                    loadExtensionDefaultResourcesFromFile(resourcesLoader.getResource(res)!!, extensionFile(res.substringAfter("default/")))
                 }
             }
         }

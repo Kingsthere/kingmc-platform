@@ -65,7 +65,7 @@ interface Sound : Buildable<Sound, Sound.Builder> {
      */
     interface Builder : Buildable.Builder<Sound> {
         var type: Key
-        var source: Sound.Source
+        var source: Source
         var volume: Float
         var pitch: Float
 

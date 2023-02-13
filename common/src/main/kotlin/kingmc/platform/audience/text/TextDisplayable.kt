@@ -30,7 +30,7 @@ fun TextDisplayable.asTitle(times: Title.Times = DEFAULT_TIMES): Title {
 
 /**
  * Convert this object into a [Title], display the text
- * as a [subtitle]
+ * as a `subtitle`
  *
  * @param times the times of this title
  */
@@ -49,7 +49,7 @@ fun TextDisplayable.asTitlePart(times: Title.Times = DEFAULT_TIMES): TitlePart<T
 
 /**
  * Convert this object into a [Title], display the text
- * as a [subtitle]
+ * as a `subtitle`
  *
  * @param times the times of this title
  */

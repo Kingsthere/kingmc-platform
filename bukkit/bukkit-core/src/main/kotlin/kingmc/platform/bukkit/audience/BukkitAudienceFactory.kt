@@ -6,7 +6,7 @@ import kingmc.platform.audience.CommandSender
 import kingmc.platform.audience.Player
 
 /**
- * Represent a audience factory use
+ * Represent an audience factory use
  * in bukkit servers. This interface is
  * not implement default, such as:
  *  + [Adventure api implement][kingmc.platform.bukkit.audience.adventure.AdventureBukkitAudienceFactory]
@@ -37,7 +37,7 @@ interface BukkitAudienceFactory : AudienceFactory {
     fun player(bukkitPlayer: OriginalBukkitPlayer): Player
 
     /**
-     * Gets a audience from original bukkit block
+     * Gets an audience from original bukkit block
      *
      * @since 0.0.5
      * @see OriginalBukkitBlockCommandSender

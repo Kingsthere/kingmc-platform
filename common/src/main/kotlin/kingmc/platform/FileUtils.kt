@@ -21,7 +21,7 @@ lateinit var baseDirectory: File
  * @since 0.0.3
  * @author kingsthere
  */
-fun BaseFile(pathname: String) =
+fun baseFile(pathname: String) =
     File("$baseDirectory/$pathname")
 
 /**
@@ -30,7 +30,7 @@ fun BaseFile(pathname: String) =
  * @since 0.0.3
  * @author kingsthere
  */
-fun BaseFile(path: String, child: String) =
+fun baseFile(path: String, child: String) =
     File("$baseDirectory/$path", child)
 
 /**
@@ -41,12 +41,12 @@ fun BaseFile(path: String, child: String) =
  * @author kingsthere
  */
 @WithApplication
-fun ExtensionFile(pathname: String): File {
+fun extensionFile(pathname: String): File {
     val application = currentApplication()
     return if (application is ExtensionApplication) {
-        BaseFile("extensions/${application.context.name}/${pathname}")
+        baseFile("extensions/${application.context.name}/${pathname}")
     } else {
-        BaseFile(pathname)
+        baseFile(pathname)
     }
 }
 /**
@@ -57,12 +57,12 @@ fun ExtensionFile(pathname: String): File {
  * @author kingsthere
  */
 @WithApplication
-fun ExtensionFile(path: String, child: String): File {
+fun extensionFile(path: String, child: String): File {
     val application = currentApplication()
     return if (application is ExtensionApplication) {
-        BaseFile("extensions/${application.context.name}/${path}", child)
+        baseFile("extensions/${application.context.name}/${path}", child)
     } else {
-        BaseFile(path, child)
+        baseFile(path, child)
     }
 }
 
@@ -73,4 +73,4 @@ fun ExtensionFile(path: String, child: String): File {
  * @author kingsthere
  */
 val LoadedExtension.extensionDataDirectory: File
-    get() = BaseFile("extensions/${application.context.name}/")
+    get() = baseFile("extensions/${application.context.name}/")

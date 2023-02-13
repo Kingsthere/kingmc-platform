@@ -3,11 +3,8 @@ package kingmc.platform.audience.playerlist
 import kingmc.platform.audience.text.Text
 
 /**
- * Represent a static player list, the
- * static player list is immutable, if
- * you modify the header or footer of this playlist
- * you can also use [PlayerListDefine.playerList] to
- * apply the player list
+ * A static `PlayerList`, it won't apply to the audience once you change properties
+ * in instances of this
  *
  * @since 0.0.3
  * @author kingsthere

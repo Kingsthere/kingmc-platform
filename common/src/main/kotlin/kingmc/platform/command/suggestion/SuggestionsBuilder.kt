@@ -7,14 +7,14 @@ class SuggestionsBuilder(val input: String, private val inputLowerCase: String, 
     private val remainingLowerCase: String = inputLowerCase.substring(start)
     private val result: MutableList<Suggestion> = ArrayList()
 
-    constructor(input: String, start: Int) : this(input, input.lowercase(), start) {}
+    constructor(input: String, start: Int) : this(input, input.lowercase(), start)
 
     fun build(): Suggestions {
         return Suggestions.create(input, result)
     }
 
     fun buildFuture(): CompletableFuture<Suggestions> {
-        return CompletableFuture.completedFuture<Suggestions>(build())
+        return CompletableFuture.completedFuture(build())
     }
 
     fun suggest(text: String): SuggestionsBuilder {

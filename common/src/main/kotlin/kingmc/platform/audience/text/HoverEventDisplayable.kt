@@ -7,7 +7,7 @@ package kingmc.platform.audience.text
  * @since 0.0.3
  * @author kingsthere
  * @see HoverEvent
- * @see LiteralText
+ * @see text
  */
 interface HoverEventDisplayable {
     /**

@@ -69,6 +69,5 @@ object AwakeProcessor : BeanProcessor {
         awakingFunctions.clear()
     }
 
-    override val priority: Byte = 1
     override val lifecycle: Int = 1
 }

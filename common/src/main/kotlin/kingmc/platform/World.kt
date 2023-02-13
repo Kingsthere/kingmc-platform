@@ -9,7 +9,7 @@ import java.util.*
 
 /**
  * A representation of **world**, **world**
- * is the forth dimension of minecraft, a
+ * is the forth dimension of minecraft, an
  * original minecraft server only have 3
  * dimension:
  *  + world

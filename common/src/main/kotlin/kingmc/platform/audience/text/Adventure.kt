@@ -65,7 +65,7 @@ typealias StyleTag = Mark
 
 class MiniMessageTextResolver(val miniMessage: MiniMessage, vararg val tags: TagResolver): TextResolver {
     /**
-     * Resolve from a [String] to a [LiteralText]
+     * Resolve from a [String] to a [text]
      *
      * @since 0.0.3
      */
@@ -74,7 +74,7 @@ class MiniMessageTextResolver(val miniMessage: MiniMessage, vararg val tags: Tag
     }
 
     /**
-     * Restore a [LiteralText] to [String]
+     * Restore a [text] to [String]
      *
      * @since 0.0.3
      */
@@ -116,7 +116,7 @@ class MiniMessageTextResolver(val miniMessage: MiniMessage, vararg val tags: Tag
 }
 class SimpleTextResolver: TextResolver {
     /**
-     * Resolve from a [String] to a [LiteralText]
+     * Resolve from a [String] to a [text]
      *
      * @since 0.0.3
      */
@@ -125,7 +125,7 @@ class SimpleTextResolver: TextResolver {
     }
 
     /**
-     * Restore a [LiteralText] to [String]
+     * Restore a [text] to [String]
      *
      * @since 0.0.3
      */
@@ -148,7 +148,7 @@ class SimpleTextResolver: TextResolver {
  * @since 0.0.3
  * @author kingsthere
  */
-fun TextBuilders.enableMiniMessage(): MiniMessageTextResolver.MiniMessageBuilder {
+fun enableMiniMessage(): MiniMessageTextResolver.MiniMessageBuilder {
     return MiniMessageTextResolver.MiniMessageBuilder()
 }
 
@@ -159,6 +159,6 @@ fun TextBuilders.enableMiniMessage(): MiniMessageTextResolver.MiniMessageBuilder
  * @author kingsthere
  * @see SimpleTextResolver
  */
-fun TextBuilders.simple(): SimpleTextResolver.SimpleMessageBuilder {
+fun simple(): SimpleTextResolver.SimpleMessageBuilder {
     return SimpleTextResolver.SimpleMessageBuilder()
 }

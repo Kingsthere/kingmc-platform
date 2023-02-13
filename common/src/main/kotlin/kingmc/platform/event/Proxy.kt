@@ -8,6 +8,4 @@ package kingmc.platform.event
  * @since 0.0.1
  * @author kingsthere
  */
-abstract class Proxy : AbstractPublisher() {
-
-}
+abstract class Proxy : AbstractPublisher()
