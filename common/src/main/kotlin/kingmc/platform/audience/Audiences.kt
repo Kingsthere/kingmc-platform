@@ -116,7 +116,7 @@ interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, Com
      * Convert this object into a [text]
      */
     override fun asText(): Text =
-        text {
+        Text {
             audiences().forEach {
                 append(it.displayName)
                 append(Text.text(","))

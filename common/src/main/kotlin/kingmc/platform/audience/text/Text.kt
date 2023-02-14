@@ -14,4 +14,4 @@ fun Application<*>.textResolver(): TextResolver =
 /**
  * A [Text] instance with no contents
  */
-val EMPTY_TEXT: Text = text {  }
+val EMPTY_TEXT: Text = Text {  }

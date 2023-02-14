@@ -13,8 +13,8 @@ import kingmc.common.environment.RuntimeDependency
 @RuntimeDependency(
     value = "de!.tr7zw:item-nbt-api:2.11.1",
     repository = "https://repo.codemc.org/repository/maven-public/",
-    relocate = ["de!.tr7zw!.changeme", "kingmc.platform.bukkit.nbt"]
+    relocate = ["de!.tr7zw!.changeme!.nbtapi", "kingmc.platform.nbt"]
 )
 @Component("nbtApiEnvironment")
-@ConditionalOnClass("kingmc.platform.bukkit.nbt.NBT")
+@ConditionalOnClass("kingmc.platform.nbt.NBT")
 object NBTAPIEnvironment

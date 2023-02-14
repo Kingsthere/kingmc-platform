@@ -8,7 +8,6 @@ import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.text.Mark
 import kingmc.platform.audience.text.Text
 import kingmc.platform.audience.text.serializer.serializeFromTextToLegacy
-import kingmc.platform.audience.text.text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.block.Block
@@ -27,7 +26,7 @@ class BukkitBlockCommandSenderImpl(private val _bukkitBlockCommandSender: Origin
      * @see Text
      */
     override var displayName: Text
-        get() = text(_bukkitBlockCommandSender.name)
+        get() = Text(_bukkitBlockCommandSender.name)
         set(_) {
             throw UnsupportedOperationException()
         }
