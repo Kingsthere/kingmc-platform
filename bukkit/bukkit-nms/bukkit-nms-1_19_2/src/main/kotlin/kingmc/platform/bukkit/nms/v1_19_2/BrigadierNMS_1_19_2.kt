@@ -6,10 +6,10 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import kingmc.common.application.Application
 import kingmc.common.application.application
-import kingmc.common.application.suspendApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.condition.ConditionalOnBean
+import kingmc.common.logging.error
 import kingmc.common.logging.info
 import kingmc.platform.audience.AudienceFactory
 import kingmc.platform.audience.CommandSender
@@ -18,6 +18,7 @@ import kingmc.platform.bukkit.audience.OriginalBukkitCommandSender
 import kingmc.platform.bukkit.brigadier.*
 import kingmc.platform.bukkit.fromBukkit
 import kingmc.platform.command.CommandContext
+import kingmc.platform.command.exceptions.CommandExecutionException
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Header
 import kingmc.platform.command.model.Node
@@ -100,15 +101,15 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                 if (handler.parameters.size == 0) {
                     // Insert empty root parameters executor
                     executes { css ->
-                        try {
-                            val parameters = Parameters.EMPTY
-                            application(commandHeader.application) {
+                        return@executes application(handler.application) {
+                            try {
+                                val parameters = Parameters.EMPTY
                                 val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
                                 handler.invoke(commandContext).asInt()
+                            } catch (e: Exception) {
+                                printCommandHandleException(e)
+                                0
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            return@executes 0
                         }
                     }
                 } else {
@@ -140,15 +141,15 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
                 if (handler.parameters.size == 0) {
                     // Insert empty root parameters executor
                     executes { css ->
-                        try {
-                            val parameters = Parameters.EMPTY
-                            application(commandNode.application) {
+                        return@executes application(handler.application) {
+                            try {
+                                val parameters = Parameters.EMPTY
                                 val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
                                 handler.invoke(commandContext).asInt()
+                            } catch (e: Exception) {
+                                printCommandHandleException(e)
+                                0
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            return@executes 0
                         }
                     }
                 } else {
@@ -172,15 +173,15 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
             if (handler.parameters.size == 0) {
                 // Insert empty root parameters executor
                 executes { css ->
-                    try {
-                        val parameters = Parameters.EMPTY
-                        application(owner.application) {
+                    return@executes application(owner.application) {
+                        try {
+                            val parameters = Parameters.EMPTY
                             val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
                             handler.invoke(commandContext).asInt()
+                        } catch (e: Exception) {
+                            printCommandHandleException(e)
+                            0
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        return@executes 0
                     }
                 }
             } else {
@@ -197,27 +198,29 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
     ): ArgumentBuilder<CommandSourceStack, *> {
         return deserializeCommandParameter(deserializing, this@BrigadierNMS_1_19_2.application).apply {
                     executes { css ->
-                        try {
-                            val parameters = BrigadierParameters_1_19_2(css, listed.subList(0, index + 1))
-                            return@executes runBlocking {
-                                this@BrigadierNMS_1_19_2.suspendApplication {
-                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                    coroutineScope {
-                                        handler.invoke(commandContext).asInt()
-                                    }
-                                }
+                        return@executes application(handler.application) {
+                            try {
+                                val parameters = BrigadierParameters_1_19_2(css, listed.subList(0, index + 1))
+                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                handler.invoke(commandContext).asInt()
+                            } catch (e: Exception) {
+                                printCommandHandleException(e)
+                                0
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            return@executes 0
                         }
                     }
+
                     if (index + 1 < listed.size) {
                         val newIndex = index + 1
                         then(deserializeCommandHandlerParameters(handler, listed, listed[newIndex], newIndex))
                     }
             }
 
+    }
+
+    fun printCommandHandleException(exception: Exception) {
+        error("An error occurred while executing a command:")
+        CommandExecutionException("An error occurred while executing a command", exception).printStackTrace()
     }
 
     private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application<*>): RequiredArgumentBuilder<CommandSourceStack, TValue> {

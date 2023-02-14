@@ -350,6 +350,7 @@ class BukkitPlugin(private val bukkitPluginInstance: BukkitJavaPlugin, private v
     /**
      * Reload all extensions in kingmc
      */
+    @Synchronized
     @ExperimentalPlatformApi
     override fun reload() {
         // Dispose loaded extensions
