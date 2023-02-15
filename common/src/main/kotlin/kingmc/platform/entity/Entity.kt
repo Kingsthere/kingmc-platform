@@ -2,7 +2,7 @@ package kingmc.platform.entity
 
 import kingmc.platform.Physical
 import kingmc.platform.audience.text.HoverEventDisplayable
-import kingmc.platform.audience.text.TextDisplayable
+import kingmc.platform.util.TextDisplayable
 
 /**
  * An interface represent an in-game entity that could display

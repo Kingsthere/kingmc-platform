@@ -1,16 +1,14 @@
 package kingmc.platform.logging
 
 import kingmc.common.application.WithApplication
-import kingmc.common.application.currentApplication
 import kingmc.common.logging.*
-import kingmc.platform.audience.text.text
-import kingmc.platform.audience.text.TextResolver
-import kingmc.platform.audience.text.textResolver
+import kingmc.platform.audience.text.TextSolver
+import kingmc.platform.util.solveText
 import kingmc.util.KingMCDsl
 import kingmc.util.format.EnableFormat
 
 /**
- * Log a info level [text] resolved from [TextResolver]
+ * Log a info level [text] resolved from [TextSolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -19,11 +17,11 @@ import kingmc.util.format.EnableFormat
 @EnableFormat
 @WithApplication
 fun infoColored(msg: String) {
-    info(currentApplication().textResolver().resolve(msg))
+    info(solveText(msg))
 }
 
 /**
- * Log a warn level [text] resolved from [TextResolver]
+ * Log a warn level [text] resolved from [TextSolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -32,11 +30,11 @@ fun infoColored(msg: String) {
 @EnableFormat
 @WithApplication
 fun warnColored(msg: String) {
-    warn(currentApplication().textResolver().resolve(msg))
+    warn(solveText(msg))
 }
 
 /**
- * Log a error level [text] resolved from [TextResolver]
+ * Log a error level [text] resolved from [TextSolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -45,11 +43,11 @@ fun warnColored(msg: String) {
 @EnableFormat
 @WithApplication
 fun errorColored(msg: String) {
-    error(currentApplication().textResolver().resolve(msg))
+    error(solveText(msg))
 }
 
 /**
- * Log a debug level [text] resolved from [TextResolver]
+ * Log a debug level [text] resolved from [TextSolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -58,11 +56,11 @@ fun errorColored(msg: String) {
 @EnableFormat
 @WithApplication
 fun debugColored(msg: String) {
-    debug(currentApplication().textResolver().resolve(msg))
+    debug(solveText(msg))
 }
 
 /**
- * Log a trace level [text] resolved from [TextResolver]
+ * Log a trace level [text] resolved from [TextSolver]
  *
  * @since 0.0.4
  * @author kingsthere
@@ -71,5 +69,5 @@ fun debugColored(msg: String) {
 @EnableFormat
 @WithApplication
 fun traceColored(msg: String) {
-    trace(currentApplication().textResolver().resolve(msg))
+    trace(solveText(msg))
 }

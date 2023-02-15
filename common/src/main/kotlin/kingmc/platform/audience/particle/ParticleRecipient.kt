@@ -1,6 +1,6 @@
 package kingmc.platform.audience.particle
 
-import kingmc.platform.audience.capable.AudienceCapable
+import kingmc.platform.audience.kind.AudienceKind
 
 /**
  * Represent an object that could receive particles
@@ -10,7 +10,7 @@ import kingmc.platform.audience.capable.AudienceCapable
  * @see Particle
  * @see ParticleGroup
  */
-@AudienceCapable
+@AudienceKind
 interface ParticleRecipient {
     /**
      * Send a particle to this particle recipient

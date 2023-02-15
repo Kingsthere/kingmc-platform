@@ -1,4 +1,4 @@
-package kingmc.platform.audience.capable
+package kingmc.platform.audience.kind
 
 import kingmc.platform.Location
 import kingmc.platform.audience.bossbar.BossBar
@@ -7,7 +7,6 @@ import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.text.Mark
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import java.util.*
@@ -18,7 +17,7 @@ import java.util.*
  * @since 0.0.3
  * @author kingsthere
  */
-@AudienceCapable
+@AudienceKind
 interface TextCapable {
     /**
      * Send a text to this receivable
@@ -47,9 +46,9 @@ interface TextCapable {
  * @author kingsthere
  * @see Title
  * @see TitlePartType
- * @see AudienceCapable
+ * @see AudienceKind
  */
-@AudienceCapable
+@AudienceKind
 interface TitleCapable {
     /**
      * Send a title to this audience
@@ -97,9 +96,9 @@ interface TitleCapable {
  *
  * @since 0.0.3
  * @author kingsthere
- * @see AudienceCapable
+ * @see AudienceKind
  */
-@AudienceCapable
+@AudienceKind
 interface ActionBarCapable {
     /**
      * Send an actionbar to this audience
@@ -118,7 +117,7 @@ interface ActionBarCapable {
  * @author kingsthere
  * @see BossBar
  */
-@AudienceCapable
+@AudienceKind
 interface BossBarCapable {
     /**
      * Show a bossbar to this receiver
@@ -143,9 +142,9 @@ interface BossBarCapable {
  *
  * @since 0.0.3
  * @author kingsthere
- * @see AudienceCapable
+ * @see AudienceKind
  */
-@AudienceCapable
+@AudienceKind
 interface MinecraftIdentityCapable {
     /**
      * The name of this receiver
@@ -178,7 +177,7 @@ interface MinecraftIdentityCapable {
  * @since 0.0.3
  * @author kingsthere
  */
-@AudienceCapable
+@AudienceKind
 interface PlayerListCapable {
     /**
      * The player list that is displaying
@@ -197,7 +196,7 @@ interface PlayerListCapable {
  * @author kingsthere
  * @see Sound
  */
-@AudienceCapable
+@AudienceKind
 interface SoundCapable {
     /**
      * Play a sound to this audience
@@ -221,5 +220,4 @@ interface SoundCapable {
     fun stopSound(soundStop: SoundStop)
 }
 
-// TODO Boss-bar receivable
 // TODO Inventory(GUI) receiver

@@ -1,7 +1,7 @@
 package kingmc.platform.audience
 
-import kingmc.platform.audience.capable.*
-import kingmc.platform.audience.text.TextDisplayable
+import kingmc.platform.audience.kind.*
+import kingmc.platform.util.TextDisplayable
 import kingmc.util.InternalAPI
 import java.io.Closeable
 

@@ -1,6 +1,6 @@
 package kingmc.platform.audience.playerlist
 
-import kingmc.platform.audience.capable.PlayerListCapable
+import kingmc.platform.audience.kind.PlayerListCapable
 import kingmc.platform.audience.text.Text
 
 /**

@@ -3,7 +3,7 @@ package kingmc.platform.item
 import de.tr7zw.changeme.nbtapi.NBTCompound
 import kingmc.platform.Material
 import kingmc.platform.audience.text.HoverEventDisplayable
-import kingmc.platform.audience.text.TextDisplayable
+import kingmc.platform.util.TextDisplayable
 import kingmc.platform.nbt.NBTCompoundHolder
 import kingmc.util.Tagged
 

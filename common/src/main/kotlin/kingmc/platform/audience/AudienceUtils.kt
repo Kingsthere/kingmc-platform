@@ -4,8 +4,8 @@ package kingmc.platform.audience
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.TextDisplayable
 import kingmc.platform.audiences
+import kingmc.platform.util.TextDisplayable
 import java.util.*
 import java.util.function.Predicate
 

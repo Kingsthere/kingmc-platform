@@ -3,7 +3,7 @@ package kingmc.platform
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Component
-import kingmc.platform.audience.text.TextDisplayable
+import kingmc.platform.util.TextDisplayable
 import kingmc.util.key.Key
 import kingmc.util.key.Keyed
 

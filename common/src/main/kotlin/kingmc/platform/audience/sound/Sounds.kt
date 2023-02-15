@@ -1,7 +1,7 @@
 package kingmc.platform.audience.sound
 
 import kingmc.platform.Location
-import kingmc.platform.audience.capable.SoundCapable
+import kingmc.platform.audience.kind.SoundCapable
 import kingmc.util.key.Key
 
 /**

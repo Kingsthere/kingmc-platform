@@ -8,8 +8,8 @@ import kingmc.common.application.Application
  * @since 0.0.3
  * @author kingsthere
  */
-fun Application<*>.textResolver(): TextResolver =
-    context.getBean(TextResolver::class)
+fun Application<*>.textSolver(): TextSolver =
+    context.getBean(TextSolver::class)
 
 /**
  * A [Text] instance with no contents

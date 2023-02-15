@@ -23,7 +23,7 @@ object BukkitTextResolvers {
      * The default text resolver to use (miniMessage is enabled by default)
      */
     @Bean("defaultTextResolver")
-    fun defaultTextResolver(): TextResolver {
+    fun defaultTextResolver(): TextSolver {
         return defaultTextResolver
     }
 

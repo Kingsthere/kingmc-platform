@@ -1,10 +1,9 @@
 package kingmc.platform.audience
 
 import kingmc.platform.*
-import kingmc.platform.audience.capable.MinecraftIdentityCapable
+import kingmc.platform.audience.kind.MinecraftIdentityCapable
 import kingmc.platform.audience.particle.*
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.text
 import kingmc.platform.block.Block
 import kingmc.platform.messaging.OutputMessage
 import kingmc.platform.messaging.PluginMessageRecipient

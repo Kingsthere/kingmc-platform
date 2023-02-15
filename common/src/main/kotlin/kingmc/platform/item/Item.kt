@@ -3,8 +3,8 @@ package kingmc.platform.item
 import de.tr7zw.changeme.nbtapi.NBTCompound
 import kingmc.platform.Material
 import kingmc.platform.audience.text.HoverEventDisplayable
-import kingmc.platform.audience.text.TextDisplayable
 import kingmc.platform.nbt.NBTCompoundHolder
+import kingmc.platform.util.TextDisplayable
 import kingmc.util.Tagged
 import kingmc.util.builder.Buildable
 import kingmc.util.errorprone.Immutable

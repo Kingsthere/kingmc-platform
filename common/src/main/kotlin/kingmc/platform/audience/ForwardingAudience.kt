@@ -7,7 +7,6 @@ import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.text.Mark
 import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import kingmc.util.InternalAPI
@@ -171,7 +170,7 @@ interface ForwardingAudience : Audience {
      */
     override var displayName: Text
         get() = this.audiences().first().displayName
-        set(value) {}
+        set(_) {}
 
     /**
      * The uuid of this identity

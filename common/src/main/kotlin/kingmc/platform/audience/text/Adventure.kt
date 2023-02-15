@@ -63,31 +63,21 @@ to kingmc
 typealias MiniMessage = MiniMessage
 typealias StyleTag = Mark
 
-class MiniMessageTextResolver(val miniMessage: MiniMessage, vararg val tags: TagResolver): TextResolver {
-    /**
-     * Resolve from a [String] to a [text]
-     *
-     * @since 0.0.3
-     */
-    override fun resolve(string: String): Text {
+class MiniMessageTextSolver(val miniMessage: MiniMessage, vararg val tags: TagResolver): TextSolver {
+    override fun solve(string: String): Text {
         return miniMessage.deserialize(string, *tags)
     }
 
-    /**
-     * Restore a [text] to [String]
-     *
-     * @since 0.0.3
-     */
-    override fun restore(text: Text): String {
+    override fun encode(text: Text): String {
         return miniMessage.serialize(text)
     }
 
-    class MiniMessageBuilder: TextResolver.Builder {
+    class MiniMessageBuilder: TextSolver.Builder {
         lateinit var miniMessage: MiniMessage
         val tags: MutableList<TagResolver> = mutableListOf()
 
         /**
-         * Set the mini message instance to use
+         * Set the `MiniMessage` to use
          *
          * @since 0.0.3
          * @see MiniMessageBuilder
@@ -108,36 +98,27 @@ class MiniMessageTextResolver(val miniMessage: MiniMessage, vararg val tags: Tag
             return this
         }
 
-        override fun build(): TextResolver {
-            return MiniMessageTextResolver(miniMessage = miniMessage, tags = tags.toTypedArray())
+        override fun build(): TextSolver {
+            return MiniMessageTextSolver(miniMessage = miniMessage, tags = tags.toTypedArray())
         }
 
     }
 }
-class SimpleTextResolver: TextResolver {
-    /**
-     * Resolve from a [String] to a [text]
-     *
-     * @since 0.0.3
-     */
-    override fun resolve(string: String): Text {
+class SimpleTextSolver: TextSolver {
+
+    override fun solve(string: String): Text {
         return Text.text(string)
     }
 
-    /**
-     * Restore a [text] to [String]
-     *
-     * @since 0.0.3
-     */
-    override fun restore(text: Text): String {
+    override fun encode(text: Text): String {
         return MiniMessage.miniMessage()
             .serialize(text)
     }
 
-    class SimpleMessageBuilder: TextResolver.Builder {
+    class SimpleMessageBuilder: TextSolver.Builder {
 
-        override fun build(): TextResolver {
-            return SimpleTextResolver()
+        override fun build(): TextSolver {
+            return SimpleTextSolver()
         }
 
     }
@@ -148,8 +129,8 @@ class SimpleTextResolver: TextResolver {
  * @since 0.0.3
  * @author kingsthere
  */
-fun enableMiniMessage(): MiniMessageTextResolver.MiniMessageBuilder {
-    return MiniMessageTextResolver.MiniMessageBuilder()
+fun enableMiniMessage(): MiniMessageTextSolver.MiniMessageBuilder {
+    return MiniMessageTextSolver.MiniMessageBuilder()
 }
 
 /**
@@ -157,8 +138,8 @@ fun enableMiniMessage(): MiniMessageTextResolver.MiniMessageBuilder {
  *
  * @since 0.0.3
  * @author kingsthere
- * @see SimpleTextResolver
+ * @see SimpleTextSolver
  */
-fun simple(): SimpleTextResolver.SimpleMessageBuilder {
-    return SimpleTextResolver.SimpleMessageBuilder()
+fun simple(): SimpleTextSolver.SimpleMessageBuilder {
+    return SimpleTextSolver.SimpleMessageBuilder()
 }
