@@ -1,9 +1,9 @@
 package kingmc.platform
 
-import com.ktil.annotation.Extendable
-import com.ktil.annotation.Extended
 import kingmc.common.application.WithApplication
 import kingmc.common.context.annotation.Component
+import kingmc.util.annotation.Extendable
+import kingmc.util.annotation.Extended
 
 /**
  * A common annotation for the components

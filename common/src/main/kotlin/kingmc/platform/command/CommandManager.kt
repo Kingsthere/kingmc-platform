@@ -5,6 +5,8 @@ import kingmc.platform.PlatformExposed
 import kingmc.platform.command.model.RegisteredCommand
 import java.io.Closeable
 
+const val NAMESPACE_SEPARATOR = ":"
+
 /**
  * A Manager to manage commands, such as registering commands,
  * modify registered commands

@@ -15,13 +15,12 @@ import kingmc.platform.bukkit.brigadier.AliasesCommandNode
 import kingmc.platform.bukkit.brigadier.BrigadierCommandManager
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
 import kingmc.platform.bukkit.brigadier.removeCommand
+import kingmc.platform.command.NAMESPACE_SEPARATOR
 import kingmc.platform.command.model.Header
 import kingmc.platform.command.model.Node
 import kingmc.platform.command.model.RegisteredCommand
 import kingmc.platform.platform
 import kingmc.platform.version.ConditionalOnVersion
-
-const val NAMESPACE_SEPARATOR = ":"
 
 @Component("brigadierCommandManager_1_19_2")
 @ConditionalOnVersion("1.19.2")

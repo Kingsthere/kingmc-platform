@@ -20,6 +20,7 @@ import kingmc.platform.bukkit.audience.OnlineBukkitPlayer
 import kingmc.platform.bukkit.audience.OriginalBukkitPlayer
 import kingmc.platform.bukkit.bukkitPluginInstance
 import kingmc.platform.bukkit.fromBukkit
+import kingmc.platform.bukkit.nms.PlayerNMS
 import kingmc.platform.bukkit.toBukkit
 import kingmc.platform.messaging.OutputMessage
 import kingmc.util.InternalAPI
@@ -32,9 +33,11 @@ import java.util.stream.Collectors
  * adventure api
  */
 open class AdventureOnlineBukkitPlayer(
+    protected var _playerNMS: PlayerNMS<Any>,
     protected var _bukkitPlayer: OriginalBukkitPlayer,
     protected var _adventureAudience: AdventureAudience
 ) : OnlineBukkitPlayer(_bukkitPlayer) {
+    private val _handle by lazy { _playerNMS.getHandle(this@AdventureOnlineBukkitPlayer) }
 
     override fun text(text: Text) {
         this.refresh()
@@ -239,9 +242,9 @@ open class AdventureOnlineBukkitPlayer(
         ))
     }
 
-    override fun particle(particle: Particle) {
+    override fun particle(particle: Particle<*>) {
         this.refresh()
-        // TODO Sending pure packet particle
+        this._playerNMS.sendParticle(this._handle, particle)
     }
 
     override fun particle(particleAnimation: ParticleAnimation): ParticleAnimationTask =

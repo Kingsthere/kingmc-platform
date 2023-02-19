@@ -6,6 +6,6 @@ package kingmc.platform.audience.particle
  * @since 0.0.3
  * @author kingsthere
  */
-data class SimpleParticleGroup(
-    override val particles: MutableSet<Particle>
+data class ParticleGroupImpl(
+    override val particles: MutableSet<Particle<*>>
 ) : ParticleGroup

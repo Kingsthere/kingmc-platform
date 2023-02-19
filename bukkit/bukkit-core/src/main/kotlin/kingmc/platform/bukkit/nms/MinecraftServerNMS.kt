@@ -3,12 +3,12 @@ package kingmc.platform.bukkit.nms
 import kingmc.common.context.annotation.Component
 
 /**
- * A superinterface exposed an interface to interact `MinecraftServer` class on bukkit
+ * A superinterface exposed few functions to interact with `MinecraftServer` class on bukkit
  *
  * @since 0.0.5
  * @author kingsthere
  */
-@Component("minecraftServerNMS")
+@Component
 interface MinecraftServerNMS<TMinecraftServer, TCraftServer> {
     /**
      * Gets the `MinecraftServer` instance for current server

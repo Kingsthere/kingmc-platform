@@ -1,5 +1,7 @@
 package kingmc.platform.bukkit
 
+import kingmc.platform.audience.Player
+import kingmc.platform.bukkit.audience.OriginalBukkitPlayer
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -45,3 +47,9 @@ lateinit var pluginFile: File
  * @author kingsthere
  */
 lateinit var bukkitPlatform: BukkitPlatform
+
+/**
+ * Gets the bukkit api version of this player
+ */
+val Player.bukkit: OriginalBukkitPlayer
+    get() = this.cast()

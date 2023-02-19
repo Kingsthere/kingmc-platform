@@ -15,5 +15,5 @@ interface ParticleGroup {
      * @since 0.0.3
      * @author kingsthere
      */
-    val particles: MutableSet<Particle>
+    val particles: MutableSet<Particle<*>>
 }

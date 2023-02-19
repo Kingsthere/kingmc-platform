@@ -15,17 +15,17 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.CommandListenerWrapper
 import java.util.concurrent.CompletableFuture
 
 class WrappedSuggestionProvider_1_19_2(
     val suggestionProvider: kingmc.platform.command.suggestion.SuggestionProvider,
-    val brigadierNMS: BrigadierNMS<CommandSourceStack>,
+    val brigadierNMS: BrigadierNMS<CommandListenerWrapper>,
     val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
     val outerApplication: Application<*>
-) : SuggestionProvider<CommandSourceStack> {
+) : SuggestionProvider<CommandListenerWrapper> {
     override fun getSuggestions(
-        css: com.mojang.brigadier.context.CommandContext<CommandSourceStack>,
+        css: com.mojang.brigadier.context.CommandContext<CommandListenerWrapper>,
         builder: SuggestionsBuilder,
     ): CompletableFuture<Suggestions> {
         val wrappedSender = brigadierNMS.getCommandSender(css)

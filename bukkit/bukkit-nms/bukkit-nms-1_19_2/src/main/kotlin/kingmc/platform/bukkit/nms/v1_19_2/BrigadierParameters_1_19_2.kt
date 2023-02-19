@@ -3,9 +3,9 @@ package kingmc.platform.bukkit.nms.v1_19_2
 import kingmc.platform.bukkit.brigadier.BrigadierCommandContext
 import kingmc.platform.command.parameter.CommandParameter
 import kingmc.platform.command.parameter.Parameters
-import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.CommandListenerWrapper
 
-class BrigadierParameters_1_19_2(private val brigadierCommandContext: BrigadierCommandContext<CommandSourceStack>, private val parameters: List<CommandParameter<*>>) : Parameters {
+class BrigadierParameters_1_19_2(private val brigadierCommandContext: BrigadierCommandContext<CommandListenerWrapper>, private val parameters: List<CommandParameter<*>>) : Parameters {
     private val value: Map<CommandParameter<*>, Any> = buildMap {
         parameters.forEach { parameter ->
             put(parameter, brigadierCommandContext.getArgument(parameter.name, parameter.type.java))

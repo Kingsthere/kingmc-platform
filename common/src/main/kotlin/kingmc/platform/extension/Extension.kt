@@ -1,6 +1,6 @@
 package kingmc.platform.extension
 
-import com.ktil.annotation.Extended
+import kingmc.util.annotation.Extended
 import kingmc.common.context.annotation.Configuration
 import kingmc.platform.Awake
 

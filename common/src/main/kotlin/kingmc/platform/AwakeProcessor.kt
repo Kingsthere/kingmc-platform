@@ -1,13 +1,13 @@
 package kingmc.platform
 
-import com.ktil.annotation.getAnnotation
-import com.ktil.reflect.findFunctionsByAnnotation
 import kingmc.common.application.application
 import kingmc.common.context.*
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.process.BeanProcessor
 import kingmc.common.logging.error
 import kingmc.util.Utility
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.reflect.findFunctionsByAnnotation
 import java.util.*
 
 /**

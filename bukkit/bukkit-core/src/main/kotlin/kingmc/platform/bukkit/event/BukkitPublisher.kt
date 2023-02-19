@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.event
 
-import com.ktil.reflect.findFunction
+import kingmc.util.reflect.findFunction
 import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope

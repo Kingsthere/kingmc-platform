@@ -9,9 +9,9 @@ import org.bukkit.craftbukkit.v1_19_R1.CraftServer
 
 @Component("minecraftServerNMS_1_19_2")
 @ConditionalOnVersion("1.19.2")
-class MinecraftServerNMS_1_19_2 : MinecraftServerNMS<MinecraftServer, CraftServer> {
+class MinecraftServerNMS_1_19_2 : MinecraftServerNMS<NMSMinecraftServer_1_19_2, CraftServer_1_19_2> {
     override fun getMinecraftServer(): MinecraftServer {
-        return (Bukkit.getServer() as CraftServer).server
+        return getCraftServer().server
     }
 
     override fun getCraftServer(): CraftServer {

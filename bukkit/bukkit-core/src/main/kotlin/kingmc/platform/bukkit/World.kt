@@ -49,7 +49,7 @@ class BukkitWorld(
     private val all = BukkitWorldAudiences(this)
     private val players = BukkitWorldPlayers(this)
 
-    private val blockCaches: Cache<Location, Block> = Caffeine.newBuilder()
+    private val blockCaches: Cache<Location3D, Block> = Caffeine.newBuilder()
         .build()
     private val chunkCaches: Cache<Pair<Int, Int>, Chunk> = Caffeine.newBuilder()
         .build()
@@ -163,7 +163,7 @@ class BukkitWorld(
      * @param location Location of the block
      * @return Block at the given location
      */
-    override fun getBlockAt(location: Location): Block {
+    override fun getBlockAt(location: Location3D): Block {
         return blockCaches.get(location) { BukkitBlock(originalBukkitWorld.getBlockAt(location.blockX, location.blockY, location.blockZ)) }!!
     }
 
@@ -187,7 +187,7 @@ class BukkitWorld(
      * @return Block at the given coordinates
      */
     override fun getBlockAt(x: Int, y: Int, z: Int): Block {
-        val location = bukkitPlatform.locations.of(x, y, z)
+        val location = bukkitPlatform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble())
         return blockCaches.get(location) { BukkitBlock(originalBukkitWorld.getBlockAt(location.blockX, location.blockY, location.blockZ)) }!!
     }
 
@@ -197,7 +197,7 @@ class BukkitWorld(
      * @param location Location of the chunk
      * @return Chunk at the given location
      */
-    override fun getChunkAt(location: Location): Chunk {
+    override fun getChunkAt(location: Location3D): Chunk {
         val chunkX = location.blockX shr 4
         val chunkZ = location.blockZ shr 4
         return chunkCaches.get(chunkX to chunkZ) { BukkitChunk(originalBukkitWorld.getChunkAt(chunkX, chunkZ), this) }!!
@@ -256,18 +256,18 @@ class BukkitWorld(
         get() = originalBukkitWorld.uid
 
     /**
-     * Send a particle to this particle recipient
+     * Send a particle to this world
      *
      * @param particle the particle to send
      * @since 0.0.3
      * @see Particle
      */
-    override fun particle(particle: Particle) {
+    override fun particle(particle: Particle<*>) {
         this.players().particle(particle)
     }
 
     /**
-     * Send a particle group to this particle recipient
+     * Send a particle group to this world
      *
      * @param particleGroup the particle group to send
      * @since 0.0.3

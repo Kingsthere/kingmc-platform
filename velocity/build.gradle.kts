@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
 }
 
-group = "com.kingmc.platform"
+group = "net.kingmc.platform"
 version = kingmc_version
 
 repositories {
@@ -28,7 +28,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    implementation("com.kingmc.platform:common:0.0.4")
+    implementation("net.kingmcplatform:common:0.0.4")
     api("com.velocitypowered:velocity-api:3.1.1")
     kapt("com.velocitypowered:velocity-api:3.1.1")
 }
@@ -60,17 +60,17 @@ tasks {
         archiveBaseName.set("kingmc-bukkit")
         dependencies {
             val kingmc_version = kingmc_version
-            include(dependency("com.kingmc.common:common:$kingmc_version"))
-            include(dependency("com.kingmc.common:application:$kingmc_version"))
-            include(dependency("com.kingmc.common:boot:$kingmc_version"))
-            include(dependency("com.kingmc.common:context:$kingmc_version"))
-            include(dependency("com.kingmc.common:coroutine:$kingmc_version"))
-            include(dependency("com.kingmc.common:configure:$kingmc_version"))
-            include(dependency("com.kingmc.common:environment:$kingmc_version"))
-            include(dependency("com.kingmc.common:file:$kingmc_version"))
-            include(dependency("com.kingmc.common:logging:$kingmc_version"))
-            include(dependency("com.kingmc.common:structure:$kingmc_version"))
-            include(dependency("com.kingmc.common:script:$kingmc_version"))
+            include(dependency("net.kingmc.common:common:$kingmc_version"))
+            include(dependency("net.kingmc.common:application:$kingmc_version"))
+            include(dependency("net.kingmc.common:boot:$kingmc_version"))
+            include(dependency("net.kingmc.common:context:$kingmc_version"))
+            include(dependency("net.kingmc.common:coroutine:$kingmc_version"))
+            include(dependency("net.kingmc.common:configure:$kingmc_version"))
+            include(dependency("net.kingmc.common:environment:$kingmc_version"))
+            include(dependency("net.kingmc.common:file:$kingmc_version"))
+            include(dependency("net.kingmc.common:logging:$kingmc_version"))
+            include(dependency("net.kingmc.common:structure:$kingmc_version"))
+            include(dependency("net.kingmc.common:script:$kingmc_version"))
             include(project(":common"))
             include(dependency("me.lucko:jar-relocator:1.5"))
             val ktil = "0.1"

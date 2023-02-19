@@ -6,7 +6,7 @@ import kingmc.platform.Material
 import kingmc.platform.item.AbstractItem
 import kingmc.platform.item.ItemBuilder
 
-class BukkitItem(material: Material, nbt: NBTCompound = NBTContainer()) : AbstractItem(material, nbt) {
+open class BukkitItem(material: Material, nbt: NBTCompound = NBTContainer()) : AbstractItem(material, nbt) {
     /**
      * Create a builder from this thing.
      *

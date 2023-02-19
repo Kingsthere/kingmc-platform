@@ -12,7 +12,7 @@ package kingmc.platform
  * @throws IllegalArgumentException for differing worlds
  * @see Vector
  */
-operator fun Locatable.rangeTo(o: Location): Double {
+operator fun Locatable3D.rangeTo(o: Location): Double {
     return this.location..o
 }
 
@@ -24,7 +24,7 @@ operator fun Locatable.rangeTo(o: Location): Double {
  * @throws IllegalArgumentException for differing worlds
  * @see Vector
  */
-fun Locatable.rangeSquared(o: Location): Double {
+fun Locatable3D.rangeSquared(o: Location): Double {
     return this.location.rangeSquared(o)
 }
 
@@ -40,7 +40,7 @@ fun Locatable.rangeSquared(o: Location): Double {
  * @throws IllegalArgumentException for differing worlds
  * @see Vector
  */
-operator fun Locatable.rangeTo(o: Locatable): Double {
+operator fun Locatable3D.rangeTo(o: Locatable): Double {
     return this.location..o.location
 }
 
@@ -52,7 +52,7 @@ operator fun Locatable.rangeTo(o: Locatable): Double {
  * @throws IllegalArgumentException for differing worlds
  * @see Vector
  */
-fun Locatable.rangeSquared(o: Locatable): Double {
+fun Locatable3D.rangeSquared(o: Locatable): Double {
     return this.location..o.location
 }
 
@@ -62,7 +62,7 @@ fun Locatable.rangeSquared(o: Locatable): Double {
  * @see Locatable
  * @see Location
  */
-val Locatable.x
+val Locatable3D.x
     get() = this.location.x
 
 /**
@@ -71,7 +71,7 @@ val Locatable.x
  * @see Locatable
  * @see Location
  */
-val Locatable.y
+val Locatable3D.y
     get() = this.location.y
 
 /**
@@ -80,7 +80,7 @@ val Locatable.y
  * @see Locatable
  * @see Location
  */
-val Locatable.z
+val Locatable3D.z
     get() = this.location.z
 
 /**
@@ -126,7 +126,7 @@ fun Locatable.getChunk(): Chunk {
  *
  * @since 0.0.1
  */
-val Location.blockX: Int
+val Location3D.blockX: Int
     get() = locToBlock(x)
 
 /**
@@ -134,7 +134,7 @@ val Location.blockX: Int
  *
  * @since 0.0.1
  */
-val Location.blockY: Int
+val Location3D.blockY: Int
     get() = locToBlock(y)
 
 /**
@@ -142,14 +142,14 @@ val Location.blockY: Int
  *
  * @since 0.0.1
  */
-val Location.blockZ: Int
+val Location3D.blockZ: Int
     get() = locToBlock(z)
 /**
  * Gets the floored value of the X component, indicating the block that this location is contained with.
  *
  * @since 0.0.1
  */
-val Locatable.blockX: Int
+val Locatable3D.blockX: Int
     get() = locToBlock(x)
 
 /**
@@ -157,7 +157,7 @@ val Locatable.blockX: Int
  *
  * @since 0.0.1
  */
-val Locatable.blockY: Int
+val Locatable3D.blockY: Int
     get() = locToBlock(y)
 
 /**
@@ -165,7 +165,7 @@ val Locatable.blockY: Int
  *
  * @since 0.0.1
  */
-val Locatable.blockZ: Int
+val Locatable3D.blockZ: Int
     get() = locToBlock(z)
 
 /**

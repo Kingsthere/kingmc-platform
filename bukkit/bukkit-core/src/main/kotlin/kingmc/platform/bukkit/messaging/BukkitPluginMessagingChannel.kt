@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.messaging
 
-import com.ktil.annotation.getAnnotation
-import com.ktil.reflect.findFunctionsByAnnotation
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.reflect.findFunctionsByAnnotation
 import kingmc.common.application.application
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.audience.playerFromBukkit

@@ -6,9 +6,9 @@
 package kingmc.platform.event
 
 import com.esotericsoftware.reflectasm.MethodAccess
-import com.ktil.annotation.getAnnotation
-import com.ktil.annotation.hasAnnotation
-import com.ktil.reflect.findFunctionsByAnnotation
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.annotation.hasAnnotation
+import kingmc.util.reflect.findFunctionsByAnnotation
 import kingmc.common.application.application
 import kingmc.common.application.suspendApplication
 import kingmc.common.context.ConditionCapableContext

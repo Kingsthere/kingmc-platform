@@ -85,7 +85,7 @@ open class RelativeLocation(
      * @throws IllegalArgumentException for differing worlds
      * @see Vector
      */
-    override fun plus(location: Location): Location {
+    override fun plus(location: Location3D): Location {
         return target.location.plus(offsetX, offsetY, offsetZ).plus(location)
     }
 
@@ -131,7 +131,7 @@ open class RelativeLocation(
      * @return the same location
      * @see Location
      */
-    override fun minus(location: Location): Location {
+    override fun minus(location: Location3D): Location {
         return target.location.plus(offsetX, offsetY, offsetZ).minus(location)
     }
 
@@ -187,7 +187,7 @@ open class RelativeLocation(
      * @throws IllegalArgumentException for differing worlds
      * @see Vector
      */
-    override fun rangeTo(o: Location): Double {
+    override fun rangeTo(o: Location3D): Double {
         return target.location.plus(offsetX, offsetY, offsetZ).rangeTo(o)
     }
 
@@ -199,7 +199,7 @@ open class RelativeLocation(
      * @throws IllegalArgumentException for differing worlds
      * @see Vector
      */
-    override fun rangeSquared(o: Location): Double {
+    override fun rangeSquared(o: Location3D): Double {
         return target.location.plus(offsetX, offsetY, offsetZ).rangeSquared(o)
     }
 
@@ -223,16 +223,6 @@ open class RelativeLocation(
      */
     override fun toVector(): Vector {
         return target.location.plus(offsetX, offsetY, offsetZ).toVector()
-    }
-
-    /**
-     * Zero this location's components. Not world-aware.
-     *
-     * @return the same location
-     * @see Vector
-     */
-    override fun zero(): Location {
-        return target.location.zero()
     }
 
     override fun component1(): Double {

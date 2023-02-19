@@ -86,7 +86,7 @@ interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, Com
     override fun iterator(): Iterator<Player> =
         audiences().iterator()
 
-    override fun particle(particle: Particle) {
+    override fun particle(particle: Particle<*>) {
         audiences().forEach { it.particle(particle) }
     }
 

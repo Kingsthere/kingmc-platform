@@ -1,7 +1,7 @@
 package kingmc.platform.messaging
 
-import com.ktil.annotation.AliasFor
-import com.ktil.annotation.Extended
+import kingmc.util.annotation.AliasFor
+import kingmc.util.annotation.Extended
 import kingmc.common.context.annotation.Component
 
 /**

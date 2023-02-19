@@ -15,7 +15,7 @@ import kingmc.util.key.Keyed
  */
 interface Material : Keyed, TextDisplayable {
     /**
-     * The raw name of this material, combined with capital letters
+     * The raw name of this material corresponds to minecraft material names, combined with capital letters
      * and underlines, for example: `DIAMOND_SWORD`
      *
      * @since 0.0.1

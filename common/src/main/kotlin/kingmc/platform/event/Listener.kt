@@ -1,7 +1,7 @@
 package kingmc.platform.event
 
-import com.ktil.annotation.AliasFor
-import com.ktil.annotation.Extended
+import kingmc.util.annotation.AliasFor
+import kingmc.util.annotation.Extended
 import kingmc.common.context.annotation.Component
 import kingmc.util.SubclassSingleton
 import kotlin.reflect.KClass

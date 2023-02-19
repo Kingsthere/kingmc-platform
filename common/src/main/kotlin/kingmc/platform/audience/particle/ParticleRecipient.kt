@@ -19,7 +19,7 @@ interface ParticleRecipient {
      * @since 0.0.3
      * @see Particle
      */
-    fun particle(particle: Particle)
+    fun particle(particle: Particle<*>)
 
     /**
      * Send a particle group to this particle recipient

@@ -4,72 +4,60 @@ import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 
 /**
- * Create a location by the approximate position
+ * Create a location by the position
  *
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Int, y: Int, z: Int): Location {
-    return currentApplication().platform.locations.of(x, y, z)
+fun Location(x: Number, y: Number, z: Number): Location {
+    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble())
 }
 
 /**
- * Create a location by the approximate position
+ * Create a location by the position
  * and direction
  *
  * @see Direction
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Int, y: Int, z: Int, dir: Direction): Location {
-    return currentApplication().platform.locations.of(x, y, z, dir)
+fun Location(x: Number, y: Number, z: Number, dir: Direction): Location {
+    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), dir)
 }
 
 /**
- * Create a location by the approximate position
- * and direction, world
- *
- * @see Direction
- * @see World
- * @since 0.0.1
- */
-@WithApplication
-fun Location(x: Int, y: Int, z: Int, dir: Direction, world: World): Location {
-    return currentApplication().platform.locations.of(x, y, z, dir, world)
-}
-
-/**
- * Create a location by the approximate position
+ * Create a location by the position
  * and world
  *
- * @see World
+ * @see Direction
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Int, y: Int, z: Int, world: World): Location {
-    return currentApplication().platform.locations.of(x, y, z, world)
+fun Location(x: Number, y: Number, z: Number, world: World): Location {
+    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), world)
 }
 
 /**
  * Create a location by the position
- *
- * @since 0.0.1
- */
-@WithApplication
-fun Location(x: Double, y: Double, z: Double): Location {
-    return currentApplication().platform.locations.of(x, y, z)
-}
-
-/**
- * Create a location by the position
- * and direction
+ * and world
  *
  * @see Direction
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Double, y: Double, z: Double, dir: Direction): Location {
-    return currentApplication().platform.locations.of(x, y, z, dir)
+fun Location(x: Number, y: Number, z: Number, dir: Direction, world: World): Location {
+    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), dir, world)
+}
+
+/**
+ * Create a location3d
+ *
+ * @since 0.0.5
+ * @see Location3D
+ */
+@WithApplication
+fun Location3D(x: Number, y: Number, z: Number): Location3D {
+    return currentApplication().platform.locations.createLocation3D(x.toDouble(), y.toDouble(), z.toDouble())
 }
 
 /**
@@ -82,7 +70,7 @@ fun Location(x: Double, y: Double, z: Double, dir: Direction): Location {
  */
 @WithApplication
 fun Location(x: Double, y: Double, z: Double, dir: Direction, world: World): Location {
-    return currentApplication().platform.locations.of(x, y, z, dir, world)
+    return currentApplication().platform.locations.createLocation(x, y, z, dir, world)
 }
 
 /**
@@ -94,7 +82,7 @@ fun Location(x: Double, y: Double, z: Double, dir: Direction, world: World): Loc
  */
 @WithApplication
 fun Location(x: Double, y: Double, z: Double, world: World): Location {
-    return currentApplication().platform.locations.of(x, y, z, world)
+    return currentApplication().platform.locations.createLocation(x, y, z, world)
 }
 
 /**
@@ -106,72 +94,47 @@ fun Location(x: Double, y: Double, z: Double, world: World): Location {
  */
 interface LocationProvider : PlatformExposed {
     /**
-     * Create a location by the approximate position
+     * Create a location with `x, y, z`
      *
      * @since 0.0.1
+     * @return the location created
      */
-    fun of(x: Int, y: Int, z: Int): Location
+    fun createLocation(x: Double, y: Double, z: Double): Location
 
     /**
-     * Create a location by the approximate position
-     * and direction
-     *
-     * @see Direction
-     * @since 0.0.1
-     */
-    fun of(x: Int, y: Int, z: Int, dir: Direction): Location
-
-    /**
-     * Create a location by the approximate position
-     * and direction, world
-     *
-     * @see Direction
-     * @see World
-     * @since 0.0.1
-     */
-    fun of(x: Int, y: Int, z: Int, dir: Direction, world: World): Location
-
-    /**
-     * Create a location by the approximate position
-     * and world
-     *
-     * @see World
-     * @since 0.0.1
-     */
-    fun of(x: Int, y: Int, z: Int, world: World): Location
-
-    /**
-     * Create a location by the position
-     *
-     * @since 0.0.1
-     */
-    fun of(x: Double, y: Double, z: Double): Location
-
-    /**
-     * Create a location by the position
-     * and direction
+     * Create a location with `x, y, z, direction`
      *
      * @see Direction
      * @since 0.0.1
+     * @return the location created
      */
-    fun of(x: Double, y: Double, z: Double, dir: Direction): Location
+    fun createLocation(x: Double, y: Double, z: Double, dir: Direction): Location
 
     /**
-     * Create a location by the approximate position
-     * and direction, world
+     * Create a location with `x, y, z, direction, world`
      *
      * @see Direction
      * @see World
      * @since 0.0.1
+     * @return the location created
      */
-    fun of(x: Double, y: Double, z: Double, dir: Direction, world: World): Location
+    fun createLocation(x: Double, y: Double, z: Double, dir: Direction, world: World): Location
 
     /**
-     * Create a location by the approximate position
-     * and world
+     * Create a location with `x, y, z, world`
      *
      * @see World
      * @since 0.0.1
+     * @return the location created
      */
-    fun of(x: Double, y: Double, z: Double, world: World): Location
+    fun createLocation(x: Double, y: Double, z: Double, world: World): Location
+
+    /**
+     * Create a location3D with `x, y, z`
+     *
+     * @see Location3D
+     * @since 0.0.1
+     * @return the location created
+     */
+    fun createLocation3D(x: Double, y: Double, z: Double): Location3D
 }

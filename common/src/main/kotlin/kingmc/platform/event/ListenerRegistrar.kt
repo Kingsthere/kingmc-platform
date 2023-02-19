@@ -1,7 +1,7 @@
 package kingmc.platform.event
 
-import com.ktil.annotation.getAnnotation
-import com.ktil.annotation.hasAnnotation
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.annotation.hasAnnotation
 import kingmc.common.application.application
 import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component

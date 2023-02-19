@@ -1,7 +1,7 @@
 package kingmc.platform.extension
 
-import com.ktil.annotation.getAnnotation
-import com.ktil.annotation.hasAnnotation
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.annotation.hasAnnotation
 import kingmc.common.context.beans.beanClass
 import kingmc.platform.ConditionalOnPlatform
 import kingmc.platform.context.PlatformContextInitializer

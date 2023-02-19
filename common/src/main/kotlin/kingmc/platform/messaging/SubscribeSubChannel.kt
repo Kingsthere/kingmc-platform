@@ -1,6 +1,6 @@
 package kingmc.platform.messaging
 
-import com.ktil.annotation.AliasFor
+import kingmc.util.annotation.AliasFor
 
 /**
  * An annotation to bound a function to a sub channel as the handler

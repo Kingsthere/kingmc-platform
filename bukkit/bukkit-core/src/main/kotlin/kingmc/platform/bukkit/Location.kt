@@ -17,7 +17,7 @@ fun Location.toBukkit(): OriginalBukkitLocation =
 
 fun OriginalBukkitLocation.fromBukkit(): Location {
     this.world?.let {
-        return bukkitPlatform.locations.of(
+        return bukkitPlatform.locations.createLocation(
             this.x,
             this.y,
             this.z,
@@ -25,7 +25,7 @@ fun OriginalBukkitLocation.fromBukkit(): Location {
             it.fromBukkit()
         )
     } ?: let {
-        return bukkitPlatform.locations.of(
+        return bukkitPlatform.locations.createLocation(
             this.x,
             this.y,
             this.z,

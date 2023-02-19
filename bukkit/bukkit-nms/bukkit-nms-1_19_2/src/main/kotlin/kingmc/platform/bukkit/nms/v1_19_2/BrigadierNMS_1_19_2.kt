@@ -26,7 +26,7 @@ import kingmc.platform.command.parameter.*
 import kingmc.platform.command.rootHandler
 import kingmc.platform.version.ConditionalOnVersion
 import kotlinx.coroutines.*
-import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.CommandListenerWrapper
 import org.bukkit.Location
 import org.bukkit.World
 import java.util.*
@@ -35,7 +35,7 @@ import java.util.*
 @Component("brigadierNMS_1_19_2")
 @ConditionalOnVersion("1.19.2")
 @ConditionalOnBean(BrigadierNMS::class)
-class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
+class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
     @Autowired
     lateinit var audienceFactory: AudienceFactory
 
@@ -49,29 +49,29 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
     }
 
     override fun syncCommands() {
-        minecraftServer.getMinecraftServer().playerList.players.forEach {
-            minecraftServer.getMinecraftServer().resources.managers.commands.sendCommands(it)
+        minecraftServer.getMinecraftServer().ac().k.forEach {
+            minecraftServer.getMinecraftServer().at.b().d.a(it)
         }
     }
 
     /**
      * Gets the command dispatcher
      */
-    override fun getBrigadierDispatcher(): CommandDispatcher<CommandSourceStack> {
-        return minecraftServer.getMinecraftServer().resources.managers.commands.dispatcher
+    override fun getBrigadierDispatcher(): CommandDispatcher<CommandListenerWrapper> {
+        return minecraftServer.getMinecraftServer().at.b().d.a()
     }
 
     /**
      * Gets the command sender of a command as a [CommandSender]
      */
-    override fun getCommandSender(cmdCtx: BrigadierCommandContext<CommandSourceStack>): CommandSender {
-        val css = cmdCtx.source as CommandSourceStack
+    override fun getCommandSender(cmdCtx: BrigadierCommandContext<CommandListenerWrapper>): CommandSender {
+        val css = cmdCtx.source as CommandListenerWrapper
         val sender = css.bukkitSender
-        val position = css.position
-        val rotation = css.rotation
+        val position = css.e()
+        val rotation = css.l()
         val world: World = this.getWorldForCSS(css)
-        val location = Location(world, position.x(), position.y(), position.z(), rotation.x, rotation.y)
-        val proxyEntity = css.entity
+        val location = Location(world, position.a(), position.b(), position.c(), rotation.i, rotation.j)
+        val proxyEntity = css.g()
         val proxy: OriginalBukkitCommandSender? = proxyEntity?.bukkitEntity
         return if (proxy == null || proxy == sender) {
             (audienceFactory as BukkitAudienceFactory).commandSender(sender)
@@ -84,12 +84,52 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         }
     }
 
-    override fun getWorldForCSS(css: CommandSourceStack): World {
-        return css.level.world
+    override fun getWorldForCSS(css: CommandListenerWrapper): World {
+        return css.f().world
     }
 
-    override fun deserializeBrigadierCommandFromCommandHeader(commandHeader: Header): HeaderArgumentBuilder<CommandSourceStack> {
-        return HeaderArgumentBuilder<CommandSourceStack>(commandHeader).apply {
+    override fun deserializeBrigadierCommandFromCommandHeader(commandHeader: Header): HeaderArgumentBuilder<CommandListenerWrapper> {
+        return HeaderArgumentBuilder<CommandListenerWrapper>(commandHeader).apply {
+            node.children.forEach {
+                val deserializedCommandNode = deserializeBrigadierCommandFromCommandNode(it).build()
+                then(deserializedCommandNode)
+                it.aliases.forEach { alias ->
+                    then(AliasesCommandNode<CommandListenerWrapper>(alias, deserializedCommandNode))
+                }
+            }
+            node.rootHandler?.let { handler ->
+                if (handler.parameters.size == 0) {
+                    // Insert empty root parameters executor
+                    executes { css ->
+                        return@executes application(handler.application) {
+                            try {
+                                val parameters = Parameters.EMPTY
+                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                handler.invoke(commandContext).asInt()
+                            } catch (e: Exception) {
+                                printCommandHandleException(e)
+                                0
+                            }
+                        }
+                    }
+                } else {
+                    then(deserializeCommandHandlerParameters(handler, handler.parameters, handler.parameters.first(), 0))
+                }
+            }
+            node.handlers.forEach {
+                if (it.name != ".root") {
+                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it, node).build()
+                    then(deserializedCommandNode)
+                    it.aliases.forEach { alias ->
+                        then(AliasesCommandNode<CommandListenerWrapper>(alias, deserializedCommandNode))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deserializeBrigadierCommandFromCommandNode(commandNode: Node): NodeArgumentBuilder<CommandListenerWrapper> {
+        return NodeArgumentBuilder<CommandListenerWrapper>(commandNode).apply {
             node.children.forEach {
                 val deserializedCommandNode = deserializeBrigadierCommandFromCommandNode(it).build()
                 then(deserializedCommandNode)
@@ -128,48 +168,8 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         }
     }
 
-    private fun deserializeBrigadierCommandFromCommandNode(commandNode: Node): NodeArgumentBuilder<CommandSourceStack> {
-        return NodeArgumentBuilder<CommandSourceStack>(commandNode).apply {
-            node.children.forEach {
-                val deserializedCommandNode = deserializeBrigadierCommandFromCommandNode(it).build()
-                then(deserializedCommandNode)
-                it.aliases.forEach { alias ->
-                    then(AliasesCommandNode(alias, deserializedCommandNode))
-                }
-            }
-            node.rootHandler?.let { handler ->
-                if (handler.parameters.size == 0) {
-                    // Insert empty root parameters executor
-                    executes { css ->
-                        return@executes application(handler.application) {
-                            try {
-                                val parameters = Parameters.EMPTY
-                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                handler.invoke(commandContext).asInt()
-                            } catch (e: Exception) {
-                                printCommandHandleException(e)
-                                0
-                            }
-                        }
-                    }
-                } else {
-                    then(deserializeCommandHandlerParameters(handler, handler.parameters, handler.parameters.first(), 0))
-                }
-            }
-            node.handlers.forEach {
-                if (it.name != ".root") {
-                    val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it, node).build()
-                    then(deserializedCommandNode)
-                    it.aliases.forEach { alias ->
-                        then(AliasesCommandNode(alias, deserializedCommandNode))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler, owner: Node): HandlerArgumentBuilder<CommandSourceStack> {
-        return HandlerArgumentBuilder<CommandSourceStack>(commandHandler).apply {
+    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler, owner: Node): HandlerArgumentBuilder<CommandListenerWrapper> {
+        return HandlerArgumentBuilder<CommandListenerWrapper>(commandHandler).apply {
             if (handler.parameters.size == 0) {
                 // Insert empty root parameters executor
                 executes { css ->
@@ -195,7 +195,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         listed: List<CommandParameter<*>>,
         deserializing: CommandParameter<*>,
         index: Int
-    ): ArgumentBuilder<CommandSourceStack, *> {
+    ): ArgumentBuilder<CommandListenerWrapper, *> {
         return deserializeCommandParameter(deserializing, this@BrigadierNMS_1_19_2.application).apply {
                     executes { css ->
                         return@executes application(handler.application) {
@@ -223,9 +223,9 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandSourceStack> {
         CommandExecutionException("An error occurred while executing a command", exception).printStackTrace()
     }
 
-    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application<*>): RequiredArgumentBuilder<CommandSourceStack, TValue> {
+    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application<*>): RequiredArgumentBuilder<CommandListenerWrapper, TValue> {
         return RequiredArgumentBuilder
-            .argument<CommandSourceStack, TValue>(parameter.name, getArgumentType(parameter))
+            .argument<CommandListenerWrapper, TValue>(parameter.name, getArgumentType(parameter))
             .apply {
                 if (parameter.suggestion != null) {
                     suggests(WrappedSuggestionProvider_1_19_2(parameter.suggestion!!, this@BrigadierNMS_1_19_2, outerApplication = application))

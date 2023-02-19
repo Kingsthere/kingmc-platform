@@ -1,15 +1,10 @@
 val kingmc_version: String by project
 
-group = "com.kingmc.platform"
+group = "net.kingmc.platform"
 version = kingmc_version
 
 plugins {
     id("java")
-    `maven-publish`
-}
-
-java {
-    withSourcesJar()
 }
 
 sourceSets.main {
@@ -20,24 +15,6 @@ subprojects {
     dependencies {
         implementation(project(":bukkit:bukkit-core"))
         implementation(project(":bukkit:bukkit-brigadier"))
-    }
-}
-
-publishing {
-    // Configure repositories to publish
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        create<MavenPublication>("bukkit-nms") {
-            groupId = group.toString()
-            artifactId = project.name
-            version = version
-
-            from(components["java"])
-        }
-
     }
 }
 

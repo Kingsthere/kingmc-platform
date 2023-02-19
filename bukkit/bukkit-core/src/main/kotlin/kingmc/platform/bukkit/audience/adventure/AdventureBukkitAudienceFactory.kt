@@ -2,6 +2,7 @@ package kingmc.platform.bukkit.audience.adventure
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
+import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Platform
 import kingmc.platform.PlatformImplementation
@@ -11,6 +12,7 @@ import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.audience.*
 import kingmc.platform.bukkit.block.OriginalBukkitBlock
 import kingmc.platform.bukkit.bukkitPlatform
+import kingmc.platform.bukkit.nms.PlayerNMS
 import java.util.*
 import java.util.function.Predicate
 
@@ -28,6 +30,9 @@ object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
         .build()
     private val players = AllBukkitPlayer
     private val all = AllBukkitAudiences
+
+    @Autowired
+    lateinit var playerNMS: PlayerNMS<Any>
 
     @Throws(IllegalArgumentException::class)
     override fun commandSender(commandSender: OriginalBukkitCommandSender): CommandSender {
@@ -65,6 +70,7 @@ object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
     override fun player(bukkitPlayer: OriginalBukkitPlayer): Player {
         return playerCache.get(bukkitPlayer.uniqueId) {
             AdventureOnlineBukkitPlayer(
+            playerNMS,
             bukkitPlayer,
             bukkitAudiences.player(bukkitPlayer)) }!!
     }
@@ -73,6 +79,7 @@ object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
         val bukkitPlayer = Bukkit.getPlayer(name) ?: return null
         return playerCache.get(bukkitPlayer.uniqueId) {
             AdventureOnlineBukkitPlayer(
+                playerNMS,
                 bukkitPlayer,
                 bukkitAudiences.player(bukkitPlayer)) }!!
     }
@@ -106,6 +113,7 @@ object AdventureBukkitAudienceFactory : BukkitAudienceFactory {
         val bukkitPlayer = Bukkit.getPlayer(uuid) ?: return null
         return playerCache.get(bukkitPlayer.uniqueId) {
             AdventureOnlineBukkitPlayer(
+                playerNMS,
                 bukkitPlayer,
                 bukkitAudiences.player(bukkitPlayer)) }!!
     }

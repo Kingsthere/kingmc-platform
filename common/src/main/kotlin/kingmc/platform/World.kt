@@ -49,13 +49,13 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
     fun getChunkAt(x: Int, z: Int): Chunk
 
     /**
-     * Gets the [Chunk] at the given [Location]
+     * Gets the [Chunk] at the given [Location3D]
      *
      * @param location Location of the chunk
      * @return Chunk at the given location
      */
     @WithApplication
-    fun getChunkAt(location: Location): Chunk
+    fun getChunkAt(location: Location3D): Chunk
 
     /**
      * Gets the [Block] at the given [x], [y], [z]
@@ -69,13 +69,13 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
     fun getBlockAt(x: Int, y: Int, z: Int): Block
 
     /**
-     * Gets the [Block] at the given [Location]
+     * Gets the [Block] at the given [Location3D]
      *
      * @param location Location of the block
      * @return Block at the given location
      */
     @WithApplication
-    fun getBlockAt(location: Location): Block
+    fun getBlockAt(location: Location3D): Block
 
     /**
      * Gets the minimum height of this world.

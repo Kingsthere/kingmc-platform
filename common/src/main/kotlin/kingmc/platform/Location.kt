@@ -1,8 +1,7 @@
 package kingmc.platform
 
 /**
- * A representation of location, a location is
- * a position in minecraft (x, y, z, world)
+ * A superinterface indicating a position for minecraft (x, y, z, world, direction)
  *
  *
  * Some example of location:
@@ -13,35 +12,9 @@ package kingmc.platform
  * @since 0.0.1
  * @author kingsthere
  * @see World
+ * @see Location3D
  */
-interface Location : Cloneable {
-    /**
-     * The exactly x position this location is
-     * on
-     *
-     * @see Double
-     * @since 0.0.1
-     */
-    val x: Double
-
-    /**
-     * The exactly y position this location is
-     * on
-     *
-     * @see Double
-     * @since 0.0.1
-     */
-    val y: Double
-
-    /**
-     * The exactly z position this location is
-     * on
-     *
-     * @see Double
-     * @since 0.0.1
-     */
-    val z: Double
-
+interface Location : Location3D {
     /**
      * The direction this location is on
      *
@@ -66,7 +39,7 @@ interface Location : Cloneable {
      * @throws IllegalArgumentException for differing worlds
      * @see Vector
      */
-    operator fun plus(location: Location): Location
+    override fun plus(location: Location3D): Location
 
     /**
      * Adds the location by a vector.
@@ -75,7 +48,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Vector
      */
-    operator fun plus(vec: Vector): Location
+    override fun plus(vec: Vector): Location
 
     /**
      * Adds the location by another. Not world-aware.
@@ -86,7 +59,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Vector
      */
-    fun plus(x: Double, y: Double, z: Double): Location
+    override fun plus(x: Double, y: Double, z: Double): Location
 
     /**
      * Subtracts the location by a vector.
@@ -95,7 +68,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Vector
      */
-    operator fun minus(vec: Vector): Location
+    override fun minus(vec: Vector): Location
 
     /**
      * Subtracts the location by another location.
@@ -104,7 +77,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Location
      */
-    operator fun minus(location: Location): Location
+    override fun minus(location: Location3D): Location
 
     /**
      * Subtracts the location by another. Not world-aware and
@@ -116,53 +89,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Vector
      */
-    fun minus(x: Double, y: Double, z: Double): Location
-
-    /**
-     * Gets the magnitude of the location, defined as sqrt(x^2+y^2+z^2). The
-     * value of this method is not cached and uses a costly square-root
-     * function, so do not repeatedly call this method to get the location's
-     * magnitude. NaN will be returned if the inner result of the sqrt()
-     * function overflows, which will be caused if the length is too long. Not
-     * world-aware and orientation independent.
-     *
-     * @return the magnitude
-     * @see Vector
-     */
-    fun length(): Double
-
-    /**
-     * Gets the magnitude of the location squared. Not world-aware and
-     * orientation independent.
-     *
-     * @return the magnitude
-     * @see Vector
-     */
-    fun lengthSquared(): Double
-
-    /**
-     * Get the distance between this location and another. The value of this
-     * method is not cached and uses a costly square-root function, so do not
-     * repeatedly call this method to get the location's magnitude. NaN will
-     * be returned if the inner result of the sqrt() function overflows, which
-     * will be caused if the distance is too long.
-     *
-     * @param o The other location
-     * @return the distance
-     * @throws IllegalArgumentException for differing worlds
-     * @see Vector
-     */
-    operator fun rangeTo(o: Location): Double
-
-    /**
-     * Get the squared distance between this location and another.
-     *
-     * @param o The other location
-     * @return the distance
-     * @throws IllegalArgumentException for differing worlds
-     * @see Vector
-     */
-    fun rangeSquared(o: Location): Double
+    override fun minus(x: Double, y: Double, z: Double): Location
 
     /**
      * Performs scalar multiplication, multiplying all components with a
@@ -172,7 +99,7 @@ interface Location : Cloneable {
      * @return the same location
      * @see Vector
      */
-    operator fun times(m: Double): Location
+    override fun times(m: Double): Location
 
     /**
      * Convert current location to a [Vector] by current position
@@ -181,14 +108,6 @@ interface Location : Cloneable {
      * @author kingsthere
      */
     fun toVector(): Vector
-
-    /**
-     * Zero this location's components. Not world-aware.
-     *
-     * @return the same location
-     * @see Vector
-     */
-    fun zero(): Location
 
     /*
      Data class functions declaration

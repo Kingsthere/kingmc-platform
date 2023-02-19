@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION", "removal")
+
 package kingmc.platform.bukkit
 
 import kingmc.common.KingMC

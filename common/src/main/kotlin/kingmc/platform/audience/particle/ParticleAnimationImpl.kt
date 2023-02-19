@@ -6,6 +6,6 @@ package kingmc.platform.audience.particle
  * @since 0.0.3
  * @author kingsthere
  */
-data class SimpleParticleAnimation(
+data class ParticleAnimationImpl(
     override val particles: List<ParticleGroup>
 ) : ParticleAnimation
