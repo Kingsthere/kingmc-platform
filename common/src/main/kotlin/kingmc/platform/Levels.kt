@@ -15,7 +15,7 @@ operator fun Chunk.component3(): World =
  * @param locatable the locatable to get from
  * @return Chunk at the given coordinates
  */
-fun World.getChunkAt(locatable: Locatable) =
+fun World.getChunkAt(locatable: Locatable3D) =
     getChunkAt(locatable.location)
 
 /**
@@ -24,5 +24,5 @@ fun World.getChunkAt(locatable: Locatable) =
  * @param locatable the locatable to get from
  * @return Block got at the given coordinates
  */
-fun World.getBlockAt(locatable: Locatable) =
+fun World.getBlockAt(locatable: Locatable3D) =
     getBlockAt(locatable.location)

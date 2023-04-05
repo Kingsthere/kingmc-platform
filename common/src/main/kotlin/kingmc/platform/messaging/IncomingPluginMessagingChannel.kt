@@ -3,16 +3,27 @@ package kingmc.platform.messaging
 import java.io.Closeable
 
 /**
- * Define a plugin messaging channel receive and forward plugin messages to [PluginMessageListener]s
+ * Define a plugin messaging channel receive and forward plugin messages to [PluginMessageChannelHandler]s
  *
  * @since 0.0.4
  * @author kingsthere
  */
 abstract class IncomingPluginMessagingChannel(val name: String): Closeable {
     /**
-     * Active this plugin messaging channel
+     * `true` if this messaging channel is activated and available for using it
      */
-    abstract fun active()
+    abstract val isActivated: Boolean
+
+    /**
+     * `true` if this messaging channel is closed, and you cannot register any handlers into
+     * it or [activate] it again
+     */
+    abstract val isClosed: Boolean
+
+    /**
+     * Activate this plugin messaging channel
+     */
+    abstract fun activate()
 
     /**
      * Close this plugin messaging channel
@@ -20,16 +31,18 @@ abstract class IncomingPluginMessagingChannel(val name: String): Closeable {
     abstract override fun close()
 
     /**
-     * Register a listener into this [IncomingPluginMessagingChannel]
+     * Register a handler from [handler] provided into this [IncomingPluginMessagingChannel]
      *
+     * @param handler the handler to handle messages
      * @throws PluginMessageListenerRegistrationException if the listener is already registered
      */
-    abstract fun registerListener(listener: Any): PluginMessageListenerRegistration
+    abstract fun registerHandler(handler: MessageHandler): MessageHandlerRegistration
 
     /**
-     * Unregister a listener from this [IncomingPluginMessagingChannel]
+     * Unregister a handler from this [IncomingPluginMessagingChannel]
      *
+     * @param registration the registration to unregister
      * @throws PluginMessageListenerRegistrationException if the listener is not registered
      */
-    abstract fun unregisterListener(listener: Any)
+    abstract fun unregisterHandler(registration: MessageHandlerRegistration)
 }

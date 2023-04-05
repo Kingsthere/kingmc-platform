@@ -1,6 +1,6 @@
 package kingmc.platform.messaging
 
-import kingmc.platform.audience.Player
+import kingmc.platform.entity.player.Player
 import java.io.DataInput
 
 /**

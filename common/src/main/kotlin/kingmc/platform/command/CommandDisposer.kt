@@ -7,7 +7,7 @@ import kingmc.common.context.annotation.Scope
 import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Releasable
-import kingmc.platform.commands
+import kingmc.platform.commandFactory
 
 /**
  * This `CommandDisposer` is responsible for dispose commands when context [release]
@@ -24,6 +24,6 @@ class CommandDisposer : Releasable, ContextAware {
      * Release
      */
     override fun release() {
-        currentApplication().commands.close()
+        currentApplication().commandFactory.close()
     }
 }

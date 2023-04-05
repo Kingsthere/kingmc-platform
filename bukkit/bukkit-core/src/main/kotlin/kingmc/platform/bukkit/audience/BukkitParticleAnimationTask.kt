@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.audience
 
 import kingmc.common.coroutine.syncMinecraftCoroutineDispatcher
-import kingmc.platform.audience.Player
+import kingmc.platform.entity.player.Player
 import kingmc.platform.audience.particle.AcceleratedParticleAnimationTask
 import kingmc.platform.audience.particle.ParticleAnimation
 import kotlinx.coroutines.*
@@ -20,7 +20,7 @@ class BukkitParticleAnimationTask(private val particleAnimation: ParticleAnimati
         jobs = scope.launch {
             repeat(particleAnimation.particles.size) { index ->
                 delay(speed.toLong())
-                player.particle(particleAnimation.particles[index])
+                player.sendParticle(particleAnimation.particles[index])
             }
         }
 

@@ -1,6 +1,6 @@
 package kingmc.platform.audience.title
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 import kingmc.platform.audience.title.Title.Times
 import kingmc.util.Ticks
 import kingmc.util.errorprone.Immutable

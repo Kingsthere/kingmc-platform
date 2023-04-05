@@ -4,21 +4,20 @@ import kingmc.platform.Location
 import kingmc.platform.Material
 import kingmc.platform.block.Block
 import kingmc.platform.block.BlockState
-import kingmc.platform.bukkit.fromBukkit
-import kingmc.platform.bukkit.material.BukkitMaterialProvider
+import kingmc.platform.bukkit.asKingMC
 
-class BukkitBlockState(override val block: Block, private val _bukkitBlockState: OriginalBukkitBlockState) : BlockState {
+class BukkitBlockState(override val block: Block, private val _bukkitBlockState: _BukkitBlockState) : BlockState {
     /**
      * The location of this locatable
      *
      * @since 0.0.3
      */
     override val location: Location
-        get() = _bukkitBlockState.location.fromBukkit()
+        get() = _bukkitBlockState.location.asKingMC()
 
     /**
      * The material of this holder
      */
-    override val material: Material
-        get() = BukkitMaterialProvider.getFromBukkit(_bukkitBlockState.type)
+    override val material: Material<*>
+        get() = TODO()
 }

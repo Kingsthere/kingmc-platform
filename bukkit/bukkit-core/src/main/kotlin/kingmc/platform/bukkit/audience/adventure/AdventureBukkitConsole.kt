@@ -1,39 +1,20 @@
 package kingmc.platform.bukkit.audience.adventure
 
+import kingmc.common.text.Mark
+import kingmc.common.text.Text
 import kingmc.platform.Location
-import kingmc.platform.audience.AdventureAudience
+import kingmc.platform.audience._AdventureAudience
 import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.text.Mark
-import kingmc.platform.audience.text.Text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.audience.BukkitConsole
-import kingmc.util.InternalAPI
-import java.util.*
 
-class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAudience) :
+class AdventureBukkitConsole(private val _adventureConsoleAudience: _AdventureAudience) :
     BukkitConsole() {
-    /**
-     * The displaying name of this receiver
-     *
-     * @since 0.0.3
-     * @see Text
-     */
-    override var displayName: Text =
-        Text.text("Console")
-
-    /**
-     * The name of this receiver
-     *
-     * @since 0.0.3
-     */
-    override val name: String
-        get() = "Console"
-
     /**
      * The player list that is displaying
      * to this receiver
@@ -42,17 +23,10 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @author kingsthere
      */
     override var playerlist: PlayerList
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
-    /**
-     * The uuid of this identity
-     *
-     * @since 0.0.3
-     * @see UUID
-     */
-    override val uuid: UUID
-        get() = throw UnsupportedOperationException()
+        get() = throw UnsupportedOperationException("A console could not receive this kind of media")
+        set(_) {
+            throw UnsupportedOperationException("A console could not receive this kind of media")
+        }
 
     /**
      * Send an actionbar to this audience
@@ -60,7 +34,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @see Text
      * @since 0.0.3
      */
-    override fun actionBar(text: Text) {
+    override fun sendActionBar(text: Text) {
         _adventureConsoleAudience.sendActionBar(text)
     }
 
@@ -68,7 +42,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * Convert this object into a [Text]
      */
     override fun asText(): Text =
-        displayName
+        Text("Console")
 
     /**
      * Show a bossbar to this receiver
@@ -76,8 +50,8 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @since 0.0.3
      * @see BossBar
      */
-    override fun bossBar(bossBar: BossBar) {
-        TODO("Not yet implemented")
+    override fun showBossBar(bossBar: BossBar) {
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
     /**
@@ -87,8 +61,8 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @since 0.0.3
      * @author kingsthere
      */
-    override fun chat(line: String) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), line)
+    override fun chat(message: String) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)
     }
 
     /**
@@ -101,9 +75,6 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
         _adventureConsoleAudience.clearTitle()
     }
 
-    @InternalAPI
-    override fun close() = Unit
-
     /**
      * Hide a bossbar to this receiver
      *
@@ -111,7 +82,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @see BossBar
      */
     override fun hideBossBar(bossBar: BossBar) {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
     /**
@@ -124,16 +95,16 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
         _adventureConsoleAudience.resetTitle()
     }
 
-    override fun sound(sound: Sound) {
-        TODO("Not yet implemented")
+    override fun playSound(sound: Sound) {
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
-    override fun sound(sound: Sound, location: Location) {
-        TODO("Not yet implemented")
+    override fun playSound(sound: Sound, location: Location) {
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
     override fun stopSound(soundStop: SoundStop) {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
     /**
@@ -142,7 +113,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @since 0.0.3
      * @see Text
      */
-    override fun text(text: Text) {
+    override fun sendText(text: Text) {
         _adventureConsoleAudience.sendMessage(text)
     }
 
@@ -154,7 +125,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @see Text
      * @see Mark
      */
-    override fun text(text: Text, vararg marks: Mark) {
+    override fun sendText(text: Text, vararg marks: Mark) {
         _adventureConsoleAudience.sendMessage(text)
     }
 
@@ -166,8 +137,8 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @since 0.0.3
      * @see Title
      */
-    override fun title(title: Title) {
-        TODO("Not yet implemented")
+    override fun sendTitle(title: Title) {
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
     /**
@@ -180,7 +151,7 @@ class AdventureBukkitConsole(private val _adventureConsoleAudience: AdventureAud
      * @param T the type of value of the title part
      * @since 0.0.3
      */
-    override fun <T : Any> titlePart(titlePart: TitlePartType<T>, value: T) {
-        TODO("Not yet implemented")
+    override fun <T : Any> sendTitlePart(titlePart: TitlePartType<T>, value: T) {
+        throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 }

@@ -1,17 +1,16 @@
 package kingmc.platform
 
-import kingmc.common.application.WithApplication
-import kingmc.platform.audience.AudienceFactory
+import kingmc.common.application.Isolated
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.ParticleRecipient
 import kingmc.platform.block.Block
+import kingmc.util.key.Key
+import kingmc.util.key.Keyed
 import java.util.*
 
 /**
- * A representation of **world**, **world**
- * is the forth dimension of minecraft, an
- * original minecraft server only have 3
- * dimension:
+ * A representation of **world**, **world** is the forth dimension of minecraft, an
+ * original minecraft server only have 3 dimension:
  *  + world
  *  + world_nether
  *  + world_the_end
@@ -23,20 +22,25 @@ import java.util.*
  * @since 0.0.1
  * @author kingsthere
  */
-interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
+@Isolated
+interface World : ForwardingAudience, ParticleRecipient, Keyed {
     /**
      * The uuid of this world
      */
-    override val uuid: UUID
+    val uuid: UUID
 
     /**
-     * The name of this world, name
-     * is the only identifier to identity
-     * worlds
-     *
-     * @since 0.0.1
+     * The name of this world
      */
-    override val name: String
+    val name: String
+
+    /**
+     * The key identifier of this world
+     *
+     * World identifiers were introduced in Minecraft 1.16.
+     * On older game instances, worlds will be assigned the Key `minecraft:<world name>`
+     */
+    override val key: Key
 
     /**
      * Gets the [Chunk] at the given coordinates
@@ -45,7 +49,6 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param z Z-coordinate of the chunk
      * @return Chunk at the given coordinates
      */
-    @WithApplication
     fun getChunkAt(x: Int, z: Int): Chunk
 
     /**
@@ -54,7 +57,6 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param location Location of the chunk
      * @return Chunk at the given location
      */
-    @WithApplication
     fun getChunkAt(location: Location3D): Chunk
 
     /**
@@ -65,7 +67,6 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param y Y-coordinate of the chunk
      * @return Chunk at the given location
      */
-    @WithApplication
     fun getBlockAt(x: Int, y: Int, z: Int): Block
 
     /**
@@ -74,7 +75,6 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @param location Location of the block
      * @return Block at the given location
      */
-    @WithApplication
     fun getBlockAt(location: Location3D): Block
 
     /**
@@ -96,6 +96,16 @@ interface World : ForwardingAudience, AudienceFactory, ParticleRecipient {
      * @return Maximum height of the world
      */
     val maxHeight: Int
+
+    /**
+     * The relative in-game time of this world
+     */
+    var time: Long
+
+    /**
+     * The full in-game time of this world
+     */
+    var fullTime: Long
 
     companion object
 }

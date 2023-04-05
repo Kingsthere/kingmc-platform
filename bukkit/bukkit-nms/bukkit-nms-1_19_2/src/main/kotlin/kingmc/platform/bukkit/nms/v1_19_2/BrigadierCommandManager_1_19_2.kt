@@ -9,26 +9,24 @@ import kingmc.common.context.annotation.Scope
 import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.common.context.condition.ConditionalOnBean
-import kingmc.platform.Platform
-import kingmc.platform.PlatformImplementation
+import kingmc.platform.Releasable
+import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.brigadier.AliasesCommandNode
 import kingmc.platform.bukkit.brigadier.BrigadierCommandManager
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
 import kingmc.platform.bukkit.brigadier.removeCommand
 import kingmc.platform.command.NAMESPACE_SEPARATOR
+import kingmc.platform.command.model.Command
 import kingmc.platform.command.model.Header
 import kingmc.platform.command.model.Node
-import kingmc.platform.command.model.RegisteredCommand
-import kingmc.platform.platform
 import kingmc.platform.version.ConditionalOnVersion
 
 @Component("brigadierCommandManager_1_19_2")
 @ConditionalOnVersion("1.19.2")
 @ConditionalOnBean(BrigadierNMS::class)
 @Scope(BeanScope.SINGLETON)
-@PlatformImplementation
-class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
-
+@BukkitImplementation
+class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware, Releasable {
     @Autowired
     @Qualifier("brigadierNMS_1_19_2")
     lateinit var brigadierNMS: BrigadierNMS_1_19_2
@@ -36,7 +34,7 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
     /**
      * Registered commands
      */
-    private val _registeredCommands: MutableList<RegisteredCommand<*>> = mutableListOf()
+    private val _registeredCommands: MutableList<Command<*>> = mutableListOf()
 
     /**
      * The default namespace for commands to the commands that
@@ -46,29 +44,26 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
         get() = application.name
 
     /**
-     * Gets the platform of this
-     */
-    override val platform: Platform
-        get() = application.platform
-
-    /**
      * Close this command manager
      */
     override fun close() {
+        _registeredCommands.forEach {
+            unregister(it)
+        }
         _registeredCommands.clear()
     }
 
     /**
      * Get all registered commands in this command manager
      */
-    override fun getRegisteredCommands(): List<RegisteredCommand<*>> {
+    override fun getRegisteredCommands(): List<Command<*>> {
         return _registeredCommands
     }
 
     /**
      * Remove a registered command from this command manager
      */
-    override fun minus(command: RegisteredCommand<*>) {
+    override fun unregister(command: Command<*>) {
         val commandNode = command.data
         if (commandNode is Header) {
             val commandDispatcher = brigadierNMS.getBrigadierDispatcher()
@@ -91,7 +86,7 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
     /**
      * Remove a registered command from this command manager byb name
      */
-    override fun minus(name: String) {
+    override fun unregister(name: String) {
         // Remove the command by `name`
         _registeredCommands.removeIf { (it.data as Node).name.startsWith(name) }
     }
@@ -99,7 +94,7 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
     /**
      * Add a registered command to this command manager
      */
-    override fun plus(command: RegisteredCommand<*>) {
+    override fun register(command: Command<*>) {
         val commandNode = command.data
         if (commandNode is Header) {
             try {
@@ -136,6 +131,13 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware {
      * **IMPLEMENT NOTE:** Use `lateinit` keyword to implement this property
      */
     override lateinit var context: Context
+
+    /**
+     * Release
+     */
+    override fun release() {
+        this.close()
+    }
 
     /**
      * Returns a string representation of the object.

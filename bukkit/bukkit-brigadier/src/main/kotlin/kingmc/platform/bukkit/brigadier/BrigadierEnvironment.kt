@@ -1,8 +1,8 @@
 package kingmc.platform.bukkit.brigadier
 
-import kingmc.common.context.annotation.Component
+import kingmc.common.context.annotation.Configuration
 import kingmc.common.context.condition.ConditionalOnClass
-import kingmc.common.environment.RuntimeDependency
+import kingmc.common.environment.maven.MavenDependency
 
 /**
  * Shaded mojang brigadier api environment
@@ -10,11 +10,12 @@ import kingmc.common.environment.RuntimeDependency
  * @since 0.0.5
  * @author kingsthere
  */
-@RuntimeDependency(
-    value = "com!.mojang:brigadier:1.0.18",
-    relocate = ["com!.mojang!.brigadier", "kingmc.platform.bukkit.brigadier"],
+@MavenDependency(
+    groupId = "com.mojang",
+    artifactId = "brigadier",
+    version = "1.0.18",
     repository = "https://libraries.minecraft.net"
 )
-@Component("brigadierEnvironment")
-@ConditionalOnClass("kingmc.platform.bukkit.brigadier.CommandDispatcher")
+@Configuration
+@ConditionalOnClass("com.mojang.brigadier.CommandDispatcher")
 object BrigadierEnvironment

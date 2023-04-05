@@ -3,7 +3,7 @@ package kingmc.platform.item
 import kingmc.common.application.WithApplication
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Material
-import kingmc.platform.PlatformExposed
+import kingmc.util.key.Key
 
 /**
  * A factory provide [ItemStack] instances
@@ -12,14 +12,15 @@ import kingmc.platform.PlatformExposed
  * @author kingsthere
  */
 @Component
-interface ItemFactory : PlatformExposed {
+interface ItemFactory  {
     /**
      * Build an item from a [ItemBuilder] and return
      *
+     * @param key the key of the item
      * @param builderAction the action to the builder
      * @return the item built
      */
-    fun buildItem(builderAction: @WithApplication ItemBuilder.() -> Unit): Item
+    fun buildItem(key: Key, builderAction: @WithApplication ItemBuilder.() -> Unit): Item
 
     /**
      * Build an `ItemStack` for the given [item]
@@ -35,7 +36,7 @@ interface ItemFactory : PlatformExposed {
      *
      * @param material the material of the `ItemStack`
      * @param amount the amount of the `ItemStack`
-     * @return the item stack create
+     * @return the item stack created
      */
-    fun createItemStack(material: Material, amount: Int = 1): ItemStack
+    fun createItemStack(material: Material<*>, amount: Int = 1): ItemStack
 }

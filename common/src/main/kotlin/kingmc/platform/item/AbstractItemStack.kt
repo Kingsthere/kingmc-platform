@@ -1,11 +1,13 @@
 package kingmc.platform.item
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
+import kingmc.common.text.BinaryTagHolder
+import kingmc.common.text.Text
 import kingmc.platform.Material
-import kingmc.platform.audience.text.BinaryTagHolder
-import kingmc.platform.audience.text.HoverEvent
-import kingmc.platform.audience.text.Text
+import kingmc.platform.nbt.MutableNBTCompound
+import kingmc.platform.nbt.getStringList
+import kingmc.platform.nbt.merge
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.event.HoverEvent
 
 /**
  * An abstract implement of [Item]
@@ -14,10 +16,10 @@ import net.kyori.adventure.key.Key
  * @author kingsthere
  */
 abstract class AbstractItemStack : ItemStack {
-    override var material: Material
-    override var nbt: NBTCompound
+    override var material: Material<*>
+    override var nbt: MutableNBTCompound
 
-    constructor(material: Material, nbt: NBTCompound) {
+    constructor(material: Material<*>, nbt: MutableNBTCompound) {
         this.material = material
         this.nbt = nbt
     }
@@ -25,6 +27,17 @@ abstract class AbstractItemStack : ItemStack {
     constructor(item: ItemStack) {
         this.material = item.material
         this.nbt = item.nbt
+    }
+
+    /**
+     * Merge the contents from [item] into this `ItemStack`
+     *
+     * @param item the item to apply into
+     * @see Item
+     */
+    override fun merge(item: Item) {
+        this.material = item.material
+        this.nbt.merge(item.nbt)
     }
 
     /**
@@ -59,24 +72,20 @@ abstract class AbstractItemStack : ItemStack {
      * @since 0.0.1
      */
     override val tags: Set<String>
-        get() = try {
-            nbt.getStringList("Tags").toSet()
-        } catch (e: IllegalArgumentException) {
-            emptySet()
-        }
+        get() = nbt.getStringList("Tags")?.toSet() ?: emptySet()
 
     /**
      * Convert this object as a [HoverEvent]
      */
     override fun asHoverEvent(): HoverEvent<*> {
-        return HoverEvent.showItem(Key.key(material.key.namespace(), material.key.value()), 1, BinaryTagHolder.binaryTagHolder(nbt.toString()))
+        return HoverEvent.showItem(Key.key(material.type.key.namespace(), material.type.key.value()), 1, BinaryTagHolder.binaryTagHolder(nbt.toString()))
     }
 
     /**
      * Convert this object into a [Text]
      */
     override fun asText(): Text =
-        displayName ?: material.asText()
+        displayName ?: material.type.asText()
 
     override fun toString(): String {
         return "ItemStack(nbt=$nbt, material=$material, amount=$amount)"

@@ -1,18 +1,19 @@
 package kingmc.platform.audience.kind
 
+import kingmc.common.text.Mark
+import kingmc.common.text.Text
 import kingmc.platform.Location
 import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.text.Mark
-import kingmc.platform.audience.text.Text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
-import java.util.*
+import kingmc.platform.inventory.Inventory
+import kingmc.platform.inventory.InventoryView
 
 /**
- * Represent a receiver could receive [text]
+ * Represent a receiver could receive [sendText]
  *
  * @since 0.0.3
  * @author kingsthere
@@ -25,7 +26,7 @@ interface TextCapable {
      * @since 0.0.3
      * @see text
      */
-    fun text(text: Text /* = net.kyori.adventure.text.Component */)
+    fun sendText(text: Text /* = net.kyori.adventure.text.Component */)
 
     /**
      * Send a text to this receivable with
@@ -35,7 +36,7 @@ interface TextCapable {
      * @see text
      * @see Mark
      */
-    fun text(text: Text /* = net.kyori.adventure.text.Component */, vararg marks: Mark)
+    fun sendText(text: Text /* = net.kyori.adventure.text.Component */, vararg marks: Mark)
 }
 
 /**
@@ -58,7 +59,7 @@ interface TitleCapable {
      * @since 0.0.3
      * @see Title
      */
-    fun title(title: Title)
+    fun sendTitle(title: Title)
 
     /**
      * Send/operate a title part to this
@@ -70,7 +71,7 @@ interface TitleCapable {
      * @param T the type of value of the title part
      * @since 0.0.3
      */
-    fun <T : Any> titlePart(titlePart: TitlePartType<T>, value: T)
+    fun <T : Any> sendTitlePart(titlePart: TitlePartType<T>, value: T)
 
     /**
      * Clears the title, if one is being displayed
@@ -106,7 +107,7 @@ interface ActionBarCapable {
      * @see text
      * @since 0.0.3
      */
-    fun actionBar(text: Text)
+    fun sendActionBar(text: Text)
 }
 
 /**
@@ -120,12 +121,12 @@ interface ActionBarCapable {
 @AudienceKind
 interface BossBarCapable {
     /**
-     * Show a bossbar to this receiver
+     * Show a bossBar to this receiver
      *
      * @since 0.0.3
      * @see BossBar
      */
-    fun bossBar(bossBar: BossBar)
+    fun showBossBar(bossBar: BossBar)
 
     /**
      * Hide a bossbar to this receiver
@@ -134,40 +135,6 @@ interface BossBarCapable {
      * @see BossBar
      */
     fun hideBossBar(bossBar: BossBar)
-}
-
-/**
- * Represent a receiver that has identifiers
- * in minecraft, including name, display name, and uuid
- *
- * @since 0.0.3
- * @author kingsthere
- * @see AudienceKind
- */
-@AudienceKind
-interface MinecraftIdentityCapable {
-    /**
-     * The name of this receiver
-     *
-     * @since 0.0.3
-     */
-    val name: String
-
-    /**
-     * The displaying name of this receiver
-     *
-     * @since 0.0.3
-     * @see text
-     */
-    var displayName: Text
-
-    /**
-     * The uuid of this identity
-     *
-     * @since 0.0.3
-     * @see UUID
-     */
-    val uuid: UUID
 }
 
 /**
@@ -190,7 +157,7 @@ interface PlayerListCapable {
 }
 
 /**
- * Represent a receiver that could receive sounds from server and play
+ * Represents a receiver that could receive sounds from server and play
  *
  * @since 0.0.5
  * @author kingsthere
@@ -203,14 +170,14 @@ interface SoundCapable {
      *
      * @since 0.0.5
      */
-    fun sound(sound: Sound)
+    fun playSound(sound: Sound)
 
     /**
      * Play a sound to this audience in specifies location
      *
      * @since 0.0.5
      */
-    fun sound(sound: Sound, location: Location)
+    fun playSound(sound: Sound, location: Location)
 
     /**
      * Stop a sound
@@ -220,4 +187,19 @@ interface SoundCapable {
     fun stopSound(soundStop: SoundStop)
 }
 
-// TODO Inventory(GUI) receiver
+/**
+ * Represents a receiver that could view an `gui(s)`, such as inventory, books
+ *
+ * @since 0.0.6
+ * @author kingsthere
+ */
+@AudienceKind
+interface GUICapable {
+    /**
+     * Open a [inventory] for this audience
+     *
+     * @since 0.0.6
+     * @return the `InventoryView` refer to the opened [inventory]
+     */
+    fun openInventory(inventory: Inventory): InventoryView
+}

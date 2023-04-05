@@ -1,10 +1,10 @@
 package kingmc.platform.bukkit.audience.adventure
 
+import kingmc.common.text.Text
+import kingmc.platform.Server
 import kingmc.platform.audience.ForwardingAudience
-import kingmc.platform.audience.Player
-import kingmc.platform.audience.Players
-import kingmc.platform.audience.text.Text
-import kingmc.platform.bukkit.Bukkit
+import kingmc.platform.entity.player.Player
+import kingmc.platform.entity.player.Players
 import java.util.function.Predicate
 
 
@@ -14,7 +14,7 @@ import java.util.function.Predicate
  * @since 0.0.4
  * @author kingsthere
  */
-class FilteredAllBukkitPlayer(private val filter: Predicate<Player>) : Players {
+class FilteredAllBukkitPlayer(val _server: Server, private val filter: Predicate<Player>) : Players {
     /**
      * Convert this object into a [Text]
      */
@@ -28,5 +28,5 @@ class FilteredAllBukkitPlayer(private val filter: Predicate<Player>) : Players {
      * @since 4.0.0
      */
     override fun audiences(): Iterable<Player> =
-        (Bukkit.getOnlinePlayers().map { AdventureBukkitAudienceFactory.player(it) }).filter { filter.test(it) }
+        _server.getOnlinePlayers().filter { filter.test(it) }
 }

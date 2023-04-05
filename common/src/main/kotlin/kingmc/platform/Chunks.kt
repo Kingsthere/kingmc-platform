@@ -7,7 +7,7 @@ package kingmc.platform
  * @param location the location of the block
  * @return block material type
  */
-fun ChunkSnapshot.getBlockType(location: Location): Material =
+fun ChunkSnapshot.getBlockType(location: Location): MaterialType<*> =
     this.getBlockType(location.blockX, location.blockY, location.blockZ)
 
 /**
@@ -16,5 +16,5 @@ fun ChunkSnapshot.getBlockType(location: Location): Material =
  * @param locatable the location of the block
  * @return block material type
  */
-fun ChunkSnapshot.getBlockType(locatable: Locatable): Material =
+fun ChunkSnapshot.getBlockType(locatable: Locatable): MaterialType<*> =
     this.getBlockType(locatable.blockX, locatable.blockY, locatable.blockZ)

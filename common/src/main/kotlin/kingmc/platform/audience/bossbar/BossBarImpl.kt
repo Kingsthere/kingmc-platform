@@ -1,6 +1,6 @@
 package kingmc.platform.audience.bossbar
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 
 /**
  * The default implement of [BossBar]
@@ -23,7 +23,13 @@ class BossBarImpl(
      * @since 0.0.3
      */
     override fun toBuilder(): BossBar.Builder {
-        TODO("Not yet implemented")
+        return BuilderImpl().apply {
+            name = this@BossBarImpl.name
+            progress = this@BossBarImpl.progress
+            color = this@BossBarImpl.color
+            overlay = this@BossBarImpl.overlay
+            flags = this@BossBarImpl.flags
+        }
     }
 
     override fun equals(other: Any?): Boolean {

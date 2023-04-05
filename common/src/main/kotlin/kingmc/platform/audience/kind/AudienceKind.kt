@@ -6,7 +6,7 @@ package kingmc.platform.audience.kind
  *  + [SoundCapable]
  *  + [TitleCapable]
  *  + [ActionBarCapable]
- *  + [MinecraftIdentityCapable]
+ *  + [MinecraftProfileCapable]
  *  + [PlayerListCapable]
  *
  * @since 0.0.3

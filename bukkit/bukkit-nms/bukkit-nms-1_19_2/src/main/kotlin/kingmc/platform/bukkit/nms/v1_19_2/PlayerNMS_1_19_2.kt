@@ -1,11 +1,11 @@
 package kingmc.platform.bukkit.nms.v1_19_2
 
 import kingmc.common.context.annotation.Component
-import kingmc.platform.audience.Player
 import kingmc.platform.audience.particle.Particle
 import kingmc.platform.bukkit.audience.particle.bukkit
-import kingmc.platform.bukkit.bukkit
+import kingmc.platform.bukkit.entity.player.BukkitPlayer
 import kingmc.platform.bukkit.nms.PlayerNMS
+import kingmc.platform.version.ConditionalOnVersion
 import kingmc.platform.x
 import kingmc.platform.y
 import kingmc.platform.z
@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutWorldParticles
 import org.bukkit.craftbukkit.v1_19_R1.CraftParticle
 
 @Component("playerNMS_1_19_2")
+@ConditionalOnVersion("1.19.2")
 class PlayerNMS_1_19_2 : PlayerNMS<NMSServerPlayer_1_19_2> {
     /**
      * Gets a handle for [player]
@@ -20,8 +21,8 @@ class PlayerNMS_1_19_2 : PlayerNMS<NMSServerPlayer_1_19_2> {
      * @param player the player to get handle from
      * @return the player handle got
      */
-    override fun getHandle(player: Player): NMSServerPlayer_1_19_2 {
-        val bukkitPlayer = (player.bukkit as CraftPlayer_1_19_2)
+    override fun getRawHandle(player: BukkitPlayer): NMSServerPlayer_1_19_2 {
+        val bukkitPlayer = (player.toBukkitPlayer() as CraftPlayer_1_19_2)
         return bukkitPlayer.handle
     }
 

@@ -36,5 +36,7 @@ interface MutableLocatable : Locatable {
      * @param locatable the locatable this locatable to teleport to
      * @see Location
      */
-    fun teleport(locatable: Locatable)
+    fun teleport(locatable: Locatable) {
+        this.teleport(locatable.location)
+    }
 }

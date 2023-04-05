@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.command
 
-import kingmc.platform.audience.CommandSender
+import kingmc.platform.command.CommandSender
 import kingmc.platform.command.CommandContext
 import kingmc.platform.command.parameter.Parameters
 

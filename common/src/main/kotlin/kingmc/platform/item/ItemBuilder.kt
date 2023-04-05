@@ -1,8 +1,9 @@
 package kingmc.platform.item
 
 import kingmc.platform.Material
-import kingmc.platform.nbt.NBTCompoundHolder
+import kingmc.platform.nbt.MutableNBTCompoundHolder
 import kingmc.util.builder.Buildable
+import kingmc.util.key.Key
 
 /**
  * A builder responsible for building [Item] instances
@@ -12,9 +13,14 @@ import kingmc.util.builder.Buildable
  * @see Buildable.Builder
  * @see Item
  */
-interface ItemBuilder : NBTCompoundHolder, Buildable.Builder<Item> {
+interface ItemBuilder : MutableNBTCompoundHolder, Buildable.Builder<Item> {
+    /**
+     * Set the key of the building item
+     */
+    fun key(key: Key)
+
     /**
      * Set the material of the building item
      */
-    fun material(material: Material): ItemBuilder
+    fun material(material: Material<*>): ItemBuilder
 }

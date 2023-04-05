@@ -3,11 +3,11 @@ package kingmc.platform.bukkit
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.platform.ChunkSnapshot
-import kingmc.platform.Material
+import kingmc.platform.MaterialType
 import kingmc.platform.bukkit.material.BukkitMaterialProvider
-import kingmc.platform.materials
+import kingmc.platform.materialProvider
 
-class BukkitChunkSnapshot(val originalBukkitChunkSnapshot: OriginalBukkitChunkSnapshot, override val worldName: String, override val x: Int, override val z: Int) : ChunkSnapshot {
+class BukkitChunkSnapshot(val _BukkitChunkSnapshot: _BukkitChunkSnapshot, override val worldName: String, override val x: Int, override val z: Int) : ChunkSnapshot {
     /**
      * Get block type for block at corresponding coordinate in the chunk
      *
@@ -17,8 +17,8 @@ class BukkitChunkSnapshot(val originalBukkitChunkSnapshot: OriginalBukkitChunkSn
      * @return block material type
      */
     @WithApplication
-    override fun getBlockType(x: Int, y: Int, z: Int): Material {
-        return (currentApplication().materials as BukkitMaterialProvider).getFromBukkit(originalBukkitChunkSnapshot.getBlockType(x, y, z))
+    override fun getBlockType(x: Int, y: Int, z: Int): MaterialType<*> {
+        return (currentApplication().materialProvider as BukkitMaterialProvider).getFromBukkit(_BukkitChunkSnapshot.getBlockType(x, y, z))
     }
 
     override fun equals(other: Any?): Boolean {

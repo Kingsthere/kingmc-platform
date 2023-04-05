@@ -1,7 +1,5 @@
 package kingmc.platform.context
 
-import kingmc.util.annotation.getAnnotation
-import kingmc.util.annotation.hasAnnotation
 import kingmc.common.context.beans.beanClass
 import kingmc.common.context.initializer.GenericContextInitializer
 import kingmc.platform.ConditionalOnPlatform
@@ -9,6 +7,8 @@ import kingmc.platform.version.ConditionalBeforeVersion
 import kingmc.platform.version.ConditionalOnVersion
 import kingmc.platform.version.ConditionalSinceVersion
 import kingmc.util.Version
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.annotation.hasAnnotation
 import java.util.function.Predicate
 
 /**

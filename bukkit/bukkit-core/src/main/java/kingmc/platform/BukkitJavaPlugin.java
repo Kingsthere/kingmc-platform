@@ -1,48 +1,88 @@
 package kingmc.platform;
 
 import kingmc.common.OpenAPI;
-import kingmc.common.environment.KotlinCoroutineEnv;
-import kingmc.common.environment.KotlinEnv;
-import kingmc.common.environment.RuntimeEnv;
-import kingmc.platform.bukkit.BukkitPlugin;
+import kingmc.platform.bukkit.driver.BukkitPlatformDriver;
+import kingmc.platform.bukkit.impl.driver.BukkitPlatformSelector;
+import kingmc.platform.bukkit.impl.driver.BukkitPlatformSelectorImpl;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 /**
- * The main class for boot up kingmc in bukkit server
- * independent of the kotlin environment
+ * The main class for boot up kingmc in bukkit server, main-class in Plugin.yml pointed here
  *
  * @since 0.0.3
  * @author kingsthere
  */
 public class BukkitJavaPlugin extends JavaPlugin {
+    /**
+     * Plugin file
+     */
     public final File file = getFile();
-    public final ClassLoader classLoader = getClassLoader();
-    public static final RuntimeEnv env = RuntimeEnv.ENV;
-    public BukkitPlugin plugin;
 
+    /**
+     * Plugin class loader (org.bukkit.plugin.PluginClassLoader)
+     */
+    public final ClassLoader classLoader = getClassLoader();
+
+    /**
+     * Plugin data folder - {@code server_root/plugins/KingMC/}
+     */
+    public final File dataFolder = getDataFolder();
+
+    /**
+     * Server root - {@code server_root/}
+     */
+    public final File serverRoot = dataFolder.getParentFile().getParentFile();
+
+    /**
+     * KingMC root - server_root/kingmc/
+     */
+    public final File kingmcRoot = new File(serverRoot, "kingmc");
+
+    /**
+     * Temp folder - server_root/kingmc/temp
+     */
+    public final File tempFolder = new File(kingmcRoot, "temp");
+
+    /**
+     * Platform selector to adapt current bukkit server environment
+     */
+    public BukkitPlatformSelector platform;
+
+    /**
+     * Platform driver to launch kingmc framework on current bukkit server
+     */
+    public BukkitPlatformDriver driver;
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onLoad() {
         long stopwatch = System.currentTimeMillis();
 
         OpenAPI.supportClassLoader(this.getClass().getClassLoader());
 
-        // Load dependencies
-        env.loadDependency(KotlinEnv.class, true);
-        env.loadDependency(KotlinCoroutineEnv.class, true);
+        if (!kingmcRoot.exists()) {
+            kingmcRoot.mkdir();
+        }
+        if (!tempFolder.exists()) {
+            tempFolder.mkdir();
+        }
 
-        plugin = new BukkitPlugin(this, stopwatch);
-        plugin.onLoad();
+        // Load dependencies
+        platform = new BukkitPlatformSelectorImpl(this);
+        driver = platform.select();
+        driver.load();
+
     }
 
     @Override
     public void onEnable() {
-        plugin.onEnable();
+        driver.enable();
     }
 
     @Override
     public void onDisable() {
-        plugin.onDisable();
+        driver.disable();
     }
 }

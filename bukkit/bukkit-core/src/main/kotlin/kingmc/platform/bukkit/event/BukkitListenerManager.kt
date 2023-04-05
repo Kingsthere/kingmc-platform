@@ -3,11 +3,9 @@ package kingmc.platform.bukkit.event
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
-import kingmc.platform.Platform
-import kingmc.platform.PlatformImplementation
-import kingmc.platform.bukkit.bukkitPlatform
-import kingmc.platform.common.AbstractListenerManager
+import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.event.ListenerManager
+import kingmc.platform.facet.FacetListenerManager
 
 /**
  * An implement of  [ListenerManager] for bukkit
@@ -17,11 +15,5 @@ import kingmc.platform.event.ListenerManager
  */
 @Component
 @Scope(BeanScope.SINGLETON)
-@PlatformImplementation
-class BukkitListenerManager : AbstractListenerManager() {
-    /**
-     * Gets the platform of this
-     */
-    override val platform: Platform
-        get() = bukkitPlatform
-}
+@BukkitImplementation
+open class BukkitListenerManager : FacetListenerManager()

@@ -21,7 +21,6 @@ dependencies {
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
         maven {
             url = uri("https://repo.codemc.io/repository/nms/")
@@ -47,14 +46,13 @@ allprojects {
     }
 
     dependencies {
-        implementation(group = "com.comphenix.protocol", name = "ProtocolLib", version = "4.8.0")
         api("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
         implementation("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
         implementation("net.kyori:adventure-platform-bukkit:4.2.0")
         implementation("com.mojang:brigadier:1.0.18")
         implementation(project(":common"))
+        implementation(project(":facet"))
         implementation("io.papermc:paperlib:1.0.7")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     }
 }
 
@@ -82,28 +80,22 @@ tasks {
             include(dependency("net.kingmc.common:structure:$kingmc_version"))
             include(dependency("net.kingmc.common:script:$kingmc_version"))
             include(project(":common"))
+            include(project(":facet"))
             include(dependency("me.lucko:jar-relocator:1.5"))
-            val ktil = "0.1"
-            include(dependency("com.kingsthere.ktil:common:$ktil"))
-            include(dependency("com.kingsthere.ktil:annotation:$ktil"))
             include(dependency("org.ow2.asm:asm:9.3"))
             include(dependency("org.ow2.asm:asm-util:9.3"))
             include(dependency("org.ow2.asm:asm-commons:9.3"))
+            include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
             include(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
             include(project(":bukkit:bukkit-brigadier"))
             include(project(":bukkit:bukkit-nbtapi"))
             include(project(":bukkit:bukkit-core"))
         }
         relocate("me.lucko", "kingmc.library")
-        relocate("de.tr7zw.changeme.nbtapi", "kingmc.platform.nbt")
-        relocate("dev.jorel", "kingmc.platform.bukkit.compatible")
+        relocate("de.tr7zw.changeme.nbtapi", "kingmc.platform.bukkit.nbtapi")
         from(sourceSets.main.get().output)
     }
     build {
         dependsOn("shadowJar")
     }
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
 }

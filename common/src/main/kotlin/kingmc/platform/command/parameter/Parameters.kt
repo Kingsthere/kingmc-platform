@@ -30,6 +30,6 @@ interface Parameters {
          * return you default values of parameters
          */
         val EMPTY_WITH_DEFAULT: Parameters
-            get() = EmptyParameters
+            get() = EmptyParametersWithDefault
     }
 }

@@ -1,15 +1,23 @@
 package kingmc.platform.bukkit.messaging
 
+import kingmc.common.application.application
+import kingmc.common.context.Context
+import kingmc.common.context.annotation.Scope
 import kingmc.common.context.annotation.Service
-import kingmc.platform.PlatformImplementation
+import kingmc.common.context.aware.ContextAware
+import kingmc.common.context.beans.BeanScope
 import kingmc.platform.bukkit.Bukkit
-import kingmc.platform.bukkit.bukkitPluginInstance
+import kingmc.platform.bukkit.BukkitImplementation
+import kingmc.platform.bukkit.driver.bukkitPlugin
+import kingmc.platform.facet.messaging.FacetMessenger
 import kingmc.platform.messaging.IncomingPluginMessagingChannel
-import kingmc.platform.messaging.Messenger
 
-@Service("bukkitMessenger")
-@PlatformImplementation
-object BukkitMessenger : Messenger {
+@Service
+@BukkitImplementation
+@Scope(BeanScope.SINGLETON)
+class BukkitMessenger : FacetMessenger(), ContextAware {
+    override lateinit var context: Context
+
     /**
      * Close a out going plugin messaging channel
      *
@@ -17,19 +25,15 @@ object BukkitMessenger : Messenger {
      * @since 0.0.4
      */
     override fun closeOutgoingPluginMessagingChannel(name: String) {
-        Bukkit.getMessenger().unregisterOutgoingPluginChannel(bukkitPluginInstance, name)
+        Bukkit.getMessenger().unregisterOutgoingPluginChannel(bukkitPlugin, name)
     }
 
     /**
-     * Gets a named plugin messaging channel from this factory, this [Messenger]
-     * should cache created plugin messaging channel instances, when calling [getIncomingPluginMessagingChannel]
-     * with same name it should return the same [Messenger] instance
-     *
-     * @param name the name of the plugin messaging channel
-     * @since 0.0.4
+     * Create an incoming plugin messaging channel
      */
-    override fun getIncomingPluginMessagingChannel(name: String): IncomingPluginMessagingChannel =
-        BukkitPluginMessagingChannel(name)
+    override fun createIncomingPluginMessagingChannel(name: String): IncomingPluginMessagingChannel {
+        return BukkitPluginMessagingChannel(name, application)
+    }
 
     /**
      * Open a out going plugin messaging channel
@@ -38,6 +42,15 @@ object BukkitMessenger : Messenger {
      * @since 0.0.4
      */
     override fun openOutgoingPluginMessagingChannel(name: String) {
-        Bukkit.getMessenger().registerOutgoingPluginChannel(bukkitPluginInstance, name)
+        Bukkit.getMessenger().registerOutgoingPluginChannel(bukkitPlugin, name)
+    }
+
+    override fun close() {
+        // Close outgoing channels
+        openedOutgoingChannels.forEach(::closeOutgoingPluginMessagingChannel)
+        // Close incoming channels
+        openedIncomingChannels.values.forEach { it.close() }
+
+        super.close()
     }
 }

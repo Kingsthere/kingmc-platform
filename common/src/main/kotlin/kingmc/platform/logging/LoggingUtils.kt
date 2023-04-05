@@ -2,72 +2,72 @@ package kingmc.platform.logging
 
 import kingmc.common.application.WithApplication
 import kingmc.common.logging.*
-import kingmc.platform.audience.text.TextSolver
+import kingmc.platform.util.format
 import kingmc.platform.util.solveText
 import kingmc.util.KingMCDsl
-import kingmc.util.format.EnableFormat
+import kingmc.util.format.Formatted
 
 /**
- * Log a info level [text] resolved from [TextSolver]
+ * Log a info level [msg] 
  *
  * @since 0.0.4
  * @author kingsthere
  */
 @KingMCDsl
-@EnableFormat
+@Formatted
 @WithApplication
-fun infoColored(msg: String) {
-    info(solveText(msg))
+fun infoColored(msg: String, vararg args: Any) {
+    info(solveText(msg.format(args)))
 }
 
 /**
- * Log a warn level [text] resolved from [TextSolver]
+ * Log a warn level [msg] 
  *
  * @since 0.0.4
  * @author kingsthere
  */
 @KingMCDsl
-@EnableFormat
+@Formatted
 @WithApplication
-fun warnColored(msg: String) {
-    warn(solveText(msg))
+fun warnColored(msg: String, vararg args: Any) {
+    warn(solveText(msg.format(args)))
 }
 
 /**
- * Log a error level [text] resolved from [TextSolver]
+ * Log a error level [msg] 
  *
  * @since 0.0.4
  * @author kingsthere
  */
 @KingMCDsl
-@EnableFormat
+@Formatted
 @WithApplication
-fun errorColored(msg: String) {
-    error(solveText(msg))
+fun errorColored(msg: String, vararg args: Any) {
+    error(solveText(msg.format(args)))
 }
 
 /**
- * Log a debug level [text] resolved from [TextSolver]
+ * Log a debug level [msg] 
  *
  * @since 0.0.4
  * @author kingsthere
  */
 @KingMCDsl
-@EnableFormat
+@Formatted
 @WithApplication
-fun debugColored(msg: String) {
-    debug(solveText(msg))
+fun debugColored(msg: String, vararg args: Any) {
+    debug(solveText(msg.format(args)))
 }
 
 /**
- * Log a trace level [text] resolved from [TextSolver]
+ * Log a trace level [msg] 
  *
  * @since 0.0.4
  * @author kingsthere
  */
 @KingMCDsl
-@EnableFormat
+@Formatted
 @WithApplication
-fun traceColored(msg: String) {
-    trace(solveText(msg))
+fun traceColored(msg: String, vararg args: Any) {
+    trace(solveText(msg.format(args)))
 }

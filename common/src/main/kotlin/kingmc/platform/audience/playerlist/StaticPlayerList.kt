@@ -1,6 +1,6 @@
 package kingmc.platform.audience.playerlist
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 
 /**
  * A static `PlayerList`, it won't apply to the audience once you change properties

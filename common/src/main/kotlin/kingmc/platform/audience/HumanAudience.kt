@@ -1,7 +1,5 @@
 package kingmc.platform.audience
 
-import kingmc.platform.MutablePhysical
-
 /**
  * Represent an audience behaved similar to a human
  *
@@ -9,4 +7,4 @@ import kingmc.platform.MutablePhysical
  * @see Audience
  * @author kingsthere
  */
-interface HumanAudience : MutablePhysical, Audience
+interface HumanAudience : Audience

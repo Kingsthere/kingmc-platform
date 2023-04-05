@@ -7,6 +7,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import kingmc.common.application.Application
+import kingmc.common.application.application
 import kingmc.common.application.suspendApplication
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
 import kingmc.platform.command.CommandContext
@@ -22,22 +23,24 @@ class WrappedSuggestionProvider_1_19_2(
     val suggestionProvider: kingmc.platform.command.suggestion.SuggestionProvider,
     val brigadierNMS: BrigadierNMS<CommandListenerWrapper>,
     val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
-    val outerApplication: Application<*>
+    val outerApplication: Application
 ) : SuggestionProvider<CommandListenerWrapper> {
     override fun getSuggestions(
         css: com.mojang.brigadier.context.CommandContext<CommandListenerWrapper>,
         builder: SuggestionsBuilder,
     ): CompletableFuture<Suggestions> {
-        val wrappedSender = brigadierNMS.getCommandSender(css)
-        val wrappedSuggestionBuilder =
-            kingmc.platform.command.suggestion.SuggestionsBuilder(builder.input, builder.start)
-        val parameters = Parameters.EMPTY
         val future = CompletableFuture<Suggestions>()
-        CoroutineScope(coroutineDispatcher).launch {
-            suspendApplication(outerApplication) {
-                suggestionProvider.invoke(wrappedSuggestionBuilder, CommandContext(wrappedSender, parameters, css.input))
-                val suggestions = wrappedSuggestionBuilder.build()
-                future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))
+        application(outerApplication) {
+            val wrappedSender = brigadierNMS.getCommandSender(css)
+            val wrappedSuggestionBuilder =
+                kingmc.platform.command.suggestion.SuggestionsBuilder(builder.input, builder.start)
+            val parameters = Parameters.EMPTY
+            CoroutineScope(coroutineDispatcher).launch {
+                suspendApplication(outerApplication) {
+                    suggestionProvider.invoke(wrappedSuggestionBuilder, CommandContext(wrappedSender, parameters, css.input))
+                    val suggestions = wrappedSuggestionBuilder.build()
+                    future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))
+                }
             }
         }
         return future

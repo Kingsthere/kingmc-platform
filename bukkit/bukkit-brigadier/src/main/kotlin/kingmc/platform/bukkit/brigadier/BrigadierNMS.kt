@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.condition.ConditionalOnBean
-import kingmc.platform.audience.CommandSender
+import kingmc.platform.command.CommandSender
 import kingmc.platform.command.model.Header
 import org.bukkit.World
 

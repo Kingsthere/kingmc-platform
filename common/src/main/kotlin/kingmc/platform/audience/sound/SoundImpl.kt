@@ -16,7 +16,7 @@ data class SoundImpl(
         override var type: Key = Key("item.armor.equip_diamond"),
         override var source: Sound.Source = Sound.Source.MASTER,
         override var volume: Float = 1f,
-        override var pitch: Float = 0f
+        override var pitch: Float = 1f
     ) : Sound.Builder {
         override fun type(type: Key): Sound.Builder {
             this.type = type

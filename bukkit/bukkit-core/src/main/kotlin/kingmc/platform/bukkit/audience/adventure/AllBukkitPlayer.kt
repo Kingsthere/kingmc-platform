@@ -1,10 +1,10 @@
 package kingmc.platform.bukkit.audience.adventure
 
+import kingmc.common.text.Text
+import kingmc.platform.Server
 import kingmc.platform.audience.ForwardingAudience
-import kingmc.platform.audience.Player
-import kingmc.platform.audience.Players
-import kingmc.platform.audience.text.Text
-import kingmc.platform.bukkit.Bukkit
+import kingmc.platform.entity.player.Player
+import kingmc.platform.entity.player.Players
 
 
 /**
@@ -13,7 +13,7 @@ import kingmc.platform.bukkit.Bukkit
  * @since 0.0.4
  * @author kingsthere
  */
-object AllBukkitPlayer : Players {
+class AllBukkitPlayer(private val _server: Server) : Players {
     /**
      * Convert this object into a [Text]
      */
@@ -27,5 +27,5 @@ object AllBukkitPlayer : Players {
      * @since 4.0.0
      */
     override fun audiences(): Iterable<Player> =
-        Bukkit.getOnlinePlayers().map { AdventureBukkitAudienceFactory.player(it) }
+        _server.getOnlinePlayers()
 }

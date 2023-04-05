@@ -12,7 +12,7 @@ import kotlin.coroutines.CoroutineContext
  * @since 0.0.3
  * @author kingsthere
  */
-fun Node.suspendHandler(coroutineContext: CoroutineContext? = null, configurer: SuspendedHandler.() -> Unit = {  }, application: Application<*>): SuspendedHandler {
+fun Node.suspendHandler(coroutineContext: CoroutineContext? = null, configurer: SuspendedHandler.() -> Unit = {  }, application: Application): SuspendedHandler {
     val handler: SuspendedHandler = object : CoroutineContextSuspendHandler(coroutineContext, executor = { failed() }, application = application) {  }
     configurer.invoke(handler)
     this.handlers.add(handler)

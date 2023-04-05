@@ -8,5 +8,5 @@ package kingmc.platform
  * @author kingsthere
  */
 @Retention
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.ANNOTATION_CLASS)
 annotation class PlatformImplementation

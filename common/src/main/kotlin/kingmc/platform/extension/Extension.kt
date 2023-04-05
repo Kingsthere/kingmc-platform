@@ -1,8 +1,7 @@
 package kingmc.platform.extension
 
-import kingmc.util.annotation.Extended
 import kingmc.common.context.annotation.Configuration
-import kingmc.platform.Awake
+import kingmc.util.annotation.Extended
 
 /**
  * Base annotation for declare an extension that could plug to a server that
@@ -11,7 +10,7 @@ import kingmc.platform.Awake
  * @since 0.0.3
  * @author kingsthere
  */
-@Extended(Configuration::class, Awake::class)
+@Extended(Configuration::class)
 @Target(AnnotationTarget.CLASS)
 @Retention
 annotation class Extension(

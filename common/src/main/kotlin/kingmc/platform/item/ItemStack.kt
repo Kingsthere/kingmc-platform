@@ -1,11 +1,13 @@
 package kingmc.platform.item
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
+import kingmc.common.text.HoverEventDisplayable
 import kingmc.platform.Material
-import kingmc.platform.audience.text.HoverEventDisplayable
-import kingmc.platform.util.TextDisplayable
-import kingmc.platform.nbt.NBTCompoundHolder
+import kingmc.platform.MaterialType
+import kingmc.platform.MutableMaterialHolder
+import kingmc.platform.nbt.MutableNBTCompound
+import kingmc.platform.nbt.MutableNBTCompoundHolder
 import kingmc.util.Tagged
+import kingmc.util.text.TextDisplayable
 
 /**
  * An interface represents an item stack, this interface is mutable
@@ -13,18 +15,18 @@ import kingmc.util.Tagged
  * @since 0.0.1
  * @author kingsthere
  */
-interface ItemStack : HoverEventDisplayable, TextDisplayable, NBTCompoundHolder, Tagged, Cloneable {
+interface ItemStack : MutableMaterialHolder, HoverEventDisplayable, TextDisplayable, MutableNBTCompoundHolder, Tagged, Cloneable {
     /**
      * Gets the `NBTCompound` to access information of this item stack
      */
-    override val nbt: NBTCompound
+    override val nbt: MutableNBTCompound
 
     /**
      * The material of this item to display in client side
      *
-     * @see Material
+     * @see MaterialType
      */
-    var material: Material
+    override var material: Material<*>
 
     /**
      * The amounts of this `ItemStack`
@@ -32,7 +34,7 @@ interface ItemStack : HoverEventDisplayable, TextDisplayable, NBTCompoundHolder,
     var amount: Int
 
     /**
-     * Convert this `ItemStack` to a [Item] to read contents of this `ItemStack` thread-safely
+     * Convert this `ItemStack` to a [Item]
      *
      * @see Item
      */

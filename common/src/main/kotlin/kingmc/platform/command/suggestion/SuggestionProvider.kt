@@ -11,4 +11,4 @@ import kingmc.platform.command.CommandContext
  * @author kingsthere
  */
 @FunctionalInterface
-fun interface SuggestionProvider : suspend SuggestionsBuilder.(CommandContext) -> Unit
+fun interface SuggestionProvider : suspend (SuggestionsBuilder, CommandContext) -> Unit

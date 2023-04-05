@@ -8,8 +8,8 @@ import net.kyori.adventure.sound.SoundStop
 import net.kyori.adventure.title.Title
 import net.kyori.adventure.title.TitlePart
 
-typealias AdventureForwardingAudience = ForwardingAudience
-typealias AdventureAudience = Audience
+typealias _AdventureForwardingAudience = ForwardingAudience
+typealias _AdventureAudience = Audience
 
 // Deprecated for removal
 // typealias MessageType = MessageType

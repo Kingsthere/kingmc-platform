@@ -1,6 +1,6 @@
 package kingmc.platform.audience.title
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 
 /**
  * A type of part of a title

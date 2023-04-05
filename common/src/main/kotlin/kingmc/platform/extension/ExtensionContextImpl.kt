@@ -3,8 +3,6 @@ package kingmc.platform.extension
 import kingmc.common.application.ApplicationExposedContext
 import kingmc.common.context.GenericApplicationContext
 import kingmc.platform.context.PlatformApplication
-import kingmc.platform.context.PlatformContext
-import kingmc.util.format.FormatContext
 
 /**
  * An implementation of context serves for extensions
@@ -12,14 +10,11 @@ import kingmc.util.format.FormatContext
  * @since 0.0.3
  * @author kingsthere
  */
-class ExtensionContextImpl(name: String) : GenericApplicationContext(name = name), ExtensionContext, ApplicationExposedContext {
-    override fun getFormatContext(): FormatContext =
-        ExtensionFormatContext()
-
+class ExtensionContextImpl(name: String, override val extension: ExtensionDefinition) : GenericApplicationContext(name = name), ExtensionContext, ApplicationExposedContext {
     /**
      * The application of this extension context
      */
-    override lateinit var application: PlatformApplication<out PlatformContext>
+    override lateinit var application: PlatformApplication
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

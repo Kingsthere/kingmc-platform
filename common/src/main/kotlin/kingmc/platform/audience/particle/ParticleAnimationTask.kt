@@ -21,7 +21,7 @@ interface ParticleAnimationTask {
          * Create a supervisor particle animation task from [child]
          */
         @JvmStatic
-        fun supervisor(vararg child: ParticleAnimationTask, speed: Int) =
+        fun createSupervisorParticleAnimationTask(vararg child: ParticleAnimationTask, speed: Int) =
             SupervisorParticleAnimationTask(*child, speed = speed)
     }
 }

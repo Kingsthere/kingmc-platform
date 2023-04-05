@@ -11,7 +11,7 @@ package kingmc.platform.event
  * a **data class**, for example:
  * ```
  * @Event
- * data class EventA(val param1: Int, val param2: String)
+ * data class EventA(val value1: Int, val value2: String)
  * ```
  * An event could forward in a [Listener] so it
  * can listen when that event is sent by using

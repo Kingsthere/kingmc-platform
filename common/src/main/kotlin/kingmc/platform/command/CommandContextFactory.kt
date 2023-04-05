@@ -3,10 +3,8 @@ package kingmc.platform.command
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Component
-import kingmc.platform.PlatformExposed
-import kingmc.platform.audience.CommandSender
 import kingmc.platform.command.parameter.Parameters
-import kingmc.platform.invocations
+import kingmc.platform.commandContextFactory
 
 /**
  * Cast a command sender to [CommandContext]
@@ -17,7 +15,7 @@ import kingmc.platform.invocations
  */
 @WithApplication
 fun CommandContext(commandSender: CommandSender, parameters: Parameters, source: String): CommandContext {
-    return currentApplication().invocations.create(
+    return currentApplication().commandContextFactory.create(
         commandSender = commandSender,
         parameters = parameters,
         source = source
@@ -33,7 +31,7 @@ fun CommandContext(commandSender: CommandSender, parameters: Parameters, source:
  * @see CommandContext
  */
 @Component
-interface CommandContextFactory : PlatformExposed {
+interface CommandContextFactory {
     /**
      * Create a command sender from [CommandSender]
      *

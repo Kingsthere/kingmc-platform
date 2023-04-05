@@ -1,24 +1,21 @@
 package kingmc.platform.audience
 
+import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
-import kingmc.platform.PlatformExposed
+import kingmc.common.context.annotation.Scope
+import kingmc.common.context.aware.ContextAware
+import kingmc.common.context.beans.BeanScope
 import kingmc.platform.block.Block
+import kingmc.platform.entity.player.Player
+import kingmc.util.key.Key
 import java.io.Closeable
 import java.util.*
 import java.util.function.Predicate
 
 /**
- * Represent a factory to provide the [kingmc.platform.audience.Audience]
- * instances & implements of audiences such as:
- *  + [CommandSender][kingmc.platform.audience.CommandSender]
- *  + [Player][kingmc.platform.audience.Player]
+ * A factory responsible for provide [audience][kingmc.platform.audience.Audience]
+ * instances such as:
  *  + [Console][kingmc.platform.audience.Console]
- *  + [BlockCommandSender][kingmc.platform.audience.BlockCommandSender]
- *
- *
- *  This factory also provide the audiences that **cast**
- *  from the other minecraft api instances, such as **bukkit api**
- *  players
  *
  *
  *  Audience factory is closeable, close the audience factory
@@ -30,88 +27,69 @@ import java.util.function.Predicate
  * @see Closeable
  */
 @Component
-interface AudienceFactory : PlatformExposed, Closeable, Iterable<Audience> {
+@Scope(BeanScope.SINGLETON)
+@Isolated
+interface AudienceFactory : Closeable, ContextAware {
     /**
-     * Gets an [Player] for an individual player by the
-     * name of that [Player]
+     * Gets an `Audience` for all online player
      *
-     * @since 0.0.3
-     * @see Player
-     * @see UUID
+     * @return `Audience`
      */
-    fun player(name: String): Player?
+    fun players(): Audience
 
     /**
-     * Gets an [Player] for an individual player by the
-     * uuid of that [Player]
+     * Gets an `Audience` for individual player
      *
-     * @since 0.0.3
-     * @see Player
-     * @see UUID
+     * @param uuid the uuid of the player
+     * @return `Audience`
      */
-    fun player(uuid: UUID): Player?
+    @Deprecated("Entities such as player are no longer supplied by the AudienceFactory, use World.getPlayer(uuid) instead")
+    fun player(uuid: UUID): Audience
 
     /**
-     * Gets an [Player] for all online players
+     * Gets an `Audience` for filtered online players
      *
-     * @since 0.0.3
-     * @return the [Player]
+     * @param predicate the predicate to filter players
+     * @return `Audience`
      */
-    fun players(): Players
+    fun players(predicate: Predicate<Player>): Audience
 
     /**
-     * Gets an [Player] for filtered online players
+     * Gets an audience for all online players, including the server's console
      *
-     * @since 0.0.3
-     * @return the [Player]
-     */
-    fun players(predicate: Predicate<Player>): Players
-
-    /**
-     * Get an audience from this factory by using the audience
-     * identifier
-     *
-     * @since 0.0.3
-     */
-    fun <T : Audience> audience(identifier: AudienceIdentifier<T>): T?
-
-    /**
-     * Gets an audience for all audiences in this factory
-     *
-     * @since 0.0.3
-     * @see Player
-     * @see Set
+     * @return `Audience` for all players and console
      */
     fun all(): Audience
 
     /**
-     * Gets an audience for filtered audiences in this factory
+     * Gets an `Audience` for current server's console
      *
      * @since 0.0.3
-     * @see Predicate
-     * @see Set
-     * @see Player
      */
-    fun all(predicate: Predicate<Audience>): Audience
+    @Deprecated("Use Server.console instead")
+    fun console(): Console
 
     /**
-     * Gets the current [Console] audience
+     * Gets an `Audience` for a world, it forward messages to the players on that world
      *
-     * @since 0.0.3
+     * @param uuid the uuid of the world
      */
-    fun console(): Console
+    @Deprecated("Worlds are no longer supplied by the AudienceFactory, use WorldFactory.getWorld() instead")
+    fun world(uuid: UUID): Audience
+
+    /**
+     * Gets an `Audience` for a world, it forward messages to the players on that world
+     *
+     * @param key the key identifier to the world
+     */
+    @Deprecated("Worlds are no longer supplied by the AudienceFactory, use WorldFactory.getWorld() instead")
+    fun world(key: Key): Audience
 
     /**
      * Gets a block command sender
      *
      * @since 0.0.5
      */
+    @Deprecated("Blocks are no longer supplied by the AudienceFactory, use World.getBlock() instead")
     fun block(block: Block): Audience
-
-    /**
-     * Gets all audience in this audience factory
-     *
-     * @since 0.0.3
-     */
-    override fun iterator(): Iterator<Audience>
 }

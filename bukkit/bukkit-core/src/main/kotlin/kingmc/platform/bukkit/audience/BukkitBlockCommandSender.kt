@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.audience
 
-import kingmc.platform.audience.BlockCommandSender
 import kingmc.platform.audience.Console
+import kingmc.platform.command.BlockCommandSender
 
 /**
  * A [Console] implementation for bukkit platform

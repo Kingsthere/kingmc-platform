@@ -1,6 +1,6 @@
 package kingmc.platform.audience.title
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 import kingmc.util.Ticks
 
 /**

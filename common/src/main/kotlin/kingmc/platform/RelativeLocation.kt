@@ -17,17 +17,17 @@ open class RelativeLocation(
     /**
      * The offset x position from [target]
      */
-    val offsetX: Double,
+    val offsetX: Double = 0.0,
 
     /**
      * The offset y position from [target]
      */
-    val offsetY: Double,
+    val offsetY: Double = 0.0,
 
     /**
      * The offset z position from [target]
      */
-    val offsetZ: Double,
+    val offsetZ: Double = 0.0,
 ): Location {
     /**
      * The exactly x position this location is
@@ -36,7 +36,7 @@ open class RelativeLocation(
      * @see Double
      * @since 0.0.1
      */
-    override val x: Double
+    final override val x: Double
         get() = target.x + offsetX
 
     /**
@@ -46,7 +46,7 @@ open class RelativeLocation(
      * @see Double
      * @since 0.0.1
      */
-    override val y: Double
+    final override val y: Double
         get() = target.y + offsetY
 
     /**
@@ -56,7 +56,7 @@ open class RelativeLocation(
      * @see Double
      * @since 0.0.1
      */
-    override val z: Double
+    final override val z: Double
         get() = target.z + offsetZ
 
     /**
@@ -65,7 +65,7 @@ open class RelativeLocation(
      * @since 0.0.1
      * @see Direction
      */
-    override val direction: Direction
+    final override val direction: Direction
         get() = target.direction
 
     /**
@@ -74,7 +74,7 @@ open class RelativeLocation(
      * @since 0.0.1
      * @see World
      */
-    override val world: World?
+    final override val world: World?
         get() = target.world
 
     /**
@@ -86,7 +86,7 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun plus(location: Location3D): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).plus(location)
+        return RelativeLocation(target, offsetX + location.x, offsetY + location.y, offsetZ + location.z)
     }
 
     /**
@@ -97,7 +97,7 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun plus(vec: Vector): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).plus(vec)
+        return RelativeLocation(target, offsetX + vec.x, offsetY + vec.y, offsetZ + vec.z)
     }
 
     /**
@@ -110,7 +110,7 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun plus(x: Double, y: Double, z: Double): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).plus(x, y, z)
+        return RelativeLocation(target, offsetX + x, offsetY + y, offsetZ + z)
     }
 
     /**
@@ -121,7 +121,7 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun minus(vec: Vector): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).minus(vec)
+        return RelativeLocation(target, offsetX - vec.x, offsetY - vec.y, offsetZ - vec.z)
     }
 
     /**
@@ -132,7 +132,7 @@ open class RelativeLocation(
      * @see Location
      */
     override fun minus(location: Location3D): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).minus(location)
+        return RelativeLocation(target, offsetX - location.x, offsetY - location.y, offsetZ - location.z)
     }
 
     /**
@@ -146,7 +146,37 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun minus(x: Double, y: Double, z: Double): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).plus(x, y, z)
+        return RelativeLocation(target, offsetX - x, offsetY - y, offsetZ - z)
+    }
+
+    /**
+     * Performs scalar multiplication, multiplying all components with a
+     * scalar. Not world-aware.
+     *
+     * @param m The factor
+     * @return the same location
+     * @see Vector
+     */
+    override fun times(m: Double): Location {
+        return RelativeLocation(target, offsetX * m, offsetY * m, offsetZ * m)
+    }
+
+    /**
+     * Convert current location to a [Vector] by current position
+     *
+     * @since 0.0.1
+     * @author kingsthere
+     */
+    override fun toVector(): Vector {
+        return target.location.plus(offsetX, offsetY, offsetZ).toVector()
+    }
+
+    override fun component4(): Direction? {
+        return direction
+    }
+
+    override fun component5(): World? {
+        return world
     }
 
     /**
@@ -200,29 +230,7 @@ open class RelativeLocation(
      * @see Vector
      */
     override fun rangeSquared(o: Location3D): Double {
-        return target.location.plus(offsetX, offsetY, offsetZ).rangeSquared(o)
-    }
-
-    /**
-     * Performs scalar multiplication, multiplying all components with a
-     * scalar. Not world-aware.
-     *
-     * @param m The factor
-     * @return the same location
-     * @see Vector
-     */
-    override fun times(m: Double): Location {
-        return target.location.plus(offsetX, offsetY, offsetZ).times(m)
-    }
-
-    /**
-     * Convert current location to a [Vector] by current position
-     *
-     * @since 0.0.1
-     * @author kingsthere
-     */
-    override fun toVector(): Vector {
-        return target.location.plus(offsetX, offsetY, offsetZ).toVector()
+        return target.location.plus(offsetX, offsetY, offsetZ).rangeTo(o)
     }
 
     override fun component1(): Double {
@@ -237,23 +245,11 @@ open class RelativeLocation(
         return z
     }
 
-    override fun component4(): Direction? {
-        return direction
-    }
-
-    override fun component5(): World? {
-        return world
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other !is RelativeLocation) return false
+        if (!super.equals(other)) return false
 
-        other as RelativeLocation
-
-        if (x != other.x) return false
-        if (y != other.y) return false
-        if (z != other.z) return false
         if (direction != other.direction) return false
         if (world != other.world) return false
 
@@ -261,15 +257,17 @@ open class RelativeLocation(
     }
 
     override fun hashCode(): Int {
-        var result = x.hashCode()
-        result = 31 * result + y.hashCode()
-        result = 31 * result + z.hashCode()
+        var result = super.hashCode()
         result = 31 * result + direction.hashCode()
         result = 31 * result + (world?.hashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "RelativeLocation(x=$x, y=$y, z=$z, direction=$direction, world=$world)"
+        return "RelativeLocation(direction=$direction, world=$world) ${super.toString()}"
+    }
+
+    override fun clone(): Location {
+        return world?.let { Location(x, y, z, direction, it) } ?: Location(x, y, z, direction)
     }
 }

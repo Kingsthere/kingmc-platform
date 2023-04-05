@@ -1,7 +1,7 @@
 package kingmc.platform.context
 
 import kingmc.common.application.Application
-import kingmc.common.context.Context
+import kingmc.common.application.FormatCapableApplication
 import kingmc.platform.Platform
 
 /**
@@ -10,7 +10,7 @@ import kingmc.platform.Platform
  * @since 0.0.5
  * @author kingsthere
  */
-interface PlatformApplication<TContext : Context> : Application<TContext> {
+interface PlatformApplication : FormatCapableApplication, Application {
     /**
      * The platform of this application
      */

@@ -1,10 +1,11 @@
 package kingmc.platform.bukkit.audience.adventure
 
+import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Configuration
-import kingmc.common.environment.RuntimeDependency
+import kingmc.common.environment.maven.MavenDependency
 import kingmc.platform.Awake
 import kingmc.platform.Releasable
-import kingmc.platform.bukkit.bukkitPluginInstance
+import kingmc.platform.bukkit.driver.bukkitPlugin
 
 /**
  * Configuration class for adding compatible to kyori
@@ -14,34 +15,48 @@ import kingmc.platform.bukkit.bukkitPluginInstance
  * @since 0.0.3
  * @author kingsthere
  */
-@Awake
+@Component
 @Configuration
-@RuntimeDependency(
-    value = "net.kyori:adventure-platform-bukkit:4.1.2"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-platform-bukkit",
+    version = "4.1.2",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-platform-api:4.1.2"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-platform-api",
+    version = "4.1.2",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-nbt:4.12.0"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-nbt",
+    version = "4.12.0",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-platform-facet:4.1.2"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-platform-facet",
+    version = "4.1.2",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-text-serializer-gson:4.11.0"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-text-serializer-gson",
+    version = "4.11.0",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-text-serializer-legacy:4.11.0"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-text-serializer-legacy",
+    version = "4.11.0",
 )
-@RuntimeDependency(
-    value = "net.kyori:adventure-text-serializer-gson-legacy-impl:4.11.0"
+@MavenDependency(
+    groupId = "net.kyori",
+    artifactId = "adventure-text-serializer-gson-legacy-impl",
+    version = "4.11.0",
 )
 object Adventure : Releasable {
     @Awake(3)
     fun active() {
         // Set up the bukkit audience provider
-        bukkitAudiences = AdventureBukkitAudiences.create(bukkitPluginInstance)
+        adventureBukkitAudiences = _AdventureBukkitAudiences.create(bukkitPlugin)
     }
 
     /**
@@ -50,6 +65,6 @@ object Adventure : Releasable {
      * @since 0.0.3
      */
     override fun release() {
-         bukkitAudiences.close()
+         adventureBukkitAudiences.close()
     }
 }

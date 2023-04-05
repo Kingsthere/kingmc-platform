@@ -46,7 +46,7 @@ interface Handler {
     /**
      * The application that registers this handler
      */
-    val application: Application<*>
+    val application: Application
 
     /**
      * Invoke this handler

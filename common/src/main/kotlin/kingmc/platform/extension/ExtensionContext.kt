@@ -13,5 +13,10 @@ interface ExtensionContext : PlatformContext {
     /**
      * The extension application of this extension context
      */
-    override var application: PlatformApplication<out PlatformContext>
+    override var application: PlatformApplication
+
+    /**
+     * The extension definition that this context is loading
+     */
+    val extension: ExtensionDefinition
 }

@@ -2,7 +2,7 @@ package kingmc.platform.bukkit.brigadier
 
 import com.mojang.brigadier.CommandDispatcher
 import kingmc.common.context.annotation.Component
-import kingmc.platform.audience.CommandSender
+import kingmc.platform.command.CommandSender
 
 /**
  * A [CommandDispatcher] enhanced by kingmc

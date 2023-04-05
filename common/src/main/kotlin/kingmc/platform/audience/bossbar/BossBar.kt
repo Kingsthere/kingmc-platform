@@ -1,6 +1,6 @@
 package kingmc.platform.audience.bossbar
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 import kingmc.util.builder.Buildable
 import net.kyori.adventure.util.Index
 

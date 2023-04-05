@@ -63,7 +63,7 @@ interface Location3D : Cloneable {
      * @return the same location
      * @see Vector
      */
-    fun plus(x: Double, y: Double, z: Double): Location3D
+    fun plus(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0): Location3D
 
     /**
      * Subtracts the location by a vector.
@@ -93,7 +93,7 @@ interface Location3D : Cloneable {
      * @return the same location
      * @see Vector
      */
-    fun minus(x: Double, y: Double, z: Double): Location3D
+    fun minus(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0): Location3D
 
     /**
      * Gets the magnitude of the location, defined as sqrt(x^2+y^2+z^2). The
@@ -150,4 +150,10 @@ interface Location3D : Cloneable {
      * @see Vector
      */
     operator fun times(m: Double): Location3D
+
+    operator fun component1(): Double
+    operator fun component2(): Double
+    operator fun component3(): Double
+
+    override fun clone(): Location3D
 }

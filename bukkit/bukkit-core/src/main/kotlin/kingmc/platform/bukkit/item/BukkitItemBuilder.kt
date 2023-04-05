@@ -1,16 +1,17 @@
 package kingmc.platform.bukkit.item
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
-import de.tr7zw.changeme.nbtapi.NBTContainer
 import kingmc.platform.Material
 import kingmc.platform.item.Item
 import kingmc.platform.item.ItemBuilder
+import kingmc.platform.nbt.MutableNBTCompound
+import kingmc.util.key.Key
 
 class BukkitItemBuilder(
-    override val nbt: NBTCompound = NBTContainer(),
-    material: Material?
+    override val nbt: MutableNBTCompound,
+    material: Material<*>?,
+    var key: Key
 ) : ItemBuilder {
-    lateinit var material: Material
+    lateinit var material: Material<*>
 
     init {
         material?.let {
@@ -25,13 +26,17 @@ class BukkitItemBuilder(
      * @since 0.0.1
      */
     override fun build(): Item {
-        return BukkitItem(material, nbt)
+        return SimpleBukkitItem(material, nbt, key)
+    }
+
+    override fun key(key: Key) {
+        this.key = key
     }
 
     /**
      * Set the material of the building item
      */
-    override fun material(material: Material): ItemBuilder {
+    override fun material(material: Material<*>): ItemBuilder {
         this.material = material
         return this
     }

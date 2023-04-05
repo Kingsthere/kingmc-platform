@@ -1,9 +1,8 @@
 package kingmc.platform.bukkit.command
 
-import kingmc.platform.Platform
-import kingmc.platform.PlatformImplementation
+import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.command.CommandManager
-import kingmc.platform.command.model.RegisteredCommand
+import kingmc.platform.command.model.Command
 
 /**
  * Default command manager implementation of kingmc command api for bukkit
@@ -11,7 +10,7 @@ import kingmc.platform.command.model.RegisteredCommand
  * @since 0.0.4
  * @author kingsthere
  */
-@PlatformImplementation
+@BukkitImplementation
 @Deprecated("Since 0.0.5, kingmc use commandapi to implement kingmc command api")
 class BukkitCommandManager : CommandManager {
     /**
@@ -19,12 +18,6 @@ class BukkitCommandManager : CommandManager {
      * registered into this command manager
      */
     override val defaultCommandNamespace: String
-        get() = throw UnsupportedOperationException("Removal for compatibles")
-
-    /**
-     * Gets the platform of this
-     */
-    override val platform: Platform
         get() = throw UnsupportedOperationException("Removal for compatibles")
 
     /**
@@ -37,28 +30,28 @@ class BukkitCommandManager : CommandManager {
     /**
      * Get all registered commands in this command manager
      */
-    override fun getRegisteredCommands(): List<RegisteredCommand<*>> {
+    override fun getRegisteredCommands(): List<Command<*>> {
         throw UnsupportedOperationException("Removal for compatibles")
     }
 
     /**
      * Remove a registered command from this command manager
      */
-    override fun minus(command: RegisteredCommand<*>) {
+    override fun unregister(command: Command<*>) {
         throw UnsupportedOperationException("Removal for compatibles")
     }
 
     /**
      * Remove a registered command from this command manager byb name
      */
-    override fun minus(name: String) {
+    override fun unregister(name: String) {
         throw UnsupportedOperationException("Removal for compatibles")
     }
 
     /**
      * Add a registered command to this command manager
      */
-    override fun plus(command: RegisteredCommand<*>) {
+    override fun register(command: Command<*>) {
         throw UnsupportedOperationException("Removal for compatibles")
     }
 }

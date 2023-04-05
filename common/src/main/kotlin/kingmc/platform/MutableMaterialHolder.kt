@@ -2,9 +2,9 @@ package kingmc.platform
 
 /**
  * A superinterface indicating the subclasses have
- * a mutable [Material]
+ * a mutable [MaterialType]
  *
- * @see Material
+ * @see MaterialType
  * @since 0.0.4
  * @author kingsthere
  */
@@ -12,5 +12,5 @@ interface MutableMaterialHolder : MaterialHolder {
     /**
      * The material of this holder
      */
-    override var material: Material
+    override var material: Material<*>
 }

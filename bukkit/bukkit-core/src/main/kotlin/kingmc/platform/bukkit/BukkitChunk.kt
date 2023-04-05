@@ -8,8 +8,10 @@ import kingmc.platform.World
 import kingmc.platform.block.Block
 import kingmc.platform.bukkit.block.BukkitBlock
 
-class BukkitChunk(private val originalBukkitChunk: OriginalBukkitChunk, override val world: World) : Chunk {
-    val blockCaches: Cache<Triple<Int, Int, Int>, Block> = Caffeine.newBuilder().build()
+class BukkitChunk(private val _bukkitChunk: _BukkitChunk, override val world: World) : Chunk {
+    val blockCaches: Cache<Triple<Int, Int, Int>, Block> = Caffeine.newBuilder()
+        .build()
+
     private val blocks: List<Block> by lazy {
         val minX: Int = this.x shl 4
         val minZ: Int = this.z shl 4
@@ -32,13 +34,13 @@ class BukkitChunk(private val originalBukkitChunk: OriginalBukkitChunk, override
      * The x-coordinate of this chunk
      */
     override val x: Int
-        get() = originalBukkitChunk.x
+        get() = _bukkitChunk.x
 
     /**
      * The y-coordinate of this chunk
      */
     override val z: Int
-        get() = originalBukkitChunk.z
+        get() = _bukkitChunk.z
 
     /**
      * Gets a block from this chunk
@@ -49,7 +51,7 @@ class BukkitChunk(private val originalBukkitChunk: OriginalBukkitChunk, override
      * @return the Block
      */
     override fun get(x: Int, y: Int, z: Int): Block {
-        return blockCaches.get(Triple(x, y, z)) { BukkitBlock(originalBukkitChunk.getBlock(x, y, z)) }!!
+        return blockCaches.get(Triple(x, y, z)) { BukkitBlock(_bukkitChunk.getBlock(x, y, z)) }!!
     }
 
     /**
@@ -64,7 +66,7 @@ class BukkitChunk(private val originalBukkitChunk: OriginalBukkitChunk, override
      * @return the chunk snapshot captured
      */
     override fun getChunkSnapshot(): ChunkSnapshot {
-        return BukkitChunkSnapshot(originalBukkitChunk.chunkSnapshot, world.name, x, z)
+        return BukkitChunkSnapshot(_bukkitChunk.chunkSnapshot, world.name, x, z)
     }
 
     override fun equals(other: Any?): Boolean {

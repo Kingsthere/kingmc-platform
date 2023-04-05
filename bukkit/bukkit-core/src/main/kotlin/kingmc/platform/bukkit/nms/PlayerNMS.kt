@@ -1,8 +1,8 @@
 package kingmc.platform.bukkit.nms
 
 import kingmc.common.context.annotation.Component
-import kingmc.platform.audience.Player
 import kingmc.platform.audience.particle.Particle
+import kingmc.platform.bukkit.entity.player.BukkitPlayer
 
 /**
  * A superinterface exposed few functions to interact with players on
@@ -20,7 +20,7 @@ interface PlayerNMS<TPlayerHandle> {
      * @param player the player to get handle from
      * @return the player handle got
      */
-    fun getHandle(player: Player): TPlayerHandle
+    fun getRawHandle(player: BukkitPlayer): TPlayerHandle
 
     /**
      * Send a particle to targeting player [handle]

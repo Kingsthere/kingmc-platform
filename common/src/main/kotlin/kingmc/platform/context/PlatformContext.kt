@@ -13,5 +13,5 @@ interface PlatformContext : ApplicationContext, ApplicationExposedContext {
     /**
      * The extension application of this extension context
      */
-    override var application: PlatformApplication<out PlatformContext>
+    override var application: PlatformApplication
 }

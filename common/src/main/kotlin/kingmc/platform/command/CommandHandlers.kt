@@ -86,4 +86,4 @@ fun <THandler : Handler> THandler.execute(executor: @WithApplication (CommandCon
  * Get parameters of this handler that is required to execute this command
  */
 val Handler.requiredParameters: Int
-    get() = this.parameters.count { !it.nullable }
+    get() = this.parameters.count { !it.nullable || it.default != null }

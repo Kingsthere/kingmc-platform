@@ -1,12 +1,10 @@
 package kingmc.platform.event
 
-import kingmc.util.annotation.getAnnotation
-import kingmc.util.annotation.hasAnnotation
 import kingmc.common.application.application
 import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.process.BeanProcessor
-import kingmc.platform.publisher
+import kingmc.platform.listenerManager
 
 /**
  * Process the listeners that annotated
@@ -15,49 +13,22 @@ import kingmc.platform.publisher
  * @since 0.0.1
  * @author kingsthere
  */
-@Component("listenerRegistrar")
+@Component
 object ListenerRegistrar : BeanProcessor {
-
-    override fun dispose(context: Context, bean: Any) {
-        val beanClass = bean::class
-        if (beanClass.hasAnnotation<Listener>()) {
-            val annotation = beanClass.getAnnotation<Listener>()!!
-            try {
-                if (annotation.publisher != Publisher::class) {
-                    // Use specified publisher
-                    val publisher = context.getBean(annotation.publisher)
-                    publisher.cancel(bean)
-                } else {
-                    // Use default publisher defined by "defaultEventPublisher"
-                    bean.application.publisher.cancel(bean)
-                }
-            } catch (e: Exception) {
-                throw ListenerInitializeException("Unable to register listener ${beanClass.qualifiedName}", e)
-            }
-        }
-    }
-
-    override fun process(context: Context, bean: Any): Boolean {
-        val beanClass = bean::class
-        if (beanClass.hasAnnotation<Listener>()) {
-            val annotation = beanClass.getAnnotation<Listener>()!!
-            try {
-                if (annotation.publisher != Publisher::class) {
-                    // Use specified publisher
-                    val publisher = context.getBean(annotation.publisher)
-                    publisher.register(bean)
-                } else {
-                    // Use default publisher defined by "defaultEventPublisher"
-                    bean.application.publisher.register(bean)
-                }
-            } catch (e: Exception) {
-                throw ListenerInitializeException("Unable to register listener ${beanClass.qualifiedName}", e)
-            }
-            return true
-        }
-        return false
-    }
-
     override val priority: Byte = 1
     override val lifecycle: Int = 3
+
+    override fun process(context: Context, bean: Any): Boolean {
+        if (bean is Listener) {
+            bean.application.listenerManager.registerListener(bean)
+        }
+        return super.process(context, bean)
+    }
+
+    // override fun dispose(context: Context, bean: Any) {
+    //     if (bean is Listener) {
+    //         bean.close()
+    //     }
+    //     super.dispose(context, bean)
+    // }
 }

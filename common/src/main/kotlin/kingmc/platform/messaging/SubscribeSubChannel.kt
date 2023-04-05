@@ -1,7 +1,5 @@
 package kingmc.platform.messaging
 
-import kingmc.util.annotation.AliasFor
-
 /**
  * An annotation to bound a function to a sub channel as the handler
  * of specified sub channel
@@ -13,14 +11,7 @@ import kingmc.util.annotation.AliasFor
 @Target(AnnotationTarget.FUNCTION)
 annotation class SubscribeSubChannel(
     /**
-     * The name of ths sub channel to subscribe, alias [subChannel]
-     */
-    @get:AliasFor(attribute = "subChannel")
-    val value: String = "",
-
-    /**
      * The name of ths sub channel to subscribe
      */
-    @get:AliasFor(attribute = "value")
     val subChannel: String = ""
 )

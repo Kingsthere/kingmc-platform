@@ -44,5 +44,5 @@ interface Node {
     /**
      * The application that registers this node
      */
-    val application: Application<*>
+    val application: Application
 }

@@ -2,16 +2,16 @@ package kingmc.platform.bukkit
 
 import kingmc.platform.Vector
 
-typealias OriginalBukkitVector = org.bukkit.util.Vector
+typealias _BukkitVector = org.bukkit.util.Vector
 
-fun Vector.toBukkit(): OriginalBukkitVector =
-    OriginalBukkitVector(
+fun Vector.asBukkit(): _BukkitVector =
+    _BukkitVector(
         this.x,
         this.y,
         this.z
     )
 
-fun OriginalBukkitVector.fromBukkit(): Vector =
+fun _BukkitVector.asKingMC(): Vector =
     Vector(
         this.x,
         this.y,

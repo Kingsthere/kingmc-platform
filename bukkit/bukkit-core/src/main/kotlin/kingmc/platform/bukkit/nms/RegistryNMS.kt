@@ -1,8 +1,10 @@
 package kingmc.platform.bukkit.nms
 
 import kingmc.common.context.annotation.Component
+import kingmc.platform.bukkit.nms.registry.ListedRegistries
+import kingmc.platform.bukkit.nms.registry.Registry
 
-    /**
+/**
  * A superinterface exposed few functions to interact with `Registry` on `net.minecraft.server`
  *
  * @since 0.0.5
@@ -16,15 +18,12 @@ interface RegistryNMS<TRegistry : Any> {
     fun adaptRegistry(registry: TRegistry)
 
     /**
-     * Gets a `Registry` from [Registries]
+     * Gets a `Registry` in `net.minecraft` from [ListedRegistries]
      */
-    fun getRegistry(registry: Registries): TRegistry
+    fun getRawRegistry(registry: ListedRegistries<*>): TRegistry
 
     /**
-     * An enum listed known registries
+     * Gets a `Registry` from [ListedRegistries]
      */
-    enum class Registries {
-        BLOCK,
-        ITEM
-    }
+    fun <T> getRegistry(registry: ListedRegistries<T>): Registry<T>
 }

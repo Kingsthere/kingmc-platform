@@ -2,14 +2,12 @@ package kingmc.platform.item
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
+import kingmc.common.text.Text
 import kingmc.platform.Material
 import kingmc.platform.Platform
-import kingmc.platform.audience.text.Text
-import kingmc.platform.nbt.getTextForJson
-import kingmc.platform.nbt.getTextListForLegacy
-import kingmc.platform.nbt.setTextForJson
-import kingmc.platform.nbt.setTextListForJson
+import kingmc.platform.nbt.*
 import kingmc.platform.platform
+import kingmc.util.key.Key
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -20,17 +18,17 @@ import kotlin.contracts.contract
  * @since 0.0.5
  * @author kingsthere
  */
-val Platform.items: ItemFactory
-    get() = this.context.getBean(ItemFactory::class)
+val Platform.itemFactory: ItemFactory
+    get() = this.driver.context.getBean(ItemFactory::class)
 
 /**
  * Create an item using a [ItemBuilder] and return
  */
 @OptIn(ExperimentalContracts::class)
 @WithApplication
-fun Item(builderAction: @WithApplication ItemBuilder.() -> Unit): Item {
+fun Item(key: Key, builderAction: @WithApplication ItemBuilder.() -> Unit): Item {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return currentApplication().platform.items.buildItem(builderAction)
+    return currentApplication().platform.itemFactory.buildItem(key, builderAction)
 }
 
 /**
@@ -38,15 +36,15 @@ fun Item(builderAction: @WithApplication ItemBuilder.() -> Unit): Item {
  */
 @WithApplication
 fun ItemStack(item: Item, amount: Int = 1): ItemStack {
-    return currentApplication().platform.items.buildItemStackForItem(item, amount)
+    return currentApplication().platform.itemFactory.buildItemStackForItem(item, amount)
 }
 
 /**
  * Build an `ItemStack` with basic properties
  */
 @WithApplication
-fun ItemStack(material: Material, amount: Int = 1): ItemStack {
-    return currentApplication().platform.items.createItemStack(material, amount)
+fun ItemStack(material: Material<*>, amount: Int = 1): ItemStack {
+    return currentApplication().platform.itemFactory.createItemStack(material, amount)
 }
 
 /**
@@ -88,7 +86,7 @@ fun ItemBuilder.durability(durability: Short): ItemBuilder {
  * @since 0.0.1
  */
 fun ItemBuilder.itemFlags(vararg itemFlag: ItemFlag): ItemBuilder {
-    this.nbt.setInteger("HideFlags", convertItemFlagsToInt(itemFlag.toSet()))
+    this.nbt.setInt("HideFlags", convertItemFlagsToInt(itemFlag.toSet()))
     return this
 }
 
@@ -103,11 +101,7 @@ fun ItemBuilder.itemFlags(vararg itemFlag: ItemFlag): ItemBuilder {
  */
 val Item.displayName: Text?
     get() {
-        return try {
-            nbt.getCompound("display").getTextForJson("Name")
-        } catch (e: IllegalArgumentException) {
-            null
-        }
+        return nbt.getCompound("display")?.getTextForJson("Name")
     }
 
 /**
@@ -120,11 +114,7 @@ val Item.displayName: Text?
  */
 val Item.displayLore: List<Text>
     get() {
-        return try {
-            nbt.getCompound("display").getTextListForLegacy("Name")
-        } catch (e: IllegalArgumentException) {
-            emptyList()
-        }
+        return nbt.getCompound("display")?.getTextListForLegacy("Name") ?: emptyList()
     }
 
 /**
@@ -135,11 +125,7 @@ val Item.displayLore: List<Text>
  * @since 0.0.1
  */
 val Item.unbreakable: Boolean
-    get() = try {
-        nbt.getBoolean("Unbreakable")
-    } catch (e: IllegalArgumentException) {
-        false
-    }
+    get() = nbt.getBoolean("Unbreakable") ?: false
 
 /**
  * The durability of this item, it displays as a bar
@@ -149,11 +135,7 @@ val Item.unbreakable: Boolean
  * @since 0.0.1
  */
 val Item.durability: Short
-    get() = try {
-        nbt.getShort("Damage")
-    } catch (e: IllegalArgumentException) {
-        0
-    }
+    get() = nbt.getShort("Damage") ?: 0
 
 /**
  * The item flags of this item, A ItemFlag can hide some Attributes
@@ -162,10 +144,9 @@ val Item.durability: Short
  * @since 0.0.1
  */
 val Item.itemFlags: Set<ItemFlag>
-    get() = try {
-        obtainItemFlagsFromInt(nbt.getInteger("HideFlags"))
-    } catch (e: IllegalArgumentException) {
-        emptySet()
+    get() {
+        val hideFlags = nbt.getInt("HideFlags") ?: return emptySet()
+        return obtainItemFlagsFromInt(hideFlags)
     }
 
 /**
@@ -179,15 +160,11 @@ val Item.itemFlags: Set<ItemFlag>
  */
 var ItemStack.displayName: Text?
     get() {
-        return try {
-            nbt.getCompound("display").getTextForJson("Name")
-        } catch (e: IllegalArgumentException) {
-            null
-        }
+        return nbt.getCompound("display")?.getTextForJson("Name")
     }
     set(value) {
         if (value == null) {
-            nbt.getOrCreateCompound("display").removeKey("Name")
+            nbt.getOrCreateCompound("display").remove("Name")
         } else {
             nbt.getOrCreateCompound("display").setTextForJson("Name", value)
         }
@@ -203,15 +180,11 @@ var ItemStack.displayName: Text?
  */
 var ItemStack.displayLore: List<Text>
     get() {
-        return try {
-            nbt.getCompound("display").getTextListForLegacy("Lore")
-        } catch (e: IllegalArgumentException) {
-            emptyList()
-        }
+        return nbt.getCompound("display")?.getTextListForLegacy("Lore") ?: emptyList()
     }
     set(value) {
         if (value.isEmpty()) {
-            nbt.getOrCreateCompound("display").removeKey("Lore")
+            nbt.getOrCreateCompound("display").remove("Lore")
         } else {
             nbt.getOrCreateCompound("display").setTextListForJson("Lore", value)
         }
@@ -225,11 +198,7 @@ var ItemStack.displayLore: List<Text>
  * @since 0.0.1
  */
 var ItemStack.unbreakable: Boolean
-    get() = try {
-        nbt.getBoolean("Unbreakable")
-    } catch (e: IllegalArgumentException) {
-        false
-    }
+    get() = nbt.getBoolean("Unbreakable") ?: false
     set(value) {
         nbt.setBoolean("Unbreakable", value)
     }
@@ -242,11 +211,7 @@ var ItemStack.unbreakable: Boolean
  * @since 0.0.1
  */
 var ItemStack.durability: Short
-    get() = try {
-        nbt.getShort("Damage")
-    } catch (e: IllegalArgumentException) {
-        0
-    }
+    get() = nbt.getShort("Damage") ?: 0
     set(value) {
         nbt.setShort("Damage", value)
     }
@@ -258,11 +223,7 @@ var ItemStack.durability: Short
  * @since 0.0.1
  */
 var ItemStack.itemFlags: Set<ItemFlag>
-    get() = try {
-        obtainItemFlagsFromInt(nbt.getInteger("HideFlags"))
-    } catch (e: IllegalArgumentException) {
-        emptySet()
-    }
+    get() = nbt.getInt("HideFlags")?.let { obtainItemFlagsFromInt(it) } ?: emptySet()
     set(value) {
-        nbt.setInteger("HideFlags", convertItemFlagsToInt(value))
+        nbt.setInt("HideFlags", convertItemFlagsToInt(value))
     }

@@ -19,5 +19,5 @@ open class CoroutineContextSuspendHandler(
     override var description: String? = null,
     override val parameters: MutableList<CommandParameter<*>> = mutableListOf(),
     override val aliases: MutableSet<String> = mutableSetOf(),
-    override var executor: CommandExecutor = CommandExecutor.EMPTY, override val application: Application<*>
+    override var executor: CommandExecutor = CommandExecutor.EMPTY, override val application: Application
 ) : SuspendedHandler()

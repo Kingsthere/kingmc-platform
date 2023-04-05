@@ -1,6 +1,5 @@
 package kingmc.platform.command
 
-import kingmc.platform.audience.CommandSender
 import kingmc.platform.command.parameter.Parameters
 
 /**

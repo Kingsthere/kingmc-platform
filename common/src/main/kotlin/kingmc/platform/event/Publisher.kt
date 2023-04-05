@@ -1,83 +1,49 @@
 package kingmc.platform.event
 
 import kingmc.common.context.annotation.Component
-import kingmc.util.SubclassSingleton
-import kotlin.reflect.KClass
+import java.io.Closeable
 
 /**
- * Represent a publisher that could publish many events
- * to [Listener] that registered to subscribe this publisher
+ * A `Publisher` is responsible for publishing specified events and
+ * register [Subscription]s to handle them
  *
- *
- * A publisher should not instantiate **more than once**, the
- * publishers could receive the events from others and forward
- * them to the [Listener]
- *
- * @since 0.0.1
+ * @since 0.0.7
  * @author kingsthere
  */
 @Component
-@SubclassSingleton
-interface Publisher {
+interface Publisher : Closeable {
     /**
-     * Register a listener into this publisher
-     * so when this publisher receives events
-     * it will forward to the registered listeners
+     * Register a subscription this publisher
      *
-     * @since 0.0.1
-     * @see Listener
+     * Normally you use [Listener.subscribe] instead of just using this
      */
-    fun register(listener: Any): RegisteredListener
+    fun subscribe(subscription: Subscription<Any>)
 
     /**
-     * Register a lambda listener to this publisher
+     * Unsubscribe a registered subscription
      *
-     * @since 0.0.1
+     * Normally you use [Listener.unsubscribe] instead of just using this
      */
-    fun <T : Any> register(event: KClass<out T>, listener: suspend (T) -> Unit, priority: Byte = 0, ignoreCancelled: Boolean = false): RegisteredListener
+    fun unsubscribe(subscription: Subscription<Any>)
 
     /**
-     * To remove a registered listener from this publisher
-     *
-     * @since 0.0.1
-     * @see RegisteredListener
+     * Close this publisher
      */
-    fun cancel(listener: RegisteredListener)
+    override fun close()
 
     /**
-     * To remove a registered listener by the instance
+     * Call an event and block current thread till every subscription proceed the event
      *
-     * @since 0.0.1
-     * @see Listener
+     * @param event the event to call
+     * @return the event called
      */
-    fun cancel(listener: Any)
+    fun <TEvent : Any> callEvent(event: TEvent) : TEvent
 
     /**
-     * Clear all event listener registered in this publisher
+     * Call an event suspend
      *
-     * @since 0.0.4
+     * @param event the event to call
+     * @return the event called
      */
-    fun clear()
-
-    /**
-     * Call an event to this publisher so this
-     * publisher will forward the event called
-     * to listeners
-     *
-     * @see Listener
-     * @since 0.0.1
-     * @return the event
-     */
-    fun <T : Any> callEvent(event: T) : T
-
-    /**
-     * Call an event suspend to this publisher so this
-     * publisher will forward the event called
-     * to listeners
-     *
-     * @see Listener
-     * @since 0.0.1
-     * @return the event
-     */
-    suspend fun <T : Any> callEventSuspend(event: T) : T
+    suspend fun <TEvent : Any> callEventSuspend(event: TEvent) : TEvent
 }

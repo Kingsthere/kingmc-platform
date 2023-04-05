@@ -1,22 +1,23 @@
 package kingmc.platform.item
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
+import kingmc.common.text.HoverEventDisplayable
 import kingmc.platform.Material
-import kingmc.platform.audience.text.HoverEventDisplayable
+import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.NBTCompoundHolder
-import kingmc.platform.util.TextDisplayable
 import kingmc.util.Tagged
 import kingmc.util.builder.Buildable
 import kingmc.util.errorprone.Immutable
+import kingmc.util.key.Keyed
+import kingmc.util.text.TextDisplayable
 
 /**
- * An interface represents any kind of item, this class is read-only and thread-safe
+ * An interface represents any kind of item, similar to a read-only item stack template
  *
  * @since 0.0.1
  * @author kingsthere
  */
 @Immutable
-interface Item : HoverEventDisplayable, TextDisplayable, NBTCompoundHolder, Tagged, Buildable<Item, ItemBuilder> {
+interface Item : Keyed, HoverEventDisplayable, TextDisplayable, NBTCompoundHolder, Tagged, Buildable<Item, ItemBuilder> {
     /**
      * Gets the `NBTCompound` to access information of this item stack
      */
@@ -28,7 +29,14 @@ interface Item : HoverEventDisplayable, TextDisplayable, NBTCompoundHolder, Tagg
      * @since 0.0.1
      * @see Material
      */
-    val material: Material
+    val material: Material<*>
+
+    /**
+     * Convert this `Item` to a [ItemStack]
+     *
+     * @see ItemStack
+     */
+    fun toItemStack(amount: Int = 1): ItemStack
 
     // TODO enchantments support
     // val enchantments

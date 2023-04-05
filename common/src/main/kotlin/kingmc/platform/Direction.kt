@@ -1,6 +1,5 @@
 package kingmc.platform
 
-import kingmc.platform.common.VectorImpl
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -35,7 +34,7 @@ data class Direction(
         val x = -xz * sin(Math.toRadians(rotX))
         val z = xz * cos(Math.toRadians(rotX))
 
-        return VectorImpl(x, y, z)
+        return Vector(x, y, z)
     }
 
     companion object {

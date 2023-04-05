@@ -4,7 +4,7 @@ import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.platform.command.coroutine.CoroutineContextSuspendHandler
 import kingmc.platform.command.model.*
-import kingmc.platform.commands
+import kingmc.platform.commandFactory
 import kingmc.util.KingMCDsl
 
 /**
@@ -17,7 +17,7 @@ import kingmc.util.KingMCDsl
 @WithApplication
 @KingMCDsl
 fun commands(run: @WithApplication CommandManager.() -> Unit) =
-    currentApplication().commands.apply(run)
+    currentApplication().commandFactory.apply(run)
 
 /**
  * Create and configure a child node from current node
@@ -36,7 +36,7 @@ fun Node(name: String, config: @WithApplication Node.() -> Unit): Node {
  * @return the Header created
  */
 @WithApplication
-fun Header(name: String, namespace: String = currentApplication().commands.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
+fun Header(name: String, namespace: String = currentApplication().commandFactory.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
     return SimpleHeader(name = name, namespace = namespace, application = currentApplication()).apply(config)
 }
 
@@ -58,9 +58,9 @@ fun CoroutineContextSuspendHandler(name: String, config: @WithApplication Corout
 /**
  * Register a [Header] into this command manager
  */
-fun <TNode : Header> CommandManager.register(node: TNode): RegisteredCommand<TNode> {
+fun <TNode : Header> CommandManager.register(node: TNode): Command<TNode> {
     val command = RegisteredCommandImpl(node)
-    this + command
+    this.register(command)
     return command
 }
 

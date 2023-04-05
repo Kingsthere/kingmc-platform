@@ -1,6 +1,9 @@
 package kingmc.platform.messaging
 
+import kingmc.common.context.annotation.Scope
 import kingmc.common.context.annotation.Service
+import kingmc.common.context.beans.BeanScope
+import java.io.Closeable
 
 /**
  * A manager for plugin messaging channels
@@ -9,8 +12,14 @@ import kingmc.common.context.annotation.Service
  * @author kingsthere
  * @see IncomingPluginMessagingChannel
  */
-@Service("messenger")
-interface Messenger {
+@Service
+@Scope(BeanScope.SINGLETON)
+interface Messenger : Closeable {
+    /**
+     * `true` if this `Messenger` is closed
+     */
+    val isClosed: Boolean
+
     /**
      * Gets a named incoming plugin messaging channel from this factory, this [Messenger]
      * should cache created plugin messaging channel instances, when calling [getIncomingPluginMessagingChannel]
@@ -36,4 +45,9 @@ interface Messenger {
      * @since 0.0.4
      */
     fun closeOutgoingPluginMessagingChannel(name: String)
+
+    /**
+     * Close this messenger
+     */
+    override fun close()
 }

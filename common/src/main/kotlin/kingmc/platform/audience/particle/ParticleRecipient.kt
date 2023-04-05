@@ -19,7 +19,7 @@ interface ParticleRecipient {
      * @since 0.0.3
      * @see Particle
      */
-    fun particle(particle: Particle<*>)
+    fun sendParticle(particle: Particle<*>)
 
     /**
      * Send a particle group to this particle recipient
@@ -28,7 +28,7 @@ interface ParticleRecipient {
      * @since 0.0.3
      * @see ParticleGroup
      */
-    fun particle(particleGroup: ParticleGroup)
+    fun sendParticle(particleGroup: ParticleGroup)
 
     /**
      * Send a particle animation to this particle recipient
@@ -37,15 +37,15 @@ interface ParticleRecipient {
      * @since 0.0.3
      * @see ParticleAnimation
      */
-    fun particle(particleAnimation: ParticleAnimation): ParticleAnimationTask
+    fun sendParticle(particleAnimation: ParticleAnimation): ParticleAnimationTask
 
     /**
      * Send a particle animation to this particle recipient
      *
      * @param particleAnimation the particle group to send
-     * @since 0.0.3
-     * @see ParticleAnimation
      * @param speed the speed of this particle to show
+     * @since 0.0.3
+     * @see ParticleAnimation
      */
-    fun particle(particleAnimation: ParticleAnimation, speed: Int = 1): AcceleratedParticleAnimationTask
+    fun sendParticle(particleAnimation: ParticleAnimation, speed: Int): AcceleratedParticleAnimationTask
 }

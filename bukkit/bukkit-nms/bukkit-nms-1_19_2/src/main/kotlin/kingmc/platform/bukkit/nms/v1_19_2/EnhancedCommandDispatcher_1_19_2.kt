@@ -5,8 +5,8 @@ import com.mojang.brigadier.tree.LiteralCommandNode
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.condition.ConditionalOnBean
-import kingmc.platform.audience.CommandSender
 import kingmc.platform.bukkit.brigadier.EnhancedCommandDispatcher
+import kingmc.platform.command.CommandSender
 
 @Component("brigadierCommandDispatcher_1_19_2")
 @ConditionalOnBean(beanName = "brigadierNMS_1_19_2")

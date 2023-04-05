@@ -9,4 +9,4 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences
  * @since 0.0.3
  * @author kingsthere
  */
-lateinit var bukkitAudiences: BukkitAudiences
+lateinit var adventureBukkitAudiences: BukkitAudiences

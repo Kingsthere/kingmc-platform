@@ -1,196 +1,80 @@
-@file:Suppress("BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
-    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
-    "BooleanMethodIsAlwaysInverted"
-)
-
 package kingmc.platform.event
 
-import com.esotericsoftware.reflectasm.MethodAccess
-import kingmc.util.annotation.getAnnotation
-import kingmc.util.annotation.hasAnnotation
-import kingmc.util.reflect.findFunctionsByAnnotation
-import kingmc.common.application.application
 import kingmc.common.application.suspendApplication
-import kingmc.common.context.ConditionCapableContext
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import java.util.*
-import kotlin.coroutines.coroutineContext
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
 
 /**
- * Abstract implement for [Publisher] to
- * implement the default logics of `publisher`
- *
- * @since 0.0.1
- * @author kingsthere
- * @see Publisher
+ * An abstract implementation of [Publisher]
  */
-@Suppress("BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
-    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
-    "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted"
-)
 abstract class AbstractPublisher : Publisher {
-    protected val listeners: MutableSet<RegisteredListener> = mutableSetOf()
+    protected val subscriptions: MutableSet<Subscription<Any>> = TreeSet(compareBy { it })
 
-    override fun <T : Any> callEvent(event: T): T {
-        // Get the event type
-        val eventType = event::class
-        listeners
-            .filter { listener -> listener.supports().any { eventType.isSubclassOf(it) } }
-            .forEach { listener ->
-                // Run handlers
-                listener.handlers
-                    .filter { eventType.isSubclassOf(it.key) }
-                    .forEach { handles ->
-                        runBlocking {
-                            handles.value.forEach {
-                                if (checkEventCancellable(event)) {
-                                    if (!(isEventCancelled(event) && !it.ignoreCancelled)) {
-                                        launch {
-                                            it.invoke(event)
-                                        }
-                                    }
-                                } else {
-                                    launch {
-                                        println("Invoking")
-                                        it.invoke(event)
-                                    }
-                                }
-                            }
-                        }
-                    }
-            }
-        return event
+    /**
+     * Register a subscription this publisher
+     *
+     * Normally you use [Listener.subscribe] instead of just using this
+     */
+    override fun subscribe(subscription: Subscription<Any>) {
+        this.subscriptions.add(subscription)
     }
 
-    override suspend fun <T : Any> callEventSuspend(event: T): T {
-        // Get the event type
-        val eventType = event::class
-        val scope = CoroutineScope(currentCoroutineContext())
-        listeners
-            .filter { listener -> listener.supports().any { eventType.isSubclassOf(it) } }
-            .forEach { listener ->
-                // Run handlers
-                listener.handlers
-                    .filter { eventType.isSubclassOf(it.key) }
-                    .forEach { handles ->
-                        handles.value.forEach {
-                            scope.launch {
-                                if (checkEventCancellable(event)) {
-                                    if (!(isEventCancelled(event) && !it.ignoreCancelled)) {
-                                        it.invoke(event)
-                                    }
-                                } else {
-                                    it.invoke(event)
-                                }
-                            }
-                        }
-                    }
-            }
-        return event
+    /**
+     * Unsubscribe a registered subscription
+     *
+     * Normally you use [Listener.unsubscribe] instead of just using this
+     */
+    override fun unsubscribe(subscription: Subscription<Any>) {
+        this.subscriptions.remove(subscription)
     }
 
-    protected open fun checkEventCancellable(event: Any): Boolean {
-        return event is Cancellable
+    /**
+     * Close this publisher
+     */
+    override fun close() {
+        this.subscriptions.clear()
     }
 
-    protected open fun isEventCancelled(event: Any): Boolean {
-        return (event as? Cancellable)?.cancelled ?: false
-    }
-
-    override fun register(listener: Any): RegisteredListener {
-        val listenerType = listener::class
-        val handlers = HandlerList()
-        val registeredListener = DefaultRegisteredListener(this, handlers, listenerType, listener)
-        // Load the event handlers in the listener
-        listenerType.findFunctionsByAnnotation<Subscribe>().forEach {
-            val eventType = it.parameters[1].type.classifier as KClass<*>
-            val priority = it.getAnnotation<Subscribe>()!!.priority
-            val ignoreCancelled = it.hasAnnotation<IgnoreCancelled>()
-            val handles = handlers.computeIfAbsent(eventType) { TreeSet() }
-
-            // Setup properties to access listener
-            val methodAccess = MethodAccess.get(listenerType.java)
-            val methodName = it.name
-
-            if (it.isSuspend) {
-                handles.add(object : EventHandler<Any> {
-                    override val priority: Byte
-                        get() = priority
-
-                    override val ignoreCancelled: Boolean
-                        get() = ignoreCancelled
-
-                    override suspend fun invoke(event: Any) {
-                        listener.suspendApplication {
-                            if (context is ConditionCapableContext && (context as ConditionCapableContext).testElementCondition(it)) {
-                                methodAccess.invoke(listener, methodName, coroutineContext, event)
-                            }
-                        }
-                    }
-                })
-            } else {
-                handles.add(object : EventHandler<Any> {
-                    override val priority: Byte
-                        get() = priority
-
-                    override val ignoreCancelled: Boolean
-                        get() = ignoreCancelled
-
-                    override suspend fun invoke(event: Any) {
-                        listener.application {
-                            if (context is ConditionCapableContext && (context as ConditionCapableContext).testElementCondition(it)) {
-                                methodAccess.invoke(listener, methodName, event)
-                            }
-                        }
-                    }
-                })
-            }
+    /**
+     * Call an event and block current thread till every subscription proceed the event
+     *
+     * @param event the event to call
+     * @return the event called
+     */
+    override fun <TEvent : Any> callEvent(event: TEvent): TEvent {
+        return runBlocking {
+            callEventSuspend(event)
         }
-        this.listeners.add(registeredListener)
-        return registeredListener
     }
 
-    override fun <T : Any> register(
-        event: KClass<out T>,
-        listener: suspend (T) -> Unit,
-        priority: Byte,
-        ignoreCancelled: Boolean
-    ): RegisteredListener {
-        val handlers = HandlerList()
-        @Suppress("UNCHECKED_CAST")
-        handlers.put(event, mutableSetOf(object : EventHandler<Any> {
-            override val priority: Byte
-                get() = priority
-
-            /**
-             * Whether to ignore cancelled events
-             */
-            override val ignoreCancelled: Boolean
-                get() = ignoreCancelled
-
-            override suspend fun invoke(event: Any) {
-                suspendApplication {
-                    listener.invoke(event as T)
+    /**
+     * Call an event suspend
+     *
+     * @param event the event to call
+     * @return the event called
+     */
+    override suspend fun <TEvent : Any> callEventSuspend(event: TEvent): TEvent {
+        this@AbstractPublisher.subscriptions.forEach {
+            if (it.ignoreCancelled) {
+                if (!checkEventCancelled(it)) {
+                    suspendApplication(it.application) {
+                        it.invoke(event)
+                    }
+                }
+            } else {
+                suspendApplication(it.application) {
+                    it.invoke(event)
                 }
             }
-
-        }))
-        val registeredListener = AnonymousRegisteredListener(handlers, this)
-        this.listeners.add(registeredListener)
-        return registeredListener
+        }
+        return event
     }
 
-    override fun cancel(listener: RegisteredListener) {
-        this.listeners.remove(listener)
-    }
-
-    override fun cancel(listener: Any) {
-        this.listeners.removeIf { it is ClassRegisteredListener && it.instance == listener }
-    }
-
-    override fun clear() {
-        this.listeners.clear()
+    open fun checkEventCancelled(event: Any): Boolean {
+        return if (event is Cancellable) {
+            event.cancelled
+        } else {
+            false
+        }
     }
 }

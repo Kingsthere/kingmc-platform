@@ -9,6 +9,9 @@ object EmptyParametersWithDefault : Parameters {
         if (parameter.default != null) {
             return parameter.default
         }
+        if (parameter.nullable) {
+            return null
+        }
         return null
     }
 }

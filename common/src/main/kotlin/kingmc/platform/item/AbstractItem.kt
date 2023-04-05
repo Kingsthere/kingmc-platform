@@ -1,11 +1,12 @@
 package kingmc.platform.item
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
+import kingmc.common.text.BinaryTagHolder
+import kingmc.common.text.Text
 import kingmc.platform.Material
-import kingmc.platform.audience.text.BinaryTagHolder
-import kingmc.platform.audience.text.HoverEvent
-import kingmc.platform.audience.text.Text
-import net.kyori.adventure.key.Key
+import kingmc.platform.nbt.NBTCompound
+import kingmc.platform.nbt.getStringList
+import kingmc.util.key.Key
+import net.kyori.adventure.text.event.HoverEvent
 
 /**
  * An abstract implement of [Item]
@@ -14,17 +15,20 @@ import net.kyori.adventure.key.Key
  * @author kingsthere
  */
 abstract class AbstractItem : Item {
-    override val material: Material
+    override val material: Material<*>
     override val nbt: NBTCompound
+    override val key: Key
 
-    constructor(material: Material, nbt: NBTCompound) {
+    constructor(material: Material<*>, nbt: NBTCompound, key: Key) {
         this.material = material
         this.nbt = nbt
+        this.key = key
     }
 
-    constructor(item: Item) {
+    constructor(item: Item, key: Key) {
         this.material = item.material
         this.nbt = item.nbt
+        this.key = key
     }
 
     /**
@@ -59,24 +63,20 @@ abstract class AbstractItem : Item {
      * @since 0.0.1
      */
     override val tags: Set<String>
-        get() = try {
-            nbt.getStringList("Tags").toSet()
-        } catch (e: IllegalArgumentException) {
-            emptySet()
-        }
+        get() = nbt.getStringList("Tags")?.toSet() ?: emptySet()
 
     /**
      * Convert this object as a [HoverEvent]
      */
     override fun asHoverEvent(): HoverEvent<*> {
-        return HoverEvent.showItem(Key.key(material.key.namespace(), material.key.value()), 1, BinaryTagHolder.binaryTagHolder(nbt.toString()))
+        return HoverEvent.showItem(net.kyori.adventure.key.Key.key(material.type.key.namespace(), material.type.key.value()), 1, BinaryTagHolder.binaryTagHolder(nbt.toString()))
     }
 
     /**
      * Convert this object into a [Text]
      */
     override fun asText(): Text =
-        displayName ?: material.asText()
+        displayName ?: material.type.asText()
 
     override fun toString(): String {
         return "AbstractItem(nbt=$nbt, material=$material)"

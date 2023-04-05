@@ -4,12 +4,13 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import kingmc.common.OpenAPI;
-import kingmc.common.environment.KotlinCoroutineEnv;
-import kingmc.common.environment.KotlinEnv;
-import kingmc.common.environment.RuntimeEnv;
 import org.slf4j.Logger;
+
+import java.io.File;
+import java.nio.file.Path;
 
 @Plugin(
         id = "kingmc",
@@ -21,17 +22,52 @@ import org.slf4j.Logger;
 public class VelocityJavaPlugin {
     public final ProxyServer server;
     public final Logger logger;
-    public static final RuntimeEnv env = RuntimeEnv.ENV;
 
+    /**
+     * Plugin file
+     */
+    public final File file = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
+
+    /**
+     * Plugin data folder - {@code server_root/plugins/KingMC/}
+     */
+    public File dataFolder;
+
+    /**
+     * Server root - {@code server_root/}
+     */
+    public final File serverRoot = dataFolder.getParentFile().getParentFile();
+
+    /**
+     * KingMC root - server_root/kingmc/
+     */
+    public final File kingmcRoot = new File(serverRoot, "kingmc");
+
+    /**
+     * Temp folder - server_root/kingmc/temp
+     */
+    public final File tempFolder = new File(kingmcRoot, "temp");
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Inject
-    public VelocityJavaPlugin(ProxyServer server, Logger logger) {
+    public VelocityJavaPlugin(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
         this.server = server;
         this.logger = logger;
+        this.dataFolder = dataDirectory.toFile();
+        long stopwatch = System.currentTimeMillis();
+
         OpenAPI.supportClassLoader(this.getClass().getClassLoader());
 
+        if (!kingmcRoot.exists()) {
+            kingmcRoot.mkdir();
+        }
+        if (!tempFolder.exists()) {
+            tempFolder.mkdir();
+        }
+
         // Load dependencies
-        env.loadDependency(KotlinEnv.class, true);
-        env.loadDependency(KotlinCoroutineEnv.class, true);
+        plugin = new BukkitPlugin(this, stopwatch);
+        plugin.onLoad();
     }
 
     @Subscribe

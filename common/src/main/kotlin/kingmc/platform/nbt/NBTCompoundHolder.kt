@@ -1,7 +1,5 @@
 package kingmc.platform.nbt
 
-import de.tr7zw.changeme.nbtapi.NBTCompound
-
 /**
  * A superinterface marking subclasses that could hold a [NBTCompound] data
  *

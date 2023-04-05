@@ -12,17 +12,17 @@ import kingmc.common.context.condition.ConditionalOnBean
 import kingmc.common.logging.error
 import kingmc.common.logging.info
 import kingmc.platform.audience.AudienceFactory
-import kingmc.platform.audience.CommandSender
 import kingmc.platform.bukkit.audience.BukkitAudienceFactory
-import kingmc.platform.bukkit.audience.OriginalBukkitCommandSender
 import kingmc.platform.bukkit.brigadier.*
-import kingmc.platform.bukkit.fromBukkit
+import kingmc.platform.bukkit.entity.player._BukkitCommandSender
 import kingmc.platform.command.CommandContext
+import kingmc.platform.command.CommandSender
 import kingmc.platform.command.exceptions.CommandExecutionException
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Header
 import kingmc.platform.command.model.Node
 import kingmc.platform.command.parameter.*
+import kingmc.platform.command.requiredParameters
 import kingmc.platform.command.rootHandler
 import kingmc.platform.version.ConditionalOnVersion
 import kotlinx.coroutines.*
@@ -72,15 +72,17 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
         val world: World = this.getWorldForCSS(css)
         val location = Location(world, position.a(), position.b(), position.c(), rotation.i, rotation.j)
         val proxyEntity = css.g()
-        val proxy: OriginalBukkitCommandSender? = proxyEntity?.bukkitEntity
+        val proxy: _BukkitCommandSender? = proxyEntity?.bukkitEntity
         return if (proxy == null || proxy == sender) {
             (audienceFactory as BukkitAudienceFactory).commandSender(sender)
         } else {
-            ProxiedLocatableCommandSender(
-                caller = (audienceFactory as BukkitAudienceFactory).commandSender(sender),
-                callee = (audienceFactory as BukkitAudienceFactory).commandSender(proxy),
-                proxiedLocation = location.fromBukkit()
-            )
+            // TODO
+            // ProxiedLocatableCommandSender(
+            //     caller = (audienceFactory as BukkitAudienceFactory).commandSender(sender),
+            //     callee = (audienceFactory as BukkitAudienceFactory).commandSender(proxy),
+            //     proxiedLocation = location.asKingMC()
+            // )
+            (audienceFactory as BukkitAudienceFactory).commandSender(sender)
         }
     }
 
@@ -113,6 +115,21 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                         }
                     }
                 } else {
+                    // Insert default root parameters executor
+                    if (handler.requiredParameters == 0) {
+                        executes { css ->
+                            return@executes application(handler.application) {
+                                try {
+                                    val parameters = Parameters.EMPTY_WITH_DEFAULT
+                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    handler.invoke(commandContext).asInt()
+                                } catch (e: Exception) {
+                                    printCommandHandleException(e)
+                                    0
+                                }
+                            }
+                        }
+                    }
                     then(deserializeCommandHandlerParameters(handler, handler.parameters, handler.parameters.first(), 0))
                 }
             }
@@ -153,6 +170,21 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                         }
                     }
                 } else {
+                    // Insert default root parameters executor
+                    if (handler.requiredParameters == 0) {
+                        executes { css ->
+                            return@executes application(handler.application) {
+                                try {
+                                    val parameters = Parameters.EMPTY_WITH_DEFAULT
+                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    handler.invoke(commandContext).asInt()
+                                } catch (e: Exception) {
+                                    printCommandHandleException(e)
+                                    0
+                                }
+                            }
+                        }
+                    }
                     then(deserializeCommandHandlerParameters(handler, handler.parameters, handler.parameters.first(), 0))
                 }
             }
@@ -223,7 +255,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
         CommandExecutionException("An error occurred while executing a command", exception).printStackTrace()
     }
 
-    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application<*>): RequiredArgumentBuilder<CommandListenerWrapper, TValue> {
+    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application): RequiredArgumentBuilder<CommandListenerWrapper, TValue> {
         return RequiredArgumentBuilder
             .argument<CommandListenerWrapper, TValue>(parameter.name, getArgumentType(parameter))
             .apply {

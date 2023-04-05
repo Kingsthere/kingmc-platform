@@ -1,7 +1,9 @@
 package kingmc.platform.event
 
+import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
-import kingmc.platform.PlatformExposed
+import kingmc.common.context.annotation.Scope
+import kingmc.common.context.beans.BeanScope
 import java.io.Closeable
 
 /**
@@ -11,18 +13,28 @@ import java.io.Closeable
  * @author kingsthere
  */
 @Component
-interface ListenerManager : PlatformExposed, Closeable {
+@Scope(BeanScope.SINGLETON)
+@Isolated
+interface ListenerManager : Closeable {
     /**
-     * The publisher this is managing
-     *
-     * @since 0.0.3
+     * Register a listener to this listener manager
      */
-    val publisher: Publisher
+    fun registerListener(listener: Listener)
 
     /**
-     * Close this listener manager's [publisher]
+     * Unregister a listener
+     *
+     * @throws IllegalArgumentException if the [listener] is not registered in this listener manager
      */
-    override fun close() {
-        publisher.clear()
-    }
+    fun unregisterListener(listener: Listener)
+
+    /**
+     * Gets listeners registered in this listener manager
+     */
+    fun getRegisteredListeners(): Set<Listener>
+
+    /**
+     * Close this listener manager
+     */
+    override fun close()
 }

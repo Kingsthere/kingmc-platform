@@ -1,6 +1,8 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val kingmc_version: String by project
-val secret_username: String by project
-val secret_password: String by project
+val ossrhUsername: String by project
+val ossrhPassword: String by project
 val kingmc_test_version: String by project
 val nbtapi_version: String by project
 
@@ -10,7 +12,7 @@ version = kingmc_version
 plugins {
     `maven-publish`
     signing
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.8.10"
 }
 
 allprojects {
@@ -18,9 +20,16 @@ allprojects {
     apply(plugin = "org.gradle.maven-publish")
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
     repositories {
         // Central repository
         mavenCentral()
+        // Maven local for dev
+        mavenLocal()
         // Snapshot repository
         maven {
             url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
@@ -47,25 +56,27 @@ allprojects {
         api("de.tr7zw:item-nbt-api:$nbtapi_version")
         api(kotlin("reflect"))
         testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
         testApi("net.kingmc.common:common:$kingmc_test_version")
     }
 
     publishing {
         repositories {
+            mavenLocal()
             maven {
                 name = "Snapshot"
                 url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
                 credentials {
-                    username = secret_username
-                    password = secret_password
+                    username = ossrhUsername
+                    password = ossrhPassword
                 }
             }
             maven {
                 name = "Release"
                 url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                 credentials {
-                    username = secret_username
-                    password = secret_password
+                    username = ossrhUsername
+                    password = ossrhPassword
                 }
             }
         }
@@ -115,6 +126,13 @@ allprojects {
 
     signing {
         sign(publishing.publications["kingmc"])
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+            // useK2 = true
+        }
     }
 
     tasks.withType<Javadoc> {

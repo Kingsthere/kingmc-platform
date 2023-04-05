@@ -4,6 +4,9 @@ import kingmc.common.application.ApplicationEnvironment
 import kingmc.common.logging.LoggerCapableApplication
 import kingmc.common.logging.LoggerManager
 import kingmc.platform.Platform
+import kingmc.util.format.FormatContext
+import kingmc.util.format.PropertiesFormatContext
+import java.util.*
 
 /**
  * An application implement for using kingmc platform api
@@ -12,15 +15,20 @@ import kingmc.platform.Platform
  * @author kingsthere
  */
 open class PlatformApplicationImpl(platformOn: Platform, override val context: PlatformContext, override val environment: ApplicationEnvironment,
-                                   override val loggers: LoggerManager
-) : PlatformApplication<PlatformContext>, LoggerCapableApplication {
+                                   override val loggers: LoggerManager, val properties: Properties
+) : PlatformApplication, LoggerCapableApplication {
+    val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
     override val platform = platformOn
 
     override val name: String
         get() = "platform"
 
-    override fun dispose() {
-        // Dispose application logic
+    override fun addShutdownHook(shutdownHook: () -> Unit) {
+        this.shutdownHooks.add(shutdownHook)
+    }
+
+    override fun shutdown() {
+        this.shutdownHooks.forEach { hook -> hook() }
         context.close()
     }
 
@@ -34,6 +42,17 @@ open class PlatformApplicationImpl(platformOn: Platform, override val context: P
         if (environment != other.environment) return false
 
         return true
+    }
+
+    val formatContext by lazy {
+        PropertiesFormatContext(properties)
+    }
+
+    /**
+     * Get the format context that this holder holding
+     */
+    override fun getFormatContext(): FormatContext {
+        return formatContext.with(context.getFormatContext())
     }
 
     override fun hashCode(): Int {

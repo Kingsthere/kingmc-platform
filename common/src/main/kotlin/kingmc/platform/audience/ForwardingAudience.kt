@@ -1,16 +1,14 @@
 package kingmc.platform.audience
 
+import kingmc.common.text.Mark
+import kingmc.common.text.Text
 import kingmc.platform.Location
 import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.text.Mark
-import kingmc.platform.audience.text.Text
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
-import kingmc.util.InternalAPI
-import java.util.*
 
 /**
  * A receiver that forward the messages to one or more receivers
@@ -24,19 +22,14 @@ interface ForwardingAudience : Audience {
      */
     fun audiences(): Iterable<Audience>
 
-    @InternalAPI
-    override fun close() {
-        this.audiences().forEach { it.close() }
-    }
-
     /**
      * Send a text to this receivable
      *
      * @since 0.0.3
      * @see text
      */
-    override fun text(text: Text) {
-        this.audiences().forEach { it.text(text) }
+    override fun sendText(text: Text) {
+        this.audiences().forEach { it.sendText(text) }
     }
 
     /**
@@ -47,8 +40,8 @@ interface ForwardingAudience : Audience {
      * @see text
      * @see Mark
      */
-    override fun text(text: Text, vararg marks: Mark) {
-        this.audiences().forEach { it.text(text, *marks) }
+    override fun sendText(text: Text, vararg marks: Mark) {
+        this.audiences().forEach { it.sendText(text, *marks) }
     }
 
     /**
@@ -59,8 +52,8 @@ interface ForwardingAudience : Audience {
      * @since 0.0.3
      * @see Title
      */
-    override fun title(title: Title) {
-        this.audiences().forEach { it.title(title) }
+    override fun sendTitle(title: Title) {
+        this.audiences().forEach { it.sendTitle(title) }
     }
 
     /**
@@ -73,8 +66,8 @@ interface ForwardingAudience : Audience {
      * @param T the type of value of the title part
      * @since 0.0.3
      */
-    override fun <T : Any> titlePart(titlePart: TitlePartType<T>, value: T) {
-        this.audiences().forEach { it.titlePart(titlePart, value) }
+    override fun <T : Any> sendTitlePart(titlePart: TitlePartType<T>, value: T) {
+        this.audiences().forEach { it.sendTitlePart(titlePart, value) }
     }
 
     /**
@@ -82,8 +75,8 @@ interface ForwardingAudience : Audience {
      *
      * @since 0.0.5
      */
-    override fun sound(sound: Sound) {
-        this.audiences().forEach { it.sound(sound) }
+    override fun playSound(sound: Sound) {
+        this.audiences().forEach { it.playSound(sound) }
     }
 
     /**
@@ -91,8 +84,8 @@ interface ForwardingAudience : Audience {
      *
      * @since 0.0.5
      */
-    override fun sound(sound: Sound, location: Location) {
-        this.audiences().forEach { it.sound(sound, location) }
+    override fun playSound(sound: Sound, location: Location) {
+        this.audiences().forEach { it.playSound(sound, location) }
     }
 
     /**
@@ -130,8 +123,8 @@ interface ForwardingAudience : Audience {
      * @see text
      * @since 0.0.3
      */
-    override fun actionBar(text: Text) {
-        this.audiences().forEach { it.actionBar(text) }
+    override fun sendActionBar(text: Text) {
+        this.audiences().forEach { it.sendActionBar(text) }
     }
 
     /**
@@ -140,8 +133,8 @@ interface ForwardingAudience : Audience {
      * @since 0.0.3
      * @see BossBar
      */
-    override fun bossBar(bossBar: BossBar) {
-        this.audiences().forEach { it.bossBar(bossBar) }
+    override fun showBossBar(bossBar: BossBar) {
+        this.audiences().forEach { it.showBossBar(bossBar) }
     }
 
     /**
@@ -153,33 +146,6 @@ interface ForwardingAudience : Audience {
     override fun hideBossBar(bossBar: BossBar) {
         this.audiences().forEach { it.hideBossBar(bossBar) }
     }
-
-    /**
-     * The name of this receiver
-     *
-     * @since 0.0.3
-     */
-    override val name: String
-        get() = this.audiences().first().name
-
-    /**
-     * The displaying name of this receiver
-     *
-     * @since 0.0.3
-     * @see text
-     */
-    override var displayName: Text
-        get() = this.audiences().first().displayName
-        set(_) {}
-
-    /**
-     * The uuid of this identity
-     *
-     * @since 0.0.3
-     * @see UUID
-     */
-    override val uuid: UUID
-        get() = this.audiences().first().uuid
 
     /**
      * The player list that is displaying

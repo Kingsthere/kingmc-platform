@@ -1,5 +1,6 @@
 package kingmc.platform.audience.sound
 
+import kingmc.platform.Locatable
 import kingmc.platform.Location
 import kingmc.platform.audience.kind.SoundCapable
 import kingmc.util.key.Key
@@ -10,8 +11,8 @@ import kingmc.util.key.Key
  * @since 0.0.5
  * @author kingsthere
  */
-fun SoundCapable.sound(builder: Sound.Builder.() -> Unit) {
-    this.sound(Sound(builder))
+fun SoundCapable.playSound(builder: Sound.Builder.() -> Unit) {
+    this.playSound(Sound(builder))
 }
 
 /**
@@ -20,9 +21,30 @@ fun SoundCapable.sound(builder: Sound.Builder.() -> Unit) {
  * @since 0.0.5
  * @author kingsthere
  */
-fun SoundCapable.sound(location: Location, builder: Sound.Builder.() -> Unit) {
-    this.sound(Sound(builder))
+fun SoundCapable.playSound(location: Location, builder: Sound.Builder.() -> Unit) {
+    this.playSound(Sound(builder), location)
 }
+
+/**
+ * Play a configured sound at specifies [Locatable]
+ *
+ * @since 0.0.5
+ * @author kingsthere
+ */
+fun SoundCapable.playSound(locatable: Locatable, builder: Sound.Builder.() -> Unit) {
+    this.playSound(Sound(builder), locatable.location)
+}
+
+/**
+ * Play a configured sound at specifies [Locatable]
+ *
+ * @since 0.0.5
+ * @author kingsthere
+ */
+fun SoundCapable.playSound(sound: Sound, locatable: Locatable) {
+    this.playSound(sound, locatable.location)
+}
+
 /**
  * Create a [Sound]
  *

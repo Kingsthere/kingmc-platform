@@ -34,5 +34,5 @@ interface ChunkSnapshot {
      * @return block material type
      */
     @WithApplication
-    fun getBlockType(x: Int, y: Int, z: Int): Material
+    fun getBlockType(x: Int, y: Int, z: Int): MaterialType<*>
 }

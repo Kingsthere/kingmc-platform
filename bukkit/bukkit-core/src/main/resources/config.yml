@@ -1,0 +1,25 @@
+# Builtin KingMC Config
+
+# The version of current config
+# DO NOT CHANGE
+config-version: 1
+
+kingmc:
+  # Flag to enable bootstrap when kingmc first setup on your server
+  # After the kingmc bootstrap is complete, you can enable it to run the kingmc bootstrap again on the server to set up kingmc
+  bootstrap: true
+
+  # Environment settings
+  environment:
+    # The default maven repository to download dependencies from
+    # For instance: https://repo1.maven.org/maven2/ (Maven central repository)
+    #
+    # If your server is located in China you can use the mirror repository down below
+    # https://maven.aliyun.com/repository/public/
+    maven-repository: https://repo1.maven.org/maven2/
+
+    # Kotlin version
+    kotlin: 1.8.10
+
+    # Kotlin coroutine version
+    kotlinx-coroutine: 1.6.4

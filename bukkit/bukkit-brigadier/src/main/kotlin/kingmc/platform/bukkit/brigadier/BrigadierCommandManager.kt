@@ -1,6 +1,5 @@
 package kingmc.platform.bukkit.brigadier
 
-import kingmc.common.context.annotation.Component
 import kingmc.platform.command.CommandManager
 
 /**
@@ -10,5 +9,4 @@ import kingmc.platform.command.CommandManager
  * @since 0.0.5
  * @author kingsthere
  */
-@Component("brigadierCommandManager")
 interface BrigadierCommandManager : CommandManager

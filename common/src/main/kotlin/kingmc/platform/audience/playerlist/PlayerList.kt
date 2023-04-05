@@ -1,6 +1,6 @@
 package kingmc.platform.audience.playerlist
 
-import kingmc.platform.audience.text.Text
+import kingmc.common.text.Text
 
 /**
  * Represent an in-game player list, players

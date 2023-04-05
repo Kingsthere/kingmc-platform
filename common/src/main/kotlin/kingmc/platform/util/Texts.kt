@@ -2,30 +2,25 @@ package kingmc.platform.util
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
+import kingmc.common.text.Mark
+import kingmc.common.text.TEXT_EMPTY
+import kingmc.common.text.Text
 import kingmc.platform.audience.kind.TextCapable
-import kingmc.platform.audience.text.EMPTY_TEXT
-import kingmc.platform.audience.text.Mark
-import kingmc.platform.audience.text.Text
-import kingmc.platform.audience.text.textSolver
 import kingmc.platform.audience.title.DEFAULT_TIMES
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePart
 import kingmc.platform.audience.title.TitlePartType
+import kingmc.util.text.TextDisplayable
 
 /**
- * A superinterface represent an object that capable to convert
- * into a [Text]
+ * The text solver of current application
  *
- * @since 0.0.3
+ * @since 0.0.7
  * @author kingsthere
- * @see Text
  */
-interface TextDisplayable {
-    /**
-     * Convert this object into a [Text]
-     */
-    fun asText(): Text
-}
+@get:WithApplication
+val textSolver: TextSolver
+    get() = currentApplication().context.getBean(TextSolver::class)
 
 /**
  * Convert this object into a [Title]
@@ -33,7 +28,7 @@ interface TextDisplayable {
  * @param times the times of this title
  */
 fun TextDisplayable.asTitle(times: Title.Times = DEFAULT_TIMES): Title {
-    return Title(asText(), EMPTY_TEXT)
+    return Title(asText(), TEXT_EMPTY)
 }
 
 /**
@@ -43,7 +38,7 @@ fun TextDisplayable.asTitle(times: Title.Times = DEFAULT_TIMES): Title {
  * @param times the times of this title
  */
 fun TextDisplayable.asSubTitle(times: Title.Times = DEFAULT_TIMES): Title {
-    return Title(EMPTY_TEXT, asText())
+    return Title(TEXT_EMPTY, asText())
 }
 
 /**
@@ -75,7 +70,7 @@ fun TextDisplayable.asSubTitlePart(times: Title.Times = DEFAULT_TIMES): TitlePar
  */
 @WithApplication
 fun solveText(string: String): Text {
-    return currentApplication().textSolver().solve(string)
+    return textSolver.solve(string)
 }
 /**
  * Send a text from [TextDisplayable.asText] to this audience
@@ -83,8 +78,8 @@ fun solveText(string: String): Text {
  * @since 0.0.2
  * @author kingsthere
  */
-fun TextCapable.text(obj: TextDisplayable) {
-    this.text(obj.asText())
+fun TextCapable.sendText(obj: TextDisplayable) {
+    this.sendText(obj.asText())
 }
 
 /**
@@ -93,6 +88,6 @@ fun TextCapable.text(obj: TextDisplayable) {
  * @since 0.0.2
  * @author kingsthere
  */
-fun TextCapable.text(obj: TextDisplayable, vararg marks: Mark) {
-    this.text(obj.asText(), *marks)
+fun TextCapable.sendText(obj: TextDisplayable, vararg marks: Mark) {
+    this.sendText(obj.asText(), *marks)
 }

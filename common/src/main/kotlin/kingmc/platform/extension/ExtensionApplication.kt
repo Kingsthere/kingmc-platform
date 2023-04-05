@@ -1,6 +1,7 @@
 package kingmc.platform.extension
 
 import kingmc.common.application.Application
+import kingmc.common.application.FormatCapableApplication
 import kingmc.platform.context.PlatformApplication
 
 /**
@@ -12,4 +13,4 @@ import kingmc.platform.context.PlatformApplication
  * @see Application
  * @see ExtensionContext
  */
-interface ExtensionApplication : PlatformApplication<ExtensionContext>
+interface ExtensionApplication : FormatCapableApplication, PlatformApplication

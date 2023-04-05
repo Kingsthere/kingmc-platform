@@ -4,7 +4,7 @@ import java.lang.annotation.Inherited
 
 /**
  * Indicating a bean that will only load when platform version
- * equals [value]
+ * exactly equals [value]
  *
  * @since 0.0.5
  * @author kingsthere

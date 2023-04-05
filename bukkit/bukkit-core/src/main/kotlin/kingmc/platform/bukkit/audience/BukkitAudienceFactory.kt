@@ -1,15 +1,18 @@
 package kingmc.platform.bukkit.audience
 
 import kingmc.common.context.annotation.Component
+import kingmc.platform.audience.Audience
 import kingmc.platform.audience.AudienceFactory
-import kingmc.platform.audience.CommandSender
-import kingmc.platform.audience.Player
+import kingmc.platform.bukkit.entity.player._BukkitCommandSender
+import kingmc.platform.bukkit.entity.player._BukkitPlayer
+import kingmc.platform.command.CommandSender
+import kingmc.platform.entity.player.Player
 
 /**
  * Represent an audience factory use
  * in bukkit servers. This interface is
  * not implement default, such as:
- *  + [Adventure api implement][kingmc.platform.bukkit.audience.adventure.AdventureBukkitAudienceFactory]
+ *  + [Adventure api implement][kingmc.platform.bukkit.audience.adventure.AdventureAudienceFactory]
  *
  * @since 0.0.3
  * @author kingsthere
@@ -21,10 +24,11 @@ interface BukkitAudienceFactory : AudienceFactory {
      * Convert a bukkit command sender into audience type
      *
      * @since 0.0.3
-     * @see OriginalBukkitCommandSender
+     * @see _BukkitCommandSender
      * @see CommandSender
      */
-    fun commandSender(commandSender: OriginalBukkitCommandSender): CommandSender
+    @Deprecated("CommandSenders are no longer supplied by the AudienceFactory, use World.getPlayer(uuid) instead")
+    fun commandSender(commandSender: _BukkitCommandSender): CommandSender
 
     /**
      * Gets a player from original bukkit
@@ -32,15 +36,8 @@ interface BukkitAudienceFactory : AudienceFactory {
      *
      * @since 0.0.3
      * @see Player
-     * @see OriginalBukkitCommandSender
+     * @see _BukkitCommandSender
      */
-    fun player(bukkitPlayer: OriginalBukkitPlayer): Player
-
-    /**
-     * Gets an audience from original bukkit block
-     *
-     * @since 0.0.5
-     * @see OriginalBukkitBlockCommandSender
-     */
-    fun block(bukkitBlock: OriginalBukkitBlockCommandSender): CommandSender
+    @Deprecated("Entities such as player are no longer supplied by the AudienceFactory, use World.getPlayer(uuid) instead")
+    fun player(bukkitPlayer: _BukkitPlayer): Audience
 }

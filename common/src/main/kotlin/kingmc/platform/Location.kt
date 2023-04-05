@@ -109,15 +109,7 @@ interface Location : Location3D {
      */
     fun toVector(): Vector
 
-    /*
-     Data class functions declaration
-     */
-    operator fun component1(): Double
-    operator fun component2(): Double
-    operator fun component3(): Double
     operator fun component4(): Direction?
     operator fun component5(): World?
-
-    // Companion object for extensions
-    companion object
+    override fun clone(): Location
 }

@@ -4,9 +4,7 @@ import kingmc.platform.Location
 import kingmc.platform.Material
 import kingmc.platform.block.Block
 import kingmc.platform.block.BlockState
-import kingmc.platform.bukkit.fromBukkit
-import kingmc.platform.bukkit.material.BukkitMaterial
-import kingmc.platform.bukkit.material.BukkitMaterialProvider
+import kingmc.platform.bukkit.asKingMC
 
 /**
  * An [Block] implementation in bukkit
@@ -14,22 +12,22 @@ import kingmc.platform.bukkit.material.BukkitMaterialProvider
  * @since 0.0.5
  * @author kingsthere
  */
-class BukkitBlock(val _bukkitBlock: OriginalBukkitBlock) : Block {
+class BukkitBlock(val _bukkitBlock: _BukkitBlock) : Block {
     /**
      * The location of this locatable
      *
      * @since 0.0.3
      */
     override val location: Location by lazy {
-        _bukkitBlock.location.fromBukkit()
+        _bukkitBlock.location.asKingMC()
     }
 
     /**
      * The material of this holder
      */
-    override var material: Material
-        get() = BukkitMaterialProvider.getFromBukkit(_bukkitBlock.type)
-        set(value) {_bukkitBlock.type = (value as BukkitMaterial).originalBukkitMaterial}
+    override var material: Material<*>
+        get() = TODO()
+        set(value) { TODO() }
 
     /**
      * Gets a [BlockState] from current block

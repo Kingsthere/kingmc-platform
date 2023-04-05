@@ -20,7 +20,7 @@ class BukkitWorldParticleAnimationTask(private val particleAnimation: ParticleAn
         repeat(particleAnimation.particles.size) { index ->
             jobs.add( scope.launch {
                 delay((index + 1) * speed.toLong())
-                world.particle(particleAnimation.particles[index])
+                world.sendParticle(particleAnimation.particles[index])
             } )
         }
     }
