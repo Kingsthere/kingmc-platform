@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTList
 import de.tr7zw.changeme.nbtapi.NBTReflectionUtil
 import kingmc.platform.bukkit.nbtapi.*
 import kingmc.platform.bukkit.nbtapi.nbt.NBTAPINBTCompound
+import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.NBTType
 import kotlin.reflect.KClass
@@ -53,7 +54,7 @@ open class NBTAPINBTCompoundImpl(protected val sourceNBTCompound: _NBTAPINBTComp
     /**
      * Gets an entry from this nbt compound by it's [key]
      */
-    override fun get(key: String): NBTCompound.NBTEntry<*>? = getNBTEntry(this, sourceNBTCompound, key)
+    override fun get(key: String): NBTCompound.NBTEntry<*>? = createNBTEntry(this, sourceNBTCompound, key, null)
 
     /**
      * Check if this nbt compound contains `NBTEntry` with key specified
@@ -93,6 +94,10 @@ open class NBTAPINBTCompoundImpl(protected val sourceNBTCompound: _NBTAPINBTComp
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
+            this.refresh()
+        }
+
+        private fun refresh() {
             when (type) {
                 NBTType.BYTE -> {
                     _nbtCompoundParent.setByte(key, value as Byte)
@@ -157,6 +162,10 @@ open class NBTAPINBTCompoundImpl(protected val sourceNBTCompound: _NBTAPINBTComp
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
+            this.refresh()
+        }
+
+        private fun refresh() {
             _nbtCompoundParent.getOrCreateCompound(key).mergeCompound((value as NBTAPINBTCompound).toNBTAPINBTCompound())
         }
 
@@ -201,9 +210,6 @@ open class NBTAPINBTCompoundImpl(protected val sourceNBTCompound: _NBTAPINBTComp
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
-            val list = getNBTList()
-            list.clear()
-            list.addAll(value)
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -214,37 +220,51 @@ open class NBTAPINBTCompoundImpl(protected val sourceNBTCompound: _NBTAPINBTComp
             return NBTReflectionUtil.getList(_nbtCompoundParent, key, _listElementType, _listElementClass.java) as NBTList<Any>
         }
 
+        private fun refresh() {
+            val list = getNBTList()
+            list.clear()
+            list.addAll(value)
+        }
+
         override fun clone(): NBTCompound.NBTEntry<List<TValue>> {
             return NBTEntryListImpl(key, _nbtCompoundParent, _listElementClass, _listElementType, source)
         }
     }
 
     companion object {
-        fun getNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String): NBTCompound.NBTEntry<*>? {
-            val type: NBTType<out Any> = nbtapiSource.getType(key)?.asKingMC() ?: return null
+        fun createNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, presentNBTType: NBTType<*>?): NBTCompound.NBTEntry<*> {
+            val type: NBTType<out Any> = presentNBTType ?: nbtapiSource.getType(key)?.asKingMC() ?: NBTType.END
             if (type == NBTType.END) {
-                return null
+                return NBTEntryImpl(key, NBTType.END, nbtapiSource, source)
             }
             if (type == NBTType.LIST) {
                 val rawListType = nbtapiSource.getListType(key)
                 val listType = nbtapiSource.getListType(key).asKingMC()
 
-                return NBTReflectionUtil.getList(nbtapiSource, key, rawListType, listType.clazz.java)?.let {
-                    NBTEntryListImpl<Any>(key, nbtapiSource, listType.clazz, rawListType, source)
-                }
+                return NBTEntryListImpl<Any>(
+                    key,
+                    nbtapiSource,
+                    listType.clazz,
+                    rawListType,
+                    source
+                )
             }
             if (type == NBTType.COMPOUND) {
                 return NBTEntryCompoundImpl(key, nbtapiSource, source)
             }
-            return nbtapiSource.getOrNull<Any>(key, type.clazz.java)?.let { NBTEntryImpl(key, type, nbtapiSource, source) }
+            return NBTEntryImpl(key, type, nbtapiSource, source)
         }
 
-        fun getOrCreateNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, type: NBTType<*>, value: Any): NBTCompound.NBTEntry<*> {
-            val nbtEntry = getNBTEntry(source, nbtapiSource, key)
-            if (nbtEntry != null) {
-                return nbtEntry
+        @Suppress("UNCHECKED_CAST")
+        fun createNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, value: Any, presentNBTType: NBTType<*>?): NBTCompound.NBTEntry<*> {
+            return (createNBTEntry(
+                source,
+                nbtapiSource,
+                key,
+                presentNBTType
+            ) as MutableNBTCompound.MutableNBTEntry<Any>).apply {
+                this@apply.value = value
             }
-            return NBTAPIVirtualNBTEntry(source, key, type, value)
         }
     }
 }

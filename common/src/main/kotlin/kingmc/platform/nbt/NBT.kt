@@ -138,7 +138,7 @@ fun NBTCompound.getByteEntry(key: String): NBTCompound.NBTEntry<Byte>? {
         if (entry.type == NBTType.BYTE) {
             entry as? NBTCompound.NBTEntry<Byte>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a byte entry")
+            null
         }
     } else {
         null
@@ -154,7 +154,7 @@ fun NBTCompound.getShortEntry(key: String): NBTCompound.NBTEntry<Short>? {
         if (entry.type == NBTType.SHORT) {
             entry as? NBTCompound.NBTEntry<Short>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a short entry")
+            null
         }
     } else {
         null
@@ -170,7 +170,7 @@ fun NBTCompound.getIntEntry(key: String): NBTCompound.NBTEntry<Int>? {
         if (entry.type == NBTType.INT) {
             entry as? NBTCompound.NBTEntry<Int>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a integer entry")
+            null
         }
     } else {
         null
@@ -186,7 +186,7 @@ fun NBTCompound.getLongEntry(key: String): NBTCompound.NBTEntry<Long>? {
         if (entry.type == NBTType.LONG) {
             entry as? NBTCompound.NBTEntry<Long>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a long entry")
+            null
         }
     } else {
         null
@@ -202,7 +202,7 @@ fun NBTCompound.getFloatEntry(key: String): NBTCompound.NBTEntry<Float>? {
         if (entry.type == NBTType.FLOAT) {
             entry as? NBTCompound.NBTEntry<Float>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a float entry")
+            null
         }
     } else {
         null
@@ -218,7 +218,7 @@ fun NBTCompound.getDoubleEntry(key: String): NBTCompound.NBTEntry<Double>? {
         if (entry.type == NBTType.DOUBLE) {
             entry as? NBTCompound.NBTEntry<Double>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a double entry")
+            null
         }
     } else {
         null
@@ -266,7 +266,7 @@ fun NBTCompound.getStringEntry(key: String): NBTCompound.NBTEntry<String>? {
         if (entry.type == NBTType.STRING) {
             entry as? NBTCompound.NBTEntry<String>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a string entry")
+            null
         }
     } else {
         null
@@ -282,7 +282,7 @@ fun NBTCompound.getUUIDEntry(key: String): NBTCompound.NBTEntry<UUID>? {
         if (entry.type == NBTType.STRING || entry.type == NBTType.INT_ARRAY) {
             entry as? NBTCompound.NBTEntry<UUID>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a string entry")
+            null
         }
     } else {
         null
@@ -298,7 +298,7 @@ fun <TValue : Any> NBTCompound.getListEntry(key: String): NBTCompound.NBTEntry<L
         if (entry.type == NBTType.LIST) {
             entry as? NBTCompound.NBTEntry<List<TValue>>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a list entry")
+            null
         }
     } else {
         null
@@ -354,7 +354,7 @@ fun NBTCompound.getCompoundEntry(key: String): NBTCompound.NBTEntry<NBTCompound>
         if (entry.type == NBTType.COMPOUND) {
             entry as? NBTCompound.NBTEntry<NBTCompound>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a compound entry")
+            null
         }
     } else {
         null
@@ -366,14 +366,17 @@ fun NBTCompound.getCompoundEntry(key: String): NBTCompound.NBTEntry<NBTCompound>
  */
 fun NBTCompound.getOrCreateCompoundEntry(key: String): NBTCompound.NBTEntry<NBTCompound> {
     val entry = this[key]
-    return if (entry != null) {
-        if (entry.type == NBTType.COMPOUND) {
+    if (entry != null) {
+        if (entry.type == NBTType.END) {
+            return NBTEntry(this, key, NBTType.COMPOUND, NBTCompound())
+        }
+        return if (entry.type == NBTType.COMPOUND) {
             entry as NBTCompound.NBTEntry<NBTCompound>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a compound entry")
+            NBTEntry(this, key, NBTType.COMPOUND, NBTCompound())
         }
     } else {
-        NBTEntry(this, key, NBTType.COMPOUND, NBTCompound())
+        return NBTEntry(this, key, NBTType.COMPOUND, NBTCompound())
     }
 }
 
@@ -386,7 +389,7 @@ fun MutableNBTCompound.getByteEntry(key: String): MutableNBTCompound.MutableNBTE
         if (entry.type == NBTType.BYTE) {
             entry as? MutableNBTCompound.MutableNBTEntry<Byte>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a byte entry")
+            null
         }
     } else {
         null
@@ -402,7 +405,7 @@ fun MutableNBTCompound.getShortEntry(key: String): MutableNBTCompound.MutableNBT
         if (entry.type == NBTType.SHORT) {
             entry as? MutableNBTCompound.MutableNBTEntry<Short>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a short entry")
+            null
         }
     } else {
         null
@@ -418,7 +421,7 @@ fun MutableNBTCompound.getIntEntry(key: String): MutableNBTCompound.MutableNBTEn
         if (entry.type == NBTType.INT) {
             entry as? MutableNBTCompound.MutableNBTEntry<Int>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a integer entry")
+            null
         }
     } else {
         null
@@ -434,7 +437,7 @@ fun MutableNBTCompound.getLongEntry(key: String): MutableNBTCompound.MutableNBTE
         if (entry.type == NBTType.LONG) {
             entry as? MutableNBTCompound.MutableNBTEntry<Long>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a long entry")
+            null
         }
     } else {
         null
@@ -450,7 +453,7 @@ fun MutableNBTCompound.getFloatEntry(key: String): MutableNBTCompound.MutableNBT
         if (entry.type == NBTType.FLOAT) {
             entry as? MutableNBTCompound.MutableNBTEntry<Float>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a float entry")
+            null
         }
     } else {
         null
@@ -466,7 +469,7 @@ fun MutableNBTCompound.getDoubleEntry(key: String): MutableNBTCompound.MutableNB
         if (entry.type == NBTType.DOUBLE) {
             entry as? MutableNBTCompound.MutableNBTEntry<Double>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a double entry")
+            null
         }
     } else {
         null
@@ -514,7 +517,7 @@ fun MutableNBTCompound.getStringEntry(key: String): MutableNBTCompound.MutableNB
         if (entry.type == NBTType.STRING) {
             entry as? MutableNBTCompound.MutableNBTEntry<String>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a string entry")
+            null
         }
     } else {
         null
@@ -530,7 +533,7 @@ fun MutableNBTCompound.getUUIDEntry(key: String): MutableNBTCompound.MutableNBTE
         if (entry.type == NBTType.STRING || entry.type == NBTType.INT_ARRAY) {
             entry as? MutableNBTCompound.MutableNBTEntry<UUID>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a string entry")
+            null
         }
     } else {
         null
@@ -546,7 +549,7 @@ fun <TValue : Any> MutableNBTCompound.getListEntry(key: String): MutableNBTCompo
         if (entry.type == NBTType.LIST) {
             entry as? MutableNBTCompound.MutableNBTEntry<List<TValue>>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a list entry")
+            null
         }
     } else {
         null
@@ -602,7 +605,7 @@ fun MutableNBTCompound.getCompoundEntry(key: String): MutableNBTCompound.Mutable
         if (entry.type == NBTType.COMPOUND) {
             entry as? MutableNBTCompound.MutableNBTEntry<MutableNBTCompound>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a compound entry")
+            null
         }
     } else {
         null
@@ -614,14 +617,17 @@ fun MutableNBTCompound.getCompoundEntry(key: String): MutableNBTCompound.Mutable
  */
 fun MutableNBTCompound.getOrCreateCompoundEntry(key: String): MutableNBTCompound.MutableNBTEntry<MutableNBTCompound> {
     val entry = this[key]
-    return if (entry != null) {
-        if (entry.type == NBTType.COMPOUND) {
+    if (entry != null) {
+        if (entry.type == NBTType.END) {
+            return MutableNBTEntry(this, key, NBTType.COMPOUND, MutableNBTCompound())
+        }
+        return if (entry.type == NBTType.COMPOUND) {
             entry as MutableNBTCompound.MutableNBTEntry<MutableNBTCompound>
         } else {
-            throw NBTEntryTypeException("Entry $entry is not a compound entry")
+            MutableNBTEntry(this, key, NBTType.COMPOUND, MutableNBTCompound())
         }
     } else {
-        MutableNBTEntry(this, key, NBTType.COMPOUND, MutableNBTCompound())
+        return MutableNBTEntry(this, key, NBTType.COMPOUND, MutableNBTCompound())
     }
 }
 

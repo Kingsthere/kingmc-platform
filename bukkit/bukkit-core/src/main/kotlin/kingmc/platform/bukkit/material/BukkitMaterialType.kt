@@ -40,7 +40,6 @@ open class BukkitMaterialType<TData>(val _bukkitMaterial: _BukkitMaterial) : Mat
      * Convert this object into a [Text]
      */
     override fun asText(): Text {
-        val key = key
-        return TranslatableText { key("block.${key.namespace()}.${key.value()}") }
+        return TranslatableText { key(_bukkitMaterial.translationKey) }
     }
 }

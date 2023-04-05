@@ -10,6 +10,14 @@ inline fun <reified TType : Any> NBTType(): NBTType<TType> {
  * Enum of all NBT Types Minecraft contains
  */
 class NBTType<TType : Any>(val clazz: KClass<out TType>) {
+
+    /**
+     * Returns a string representation of the object.
+     */
+    override fun toString(): String {
+        return "NBTType(clazz=$clazz)"
+    }
+
     companion object {
         val BYTE : NBTType<Byte> = NBTType()
         val SHORT : NBTType<Short> = NBTType()

@@ -19,8 +19,8 @@ class NBTAPIVirtualNBTEntry(
      * Merge this nbt entry to another nbt compound
      */
     override fun merge(nbtCompound: NBTCompound) {
-        NBTAPIMutableNBTCompoundImpl.getOrCreateNBTEntry(source, nbtapiSource, key, type, value).apply {
-            merge(nbtCompound)
+        NBTAPIMutableNBTCompoundImpl.createNBTEntry(source, nbtapiSource, key, value, type).apply {
+            this.merge(nbtCompound)
         }
     }
 
@@ -42,8 +42,8 @@ class NBTAPIVirtualMutableNBTEntry(
      * Merge this nbt entry to another nbt compound
      */
     override fun merge(nbtCompound: NBTCompound) {
-        NBTAPIMutableNBTCompoundImpl.getOrCreateNBTEntry(source, nbtapiSource, key, type, value).apply {
-            merge(nbtCompound)
+        NBTAPIMutableNBTCompoundImpl.createNBTEntry(source, nbtapiSource, key, value, type).apply {
+            this.merge(nbtCompound)
         }
     }
 

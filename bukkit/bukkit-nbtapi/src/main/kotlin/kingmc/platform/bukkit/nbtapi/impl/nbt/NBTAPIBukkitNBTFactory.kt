@@ -60,7 +60,7 @@ class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
      * Create a mutable nbt compound for specified [itemStack]
      */
     override fun createMutableNBTCompoundForItemStack(itemStack: _BukkitItemStack): MutableNBTCompound {
-        return NBTAPIMutableNBTCompoundImpl(_NBTAPINBTItem(itemStack))
+        return NBTAPIMutableNBTCompoundImpl(_NBTAPINBTItem(itemStack, true))
     }
 
     /**
@@ -138,10 +138,10 @@ class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
         type: NBTType<*>,
         value: TValue
     ): NBTCompound.NBTEntry<TValue> {
-        return NBTAPINBTCompoundImpl.getOrCreateNBTEntry(
+        return NBTAPINBTCompoundImpl.createNBTEntry(
             nbtapiSource = (source as NBTAPINBTCompound).toNBTAPINBTCompound(),
             key = key,
-            type = type,
+            presentNBTType = type,
             value = value,
             source = source
         ) as NBTCompound.NBTEntry<TValue>
@@ -163,10 +163,10 @@ class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
         type: NBTType<*>,
         value: TValue
     ): MutableNBTCompound.MutableNBTEntry<TValue> {
-        return NBTAPIMutableNBTCompoundImpl.getOrCreateNBTEntry(
+        return NBTAPIMutableNBTCompoundImpl.createNBTEntry(
             nbtapiSource = (source as NBTAPINBTCompound).toNBTAPINBTCompound(),
             key = key,
-            type = type,
+            presentNBTType = type,
             value = value,
             source = source
         ) as MutableNBTCompound.MutableNBTEntry<TValue>

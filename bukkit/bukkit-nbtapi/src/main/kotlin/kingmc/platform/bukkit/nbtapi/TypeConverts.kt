@@ -3,7 +3,6 @@ package kingmc.platform.bukkit.nbtapi
 import kingmc.platform.nbt.NBTType
 
 fun _NBTAPINBTType.asKingMC(): NBTType<out Any> {
-    println(this)
     return when (this) {
         _NBTAPINBTType.NBTTagByte -> NBTType.BYTE
         _NBTAPINBTType.NBTTagShort -> NBTType.SHORT

@@ -29,7 +29,7 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
     }
 
     override fun get(key: String): MutableNBTCompound.MutableNBTEntry<*>? {
-        return getNBTEntry(this, sourceNBTCompound, key)
+        return createNBTEntry(this, sourceNBTCompound, key, null)
     }
 
     /**
@@ -94,6 +94,10 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
+            this.refresh()
+        }
+
+        private fun refresh() {
             value = value
         }
 
@@ -118,7 +122,7 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
          * The value of this `NBTEntry`
          */
         override var value: NBTCompound
-            get() = NBTAPINBTCompoundImpl(_nbtCompoundParent.getCompound(key))
+            get() = NBTAPIMutableNBTCompoundImpl(_nbtCompoundParent.getCompound(key))
             set(value) {
                 _nbtCompoundParent.getOrCreateCompound(key).mergeCompound((value as NBTAPINBTCompound).toNBTAPINBTCompound())
             }
@@ -135,6 +139,10 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
+            this.refresh()
+        }
+
+        private fun refresh() {
             value = value
         }
 
@@ -193,6 +201,10 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
          */
         fun merge(nbtCompound: _NBTAPINBTCompound) {
             _nbtCompoundParent = nbtCompound
+            this.refresh()
+        }
+
+        private fun refresh() {
             value = value
         }
 
@@ -202,36 +214,26 @@ open class NBTAPIMutableNBTCompoundImpl(nbtCompound: _NBTAPINBTCompound = _NBTAP
     }
 
     companion object {
-        fun getNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String): MutableNBTCompound.MutableNBTEntry<*>? {
-            val type: NBTType<out Any> = nbtapiSource.getType(key)?.asKingMC() ?: return null
+        fun createNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, presentNBTType: NBTType<*>?): MutableNBTCompound.MutableNBTEntry<*> {
+            val type: NBTType<out Any> = presentNBTType ?: nbtapiSource.getType(key)?.asKingMC() ?: NBTType.END
             if (type == NBTType.END) {
-                return null
+                return MutableNBTEntryImpl(key, NBTType.END, nbtapiSource, source)
             }
             if (type == NBTType.LIST) {
                 val rawListType = nbtapiSource.getListType(key)
                 val listType = nbtapiSource.getListType(key).asKingMC()
 
-                return NBTReflectionUtil.getList(nbtapiSource, key, rawListType, listType.clazz.java)?.let {
-                    MutableNBTEntryListImpl<Any>(key, nbtapiSource, listType.clazz, rawListType, source)
-                }
+                return MutableNBTEntryListImpl<Any>(key, nbtapiSource, listType.clazz, rawListType, source)
             }
             if (type == NBTType.COMPOUND) {
                 return MutableNBTEntryCompoundImpl(key, nbtapiSource, source)
             }
-            return nbtapiSource.getOrNull<Any>(key, type.clazz.java)?.let { MutableNBTEntryImpl(key, type, nbtapiSource, source) }
-        }
-
-        fun getOrCreateNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, type: NBTType<*>, value: Any): MutableNBTCompound.MutableNBTEntry<*> {
-            val nbtEntry = getNBTEntry(source, nbtapiSource, key)
-            if (nbtEntry != null) {
-                return nbtEntry
-            }
-            return NBTAPIVirtualMutableNBTEntry(source, key, type, value)
+            return MutableNBTEntryImpl(key, type, nbtapiSource, source)
         }
 
         @Suppress("UNCHECKED_CAST")
-        fun getNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, value: Any): NBTCompound.NBTEntry<*>? {
-            return (getNBTEntry(source, nbtapiSource, key) as? MutableNBTCompound.MutableNBTEntry<Any>)?.apply {
+        fun createNBTEntry(source: NBTCompound, nbtapiSource: _NBTAPINBTCompound, key: String, value: Any, presentNBTType: NBTType<*>?): MutableNBTCompound.MutableNBTEntry<*> {
+            return (createNBTEntry(source, nbtapiSource, key, presentNBTType) as MutableNBTCompound.MutableNBTEntry<Any>).apply {
                 this@apply.value = value
             }
         }
