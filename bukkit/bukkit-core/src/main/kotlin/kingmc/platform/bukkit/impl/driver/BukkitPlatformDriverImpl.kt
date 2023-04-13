@@ -31,7 +31,7 @@ import kingmc.platform.Platforms
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit._BukkitServer
-import kingmc.platform.bukkit.audience.adventure.Adventure
+import kingmc.platform.bukkit.adventure.Adventure
 import kingmc.platform.bukkit.driver.BukkitPlatformDriver
 import kingmc.platform.bukkit.impl.BukkitPlatform
 import kingmc.platform.bukkit.impl.extension.BukkitExtensionDispatcherImpl
@@ -149,12 +149,12 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         val environment = PlatformApplicationEnvironment(classLoader)
         val loggers = Slf4jLoggerManager(logger)
 
-        val context = PlatformContextImpl("kingmc")
+        val context = PlatformContextImpl(properties, "kingmc")
         contextInitializer = PlatformContextInitializer(context).apply {
             addSource(source)
         }
 
-        val application: PlatformApplication = PlatformApplicationImpl(platform, context, environment, loggers, properties)
+        val application: PlatformApplication = PlatformApplicationImpl(platform, context, environment, loggers)
         context.application = application
 
         Platforms.registerPlatform(application.platform, application.context)

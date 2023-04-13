@@ -1,25 +1,24 @@
 package kingmc.platform.item
 
+import kingmc.common.application.Application
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.text.Text
 import kingmc.platform.Material
-import kingmc.platform.Platform
 import kingmc.platform.nbt.*
-import kingmc.platform.platform
 import kingmc.util.key.Key
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * Gets the [ItemFactory] of this platform
+ * Gets the [ItemFactory] of this Application
  *
  * @since 0.0.5
  * @author kingsthere
  */
-val Platform.itemFactory: ItemFactory
-    get() = this.driver.context.getBean(ItemFactory::class)
+val Application.itemFactory: ItemFactory
+    get() = this.context.getBean(ItemFactory::class)
 
 /**
  * Create an item using a [ItemBuilder] and return
@@ -28,7 +27,7 @@ val Platform.itemFactory: ItemFactory
 @WithApplication
 fun Item(key: Key, builderAction: @WithApplication ItemBuilder.() -> Unit): Item {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return currentApplication().platform.itemFactory.buildItem(key, builderAction)
+    return currentApplication().itemFactory.buildItem(key, builderAction)
 }
 
 /**
@@ -36,7 +35,7 @@ fun Item(key: Key, builderAction: @WithApplication ItemBuilder.() -> Unit): Item
  */
 @WithApplication
 fun ItemStack(item: Item, amount: Int = 1): ItemStack {
-    return currentApplication().platform.itemFactory.buildItemStackForItem(item, amount)
+    return currentApplication().itemFactory.buildItemStackForItem(item, amount)
 }
 
 /**
@@ -44,7 +43,7 @@ fun ItemStack(item: Item, amount: Int = 1): ItemStack {
  */
 @WithApplication
 fun ItemStack(material: Material<*>, amount: Int = 1): ItemStack {
-    return currentApplication().platform.itemFactory.createItemStack(material, amount)
+    return currentApplication().itemFactory.createItemStack(material, amount)
 }
 
 /**

@@ -2,6 +2,7 @@ package kingmc.platform.bukkit
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
+import kingmc.common.context.annotation.Component
 import kingmc.platform.Server
 import kingmc.platform.bukkit.entity.player._BukkitPlayer
 import kingmc.platform.entity.player.Player
@@ -14,6 +15,7 @@ import kingmc.platform.server
  * @since 0.0.7
  * @author kingsthere
  */
+@Component
 interface BukkitServer : Server {
     /**
      * Convert this server to a [_BukkitServer]

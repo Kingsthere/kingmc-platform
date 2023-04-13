@@ -13,7 +13,7 @@ class BukkitBlockState(override val block: Block, private val _bukkitBlockState:
      * @since 0.0.3
      */
     override val location: Location
-        get() = _bukkitBlockState.location.asKingMC()
+        get() = _bukkitBlockState.location.asKingMC(block.application)
 
     /**
      * The material of this holder

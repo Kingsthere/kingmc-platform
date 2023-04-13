@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.nbt
 
 import kingmc.common.context.annotation.Component
-import kingmc.platform.SinceMinecraft
+import kingmc.platform.util.Versioned
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit._BukkitChunk
 import kingmc.platform.bukkit.block._BukkitBlock
@@ -33,13 +33,13 @@ interface BukkitNBTFactory : NBTFactory {
     /**
      * Create a nbt compound for specified [block]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     fun createNBTCompoundForBlock(block: _BukkitBlock): NBTCompound
 
     /**
      * Create a nbt compound for specified [chunk]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     fun createNBTCompoundForChunk(chunk: _BukkitChunk): NBTCompound
 
     /**
@@ -55,13 +55,13 @@ interface BukkitNBTFactory : NBTFactory {
     /**
      * Create a nbt compound for specified [block]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     fun createMutableNBTCompoundForBlock(block: _BukkitBlock): MutableNBTCompound
 
     /**
      * Create a nbt compound for specified [chunk]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     fun createMutableNBTCompoundForChunk(chunk: _BukkitChunk): MutableNBTCompound
 
     /**

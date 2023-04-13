@@ -1,19 +1,21 @@
 package kingmc.platform.entity.player
 
 import kingmc.common.text.Text
-import kingmc.platform.audience.HumanAudience
 import kingmc.platform.audience.particle.ParticleRecipient
-import kingmc.platform.entity.Entity
-import kingmc.platform.messaging.PluginMessageRecipient
+import kingmc.platform.entity.HumanEntity
+import kingmc.platform.messaging.PluginMessageSink
+import kingmc.platform.messaging.PluginMessageSource
+import kingmc.platform.permission.Permissible
+import kingmc.platform.util.InboundConnection
 
 /**
  * Represent a online minecraft player
  *
- * @since 0.0.3
+ * @since 0.0.4
  * @author kingsthere
- * @see HumanAudience
+ * @see HumanEntity
  */
-interface Player : Entity, OfflinePlayer, ParticleRecipient, HumanAudience, PluginMessageRecipient {
+interface Player : HumanEntity, OfflinePlayer, ParticleRecipient, PluginMessageSink, PluginMessageSource, Permissible, InboundConnection {
     @Deprecated(
         """This value is controlled only by the client and is therefore unreliable
                             and vulnerable to spoofing and/or desync depending on the context/time 

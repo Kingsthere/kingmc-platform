@@ -1,14 +1,12 @@
 package kingmc.platform.bukkit
 
-import kingmc.common.application.WithApplication
-import kingmc.common.application.currentApplication
+import kingmc.common.application.Application
 import kingmc.platform.Direction
 import kingmc.platform.Location
 import kingmc.platform.platform
 
 typealias _BukkitLocation = org.bukkit.Location
 
-@WithApplication
 fun Location.asBukkit(): _BukkitLocation =
     _BukkitLocation(
         this.world?.asBukkit(),
@@ -19,18 +17,18 @@ fun Location.asBukkit(): _BukkitLocation =
         this.direction.pitch
     )
 
-@WithApplication
-fun _BukkitLocation.asKingMC(): Location {
+// @WithApplication use parameter [application] instead
+fun _BukkitLocation.asKingMC(application: Application): Location {
     this.world?.let {
-        return currentApplication().platform.locations.createLocation(
+        return application.platform.locations.createLocation(
             this.x,
             this.y,
             this.z,
             Direction(this.yaw, this.pitch),
-            it.asKingMC()
+            it.asKingMC(application)
         )
     } ?: let {
-        return currentApplication().platform.locations.createLocation(
+        return application.platform.locations.createLocation(
             this.x,
             this.y,
             this.z,

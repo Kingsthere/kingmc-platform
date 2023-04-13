@@ -10,6 +10,7 @@ import kingmc.platform.bukkit.item.BukkitItemFactory
 import kingmc.platform.bukkit.item._BukkitItemStack
 import kingmc.platform.bukkit.material.BukkitMaterialProvider
 import kingmc.platform.bukkit.material.BukkitMaterialType
+import kingmc.platform.bukkit.material._BukkitMaterial
 import kingmc.platform.bukkit.nbt.BukkitNBTFactory
 import kingmc.platform.item.Item
 import kingmc.platform.item.ItemBuilder
@@ -42,9 +43,16 @@ object BukkitItemFactoryImpl : BukkitItemFactory {
         // TODO Material data
         return BukkitItemStackImpl(
             amount = itemStack.amount,
-            material = Material(materialProvider.getFromBukkit(itemStack.type) as MaterialType<Unit>, Unit),
+            material = Material(materialProvider.getTypeForBukkit(itemStack.type) as MaterialType<Unit>, Unit),
             _bukkitItemStack = itemStack
         )
+    }
+
+    /**
+     * A constant value for an `Air ItemStack`
+     */
+    override val AIR: ItemStack by lazy {
+        createItemStackForBukkit(_BukkitItemStack(_BukkitMaterial.AIR) )
     }
 
     /**
@@ -74,7 +82,7 @@ object BukkitItemFactoryImpl : BukkitItemFactory {
         return BukkitItemStackImpl(
             amount = amount,
             material = material,
-            _bukkitItemStack = _BukkitItemStack((material.type as BukkitMaterialType)._bukkitMaterial)
+            _bukkitItemStack = _BukkitItemStack((material.type as BukkitMaterialType).toBukkitMaterial())
         ).apply {
             this.nbt.merge(item.nbt)
         }
@@ -91,7 +99,7 @@ object BukkitItemFactoryImpl : BukkitItemFactory {
         return BukkitItemStackImpl(
             amount = amount,
             material = material,
-            _bukkitItemStack = _BukkitItemStack((material.type as BukkitMaterialType)._bukkitMaterial)
+            _bukkitItemStack = _BukkitItemStack((material.type as BukkitMaterialType).toBukkitMaterial())
         )
     }
 }

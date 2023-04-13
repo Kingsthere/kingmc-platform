@@ -6,7 +6,7 @@ import kingmc.platform.Material
 import kingmc.platform.bukkit.item.BukkitItemStack
 import kingmc.platform.bukkit.item.SimpleBukkitItem
 import kingmc.platform.bukkit.item._BukkitItemStack
-import kingmc.platform.bukkit.material.BukkitMaterialType
+import kingmc.platform.bukkit.material.asBukkit
 import kingmc.platform.bukkit.nbt.BukkitNBTFactory
 import kingmc.platform.item.AbstractItemStack
 import kingmc.platform.item.Item
@@ -16,7 +16,7 @@ import kingmc.platform.nbtFactory
 class BukkitItemStackImpl @WithApplication constructor(
     override var amount: Int,
     override var material: Material<*>,
-    private val _bukkitItemStack: _BukkitItemStack = _BukkitItemStack((material.type as BukkitMaterialType)._bukkitMaterial),
+    private val _bukkitItemStack: _BukkitItemStack = _BukkitItemStack(material.type.asBukkit()),
     override var nbt: MutableNBTCompound = (currentApplication().nbtFactory as BukkitNBTFactory).createMutableNBTCompoundForItemStack(_bukkitItemStack)
 ) : BukkitItemStack, AbstractItemStack(material, nbt) {
     /**

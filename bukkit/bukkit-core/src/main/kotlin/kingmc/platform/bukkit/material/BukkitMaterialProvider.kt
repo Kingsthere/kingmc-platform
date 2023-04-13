@@ -69,13 +69,13 @@ open class BukkitMaterialProvider : MaterialProvider {
     }
 
     /**
-     * Get a `Material` from [bukkitMaterial]
+     * Get a `Material` for [bukkitMaterial]
      *
      * @since 0.0.5
      * @param bukkitMaterial the bukkit material to get from
      * @author kingsthere
      */
-    fun getFromBukkit(bukkitMaterial: _BukkitMaterial): MaterialType<*> {
+    fun getTypeForBukkit(bukkitMaterial: _BukkitMaterial): MaterialType<*> {
         return _materialTypesByName[bukkitMaterial.name]
             ?: throw UnsupportedOperationException("Unsupported bukkit material $bukkitMaterial")
     }

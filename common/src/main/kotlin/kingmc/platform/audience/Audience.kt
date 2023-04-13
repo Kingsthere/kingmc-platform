@@ -24,7 +24,7 @@ import kingmc.util.text.TextDisplayable
  * @since 0.0.3
  * @author kingsthere
  */
-interface Audience : TextCapable, PlayerListCapable, BossBarCapable, TitleCapable, ActionBarCapable, TextDisplayable, SoundCapable {
+interface Audience : TextCapable, PlayerListCapable, BossBarCapable, TitleCapable, ActionBarCapable, SoundCapable, TextDisplayable {
     companion object {
         val EMPTY: Audience = object : Audience {
             override fun sendText(text: Text) {  }

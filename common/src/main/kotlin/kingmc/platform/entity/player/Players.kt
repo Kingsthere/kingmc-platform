@@ -5,7 +5,7 @@ import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.*
 import kingmc.platform.command.CommandSender
 import kingmc.platform.messaging.OutputMessage
-import kingmc.platform.messaging.PluginMessageRecipient
+import kingmc.platform.messaging.PluginMessageSink
 
 /**
  * A receiver that forward the messages to one or more [Player]s
@@ -13,7 +13,7 @@ import kingmc.platform.messaging.PluginMessageRecipient
  * @since 0.0.3
  * @author kingsthere
  */
-interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, CommandSender, PluginMessageRecipient {
+interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, CommandSender, PluginMessageSink {
     override fun audiences(): Iterable<Player>
 
     override fun iterator(): Iterator<Player> =

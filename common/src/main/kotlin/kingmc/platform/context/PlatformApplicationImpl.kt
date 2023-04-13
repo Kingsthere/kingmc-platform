@@ -1,12 +1,12 @@
 package kingmc.platform.context
 
 import kingmc.common.application.ApplicationEnvironment
+import kingmc.common.application.properties
 import kingmc.common.logging.LoggerCapableApplication
 import kingmc.common.logging.LoggerManager
 import kingmc.platform.Platform
 import kingmc.util.format.FormatContext
 import kingmc.util.format.PropertiesFormatContext
-import java.util.*
 
 /**
  * An application implement for using kingmc platform api
@@ -15,7 +15,7 @@ import java.util.*
  * @author kingsthere
  */
 open class PlatformApplicationImpl(platformOn: Platform, override val context: PlatformContext, override val environment: ApplicationEnvironment,
-                                   override val loggers: LoggerManager, val properties: Properties
+                                   override val loggers: LoggerManager
 ) : PlatformApplication, LoggerCapableApplication {
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
     override val platform = platformOn
@@ -45,7 +45,7 @@ open class PlatformApplicationImpl(platformOn: Platform, override val context: P
     }
 
     val formatContext by lazy {
-        PropertiesFormatContext(properties)
+        PropertiesFormatContext(this.properties)
     }
 
     /**

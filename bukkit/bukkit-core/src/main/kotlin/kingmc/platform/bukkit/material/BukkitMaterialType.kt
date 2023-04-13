@@ -12,7 +12,12 @@ import kingmc.util.key.Key
  * @since 0.0.5
  * @author kingsthere
  */
-open class BukkitMaterialType<TData>(val _bukkitMaterial: _BukkitMaterial) : MaterialType<TData> {
+open class BukkitMaterialType<TData>(private val _bukkitMaterial: _BukkitMaterial) : MaterialType<TData> {
+    /**
+     * Convert this material type to a [org.bukkit.Material]
+     */
+    fun toBukkitMaterial(): _BukkitMaterial = _bukkitMaterial
+
     /**
      * The key of this material
      *

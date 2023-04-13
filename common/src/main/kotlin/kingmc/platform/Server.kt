@@ -2,11 +2,12 @@ package kingmc.platform
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
-import kingmc.common.context.annotation.Component
 import kingmc.platform.audience.Audience
 import kingmc.platform.audience.Console
+import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.entity.player.OfflinePlayer
 import kingmc.platform.entity.player.Player
+import kingmc.platform.messaging.PluginMessageSink
 import java.util.*
 
 /**
@@ -15,8 +16,7 @@ import java.util.*
  * @since 0.0.7
  * @author kingsthere
  */
-@Component
-interface Server {
+interface Server : PluginMessageSink, ForwardingAudience {
     /**
      * The console of this server
      */
@@ -27,7 +27,7 @@ interface Server {
      *
      * @return all players that online
      */
-    fun getOnlinePlayers(): Set<Player>
+    fun getOnlinePlayers(): Collection<Player>
 
     /**
      * Gets every player that has ever played on this server
@@ -60,6 +60,13 @@ interface Server {
     fun getOfflinePlayer(username: String): OfflinePlayer?
 
     /**
+     * Gets the audiences to forward to
+     */
+    override fun audiences(): Iterable<Audience> {
+        return getOnlinePlayers()
+    }
+
+    /**
      * Gets an offline player
      *
      * @param uuid the uuid of the player
@@ -72,7 +79,7 @@ interface Server {
  * A shortcut to get online players on the server
  */
 @get:WithApplication
-val onlinePlayers: Set<Player>
+val onlinePlayers: Collection<Player>
     get() = currentApplication().server.getOnlinePlayers()
 
 

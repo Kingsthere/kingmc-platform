@@ -1,37 +1,16 @@
 package kingmc.platform.bukkit.block
 
-import kingmc.platform.Location
-import kingmc.platform.Material
 import kingmc.platform.block.Block
-import kingmc.platform.block.BlockState
-import kingmc.platform.bukkit.asKingMC
 
 /**
- * An [Block] implementation in bukkit
+ * A `Block` capable to convert to a [org.bukkit.block.Block]
  *
  * @since 0.0.5
  * @author kingsthere
  */
-class BukkitBlock(val _bukkitBlock: _BukkitBlock) : Block {
+interface BukkitBlock : Block {
     /**
-     * The location of this locatable
-     *
-     * @since 0.0.3
+     * Convert this block to a [org.bukkit.block.Block]
      */
-    override val location: Location by lazy {
-        _bukkitBlock.location.asKingMC()
-    }
-
-    /**
-     * The material of this holder
-     */
-    override var material: Material<*>
-        get() = TODO()
-        set(value) { TODO() }
-
-    /**
-     * Gets a [BlockState] from current block
-     */
-    override fun getState(): BlockState =
-        BukkitBlockState(this, _bukkitBlock.state)
+    fun toBukkitBlock(): _BukkitBlock
 }

@@ -18,7 +18,7 @@ class BukkitChunkSnapshot(val _BukkitChunkSnapshot: _BukkitChunkSnapshot, overri
      */
     @WithApplication
     override fun getBlockType(x: Int, y: Int, z: Int): MaterialType<*> {
-        return (currentApplication().materialProvider as BukkitMaterialProvider).getFromBukkit(_BukkitChunkSnapshot.getBlockType(x, y, z))
+        return (currentApplication().materialProvider as BukkitMaterialProvider).getTypeForBukkit(_BukkitChunkSnapshot.getBlockType(x, y, z))
     }
 
     override fun equals(other: Any?): Boolean {

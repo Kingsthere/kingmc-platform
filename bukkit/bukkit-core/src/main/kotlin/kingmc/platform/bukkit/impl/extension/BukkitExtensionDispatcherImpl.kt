@@ -57,14 +57,14 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
                 val extensionLoggers = Slf4jLoggerManager(Slf4jLoggerWrapper(ComponentLogger.logger(source.extensions.first().name)))
                 val extensionEnvironment = ExtensionEnvironment(classLoader)
                 val extensionDefinition = source.extensions.first()
-                val extensionContext = ExtensionContextImpl(name = extensionDefinition.id, extension = extensionDefinition)
+                val extensionContext = ExtensionContextImpl(properties = driver.properties, name = extensionDefinition.id, extension = extensionDefinition)
                 val extensionContextInitializer = ExtensionContextInitializer(extensionContext).apply {
                     addSource(source)
                     addParent(driver.application.context)
                 }
                 extensionContext.insertProcessBeanLifecycle(5)
 
-                val application = ExtensionApplicationImpl(driver.platform, extensionContext, extensionEnvironment, source, extensionLoggers, driver.properties)
+                val application = ExtensionApplicationImpl(driver.platform, extensionContext, extensionEnvironment, source, extensionLoggers)
                 extensionContext.application = application
 
                 val returns = mutableListOf<ExtensionData>()

@@ -1,4 +1,4 @@
-# Builtin KingMC Config
+# Builtin KingMC Config for bukkit
 
 # The version of current config
 # DO NOT CHANGE
@@ -7,7 +7,11 @@ config-version: 1
 kingmc:
   # Flag to enable bootstrap when kingmc first setup on your server
   # After the kingmc bootstrap is complete, you can enable it to run the kingmc bootstrap again on the server to set up kingmc
+  # TODO bootstrap is unimplemented
   bootstrap: true
+
+  # Bundled extensions that kingmc will download and install
+  bundled-extensions: ["Toolbox"]
 
   # Environment settings
   environment:
@@ -23,3 +27,20 @@ kingmc:
 
     # Kotlin coroutine version
     kotlinx-coroutine: 1.6.4
+
+platform-bukkit:
+  # Hook settings
+  hook:
+    # Hook into ViaVersion
+    # https://github.com/ViaVersion
+    viaversion: false
+
+    # Hook into Item-NBT-API by tr7zw
+    # https://github.com/tr7zw/Item-NBT-API
+    # Bundled
+    item-nbt-api: true
+
+    # Hook into ProtocolLib
+    # https://github.com/dmulloy2/ProtocolLib
+    protocollib: false
+

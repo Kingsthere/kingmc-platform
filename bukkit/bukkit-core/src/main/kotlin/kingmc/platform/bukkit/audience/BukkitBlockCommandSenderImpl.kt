@@ -1,14 +1,15 @@
 package kingmc.platform.bukkit.audience
 
+import kingmc.common.application.Application
 import kingmc.platform.audience.Audience
 import kingmc.platform.block.Block
 import kingmc.platform.bukkit.Bukkit
-import kingmc.platform.bukkit.block.BukkitBlock
+import kingmc.platform.bukkit.block.BukkitBlockImpl
 import kingmc.platform.bukkit.entity.player._BukkitBlockCommandSender
 
-class BukkitBlockCommandSenderImpl(private val _bukkitBlockCommandSender: _BukkitBlockCommandSender)
+class BukkitBlockCommandSenderImpl(private val _bukkitBlockCommandSender: _BukkitBlockCommandSender, val application: Application)
     : BukkitBlockCommandSender(), Audience by Audience.EMPTY {
-    private val _block = BukkitBlock(_bukkitBlockCommandSender.block)
+    private val _block = BukkitBlockImpl(_bukkitBlockCommandSender.block, application)
 
     /**
      * Gets the [Block] instance that this command sender represents

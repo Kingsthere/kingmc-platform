@@ -1,7 +1,7 @@
 package kingmc.platform.audience.title
 
 import kingmc.common.text.Text
-import java.time.Duration
+import kotlin.time.Duration
 
 /**
  * The default implement of [Title]

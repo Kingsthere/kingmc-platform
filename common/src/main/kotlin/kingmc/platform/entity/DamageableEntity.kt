@@ -9,7 +9,7 @@ import kingmc.platform.entity.damage.ModifiedDamage
  * @since 0.0.7
  * @author kingsthere
  */
-interface DamageableEntity : LivingEntity {
+interface DamageableEntity : Entity {
     /**
      * Deal damage to this damageable
      *

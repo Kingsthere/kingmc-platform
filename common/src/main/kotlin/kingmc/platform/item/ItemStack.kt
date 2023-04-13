@@ -1,5 +1,6 @@
 package kingmc.platform.item
 
+import kingmc.common.application.currentApplication
 import kingmc.common.text.HoverEventDisplayable
 import kingmc.platform.Material
 import kingmc.platform.MaterialType
@@ -47,4 +48,8 @@ interface ItemStack : MutableMaterialHolder, HoverEventDisplayable, TextDisplaya
      * @see Item
      */
     fun merge(item: Item)
+
+    companion object Items {
+        val AIR get() = currentApplication().itemFactory.AIR
+    }
 }

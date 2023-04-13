@@ -1,5 +1,6 @@
 package kingmc.platform
 
+import kingmc.common.application.Application
 import kingmc.platform.block.Block
 
 /**
@@ -24,6 +25,11 @@ interface Chunk : Iterable<Block> {
      * The world that this chunk is load from
      */
     val world: World
+
+    /**
+     * The application of this chunk
+     */
+    val application: Application
 
     /**
      * Gets a block from this chunk

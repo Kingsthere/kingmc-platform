@@ -1,6 +1,7 @@
 package kingmc.platform.extension
 
 import kingmc.common.application.ApplicationEnvironment
+import kingmc.common.application.properties
 import kingmc.common.logging.LoggerCapableApplication
 import kingmc.common.logging.LoggerManager
 import kingmc.common.structure.ClassSource
@@ -9,7 +10,6 @@ import kingmc.util.format.FormatArgument
 import kingmc.util.format.FormatContext
 import kingmc.util.format.ListFormatArguments
 import kingmc.util.format.PropertiesFormatContext
-import java.util.*
 
 /**
  * A default implementation of [ExtensionApplication]
@@ -26,8 +26,7 @@ class ExtensionApplicationImpl(
     override val context: ExtensionContext,
     override val environment: ApplicationEnvironment,
     private val project: ClassSource,
-    override val loggers: LoggerManager,
-    val properties: Properties
+    override val loggers: LoggerManager
 ) : ExtensionApplication, LoggerCapableApplication {
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
     override val name: String
@@ -57,7 +56,7 @@ class ExtensionApplicationImpl(
     }
 
     val _formatContext by lazy {
-        PropertiesFormatContext(properties).with(ListFormatArguments(listOf(
+        PropertiesFormatContext(this.properties).with(ListFormatArguments(listOf(
             FormatArgument(0, context.extension.id, "extension.id"),
             FormatArgument(0, context.extension.name, "extension.name"),
             FormatArgument(0, context.extension.tag, "extension.tag"),

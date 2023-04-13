@@ -3,6 +3,7 @@ package kingmc.platform
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Component
+import kingmc.platform.util.Versioned
 import kingmc.util.key.Key
 
 /**
@@ -15,8 +16,6 @@ import kingmc.util.key.Key
  * @author kingsthere
  */
 data class Material<TData>(val type: MaterialType<TData>, val data: TData)
-
-interface Air : MaterialType<Unit>
 
 /**
  * A wrapper to wrap Material
@@ -90,7 +89,7 @@ fun <TData> MaterialType(key: Key): MaterialType<TData> =
  * Check if this material is an `Air`
  */
 fun Material<*>.isAir(): Boolean {
-    return type is Air
+    return type.key == Key("minecraft:air")
 }
 
 /**
@@ -100,11 +99,13 @@ fun Material<*>.isAir(): Boolean {
  * @author kingsthere
  */
 object Materials {
+    // Air
+    val AIR: Material<Unit> = Material(MaterialType(Key("minecraft:air")), Unit)
     // Acacia Boat
-    @SinceMinecraft(minecraftVersion = "1.9..", fallback = "OAK_BOAT")
+    @Versioned(minecraftVersion = "1.9..", fallback = "OAK_BOAT")
     val ACACIA_BOAT: Material<Unit> = Material(MaterialType(Key("minecraft:acacia_boat")), Unit)
     // Amethyst Shard
-    @SinceMinecraft(minecraftVersion = "1.17..")
+    @Versioned(minecraftVersion = "1.17..")
     val AMETHYST_SHARD: Material<Unit> = Material(MaterialType(Key("minecraft:amethyst_shard")), Unit)
     // Apple
     val APPLE: Material<Unit> = Material(MaterialType(Key("minecraft:apple")), Unit)
@@ -113,34 +114,34 @@ object Materials {
     // Arrow
     val ARROW: Material<Unit> = Material(MaterialType(Key("minecraft:arrow")), Unit)
     // Bucket of Axolotl
-    @SinceMinecraft(minecraftVersion = "1.17..")
+    @Versioned(minecraftVersion = "1.17..")
     val AXOLOTL_BUCKET: Material<Unit> = Material(MaterialType(Key("minecraft:axolotl_bucket")), Unit)
     // Axolotl Spawn Egg
-    @SinceMinecraft(minecraftVersion = "1.17..")
+    @Versioned(minecraftVersion = "1.17..")
     val AXOLOTL_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:axolotl_spawn_egg")), Unit)
     // Baked Potato
     val BAKED_POTATO: Material<Unit> = Material(MaterialType(Key("minecraft:baked_potato")), Unit)
     // Bat Spawn Egg
     val BAT_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:bat_spawn_egg")), Unit)
     // Bee Spawn Egg
-    @SinceMinecraft(minecraftVersion = "1.15..")
+    @Versioned(minecraftVersion = "1.15..")
     val BEE_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:bee_spawn_egg")), Unit)
     // Raw Beef
     val BEEF: Material<Unit> = Material(MaterialType(Key("minecraft:beef")), Unit)
     // Beetroot
-    @SinceMinecraft(minecraftVersion = "1.9..")
+    @Versioned(minecraftVersion = "1.9..")
     val BEETROOT: Material<Unit> = Material(MaterialType(Key("minecraft:beetroot")), Unit)
     // Beetroot Seeds
-    @SinceMinecraft(minecraftVersion = "1.9..")
+    @Versioned(minecraftVersion = "1.9..")
     val BEETROOT_SEEDS: Material<Unit> = Material(MaterialType(Key("minecraft:beetroot_seeds")), Unit)
     // Beetroot Soup
-    @SinceMinecraft(minecraftVersion = "1.9..")
+    @Versioned(minecraftVersion = "1.9..")
     val BEETROOT_SOUP: Material<Unit> = Material(MaterialType(Key("minecraft:beetroot_soup")), Unit)
     // Birch Boat
-    @SinceMinecraft(minecraftVersion = "1.9..")
+    @Versioned(minecraftVersion = "1.9..")
     val BIRCH_BOAT: Material<Unit> = Material(MaterialType(Key("minecraft:birch_boat")), Unit)
     // Black Dye
-    @SinceMinecraft(minecraftVersion = "1.14..")
+    @Versioned(minecraftVersion = "1.14..")
     val BLACK_DYE: Material<Unit> = Material(MaterialType(Key("minecraft:black_dye")), Unit)
     // Blaze Powder
     val BLAZE_POWDER: Material<Unit> = Material(MaterialType(Key("minecraft:blaze_powder")), Unit)
@@ -167,7 +168,7 @@ object Materials {
     // Brick
     val BRICK: Material<Unit> = Material(MaterialType(Key("minecraft:brick")), Unit)
     // Brown Dye
-    @SinceMinecraft(minecraftVersion = "1.14..")
+    @Versioned(minecraftVersion = "1.14..")
     val BROWN_DYE: Material<Unit> = Material(MaterialType(Key("minecraft:brown_dye")), Unit)
     // Bucket
     val BUCKET: Material<Unit> = Material(MaterialType(Key("minecraft:bucket")), Unit)
@@ -732,18 +733,18 @@ object Materials {
     // Turtle Spawn Egg
     val TURTLE_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:turtle_spawn_egg")), Unit)
     // Vex Spawn Egg
-    @SinceMinecraft(minecraftVersion = "1.11..")
+    @Versioned(minecraftVersion = "1.11..")
     val VEX_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:vex_spawn_egg")), Unit)
     // Villager Spawn Egg
     val VILLAGER_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:villager_spawn_egg")), Unit)
     // Vindicator Spawn Egg
-    @SinceMinecraft(minecraftVersion = "1.11..")
+    @Versioned(minecraftVersion = "1.11..")
     val VINDICATOR_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:vindicator_spawn_egg")), Unit)
     // Wandering Trader Spawn Egg
-    @SinceMinecraft(minecraftVersion = "1.14..")
+    @Versioned(minecraftVersion = "1.14..")
     val WANDERING_TRADER_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:wandering_trader_spawn_egg")), Unit)
     // Warped Fungus on a Stick
-    @SinceMinecraft(minecraftVersion = "1.16..")
+    @Versioned(minecraftVersion = "1.16..")
     val WARPED_FUNGUS_ON_A_STICK: Material<Unit> = Material(MaterialType(Key("minecraft:warped_fungus_on_a_stick")), Unit)
     // Water Bucket
     val WATER_BUCKET: Material<Unit> = Material(MaterialType(Key("minecraft:water_bucket")), Unit)
@@ -787,7 +788,6 @@ object Materials {
     val ZOMBIFIED_PIGLIN_SPAWN_EGG: Material<Unit> = Material(MaterialType(Key("minecraft:zombified_piglin_spawn_egg")), Unit)
 
     // Block materials:
-    val AIR: Material<Unit> = Material(MaterialType(Key("minecraft:air")), Unit)
     val STONE: Material<Unit> = Material(MaterialType(Key("minecraft:stone")), Unit)
     val GRANITE: Material<Unit> = Material(MaterialType(Key("minecraft:granite")), Unit)
     val POLISHED_GRANITE: Material<Unit> = Material(MaterialType(Key("minecraft:polished_granite")), Unit)

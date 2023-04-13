@@ -1,6 +1,9 @@
 package kingmc.platform.bukkit
 
+import org.junit.jupiter.api.Test
+
 class Test {
-    fun test() {
+    @Test
+    fun testInventory() {
     }
 }

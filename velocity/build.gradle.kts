@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-val kingmc_version: String by project
+val kingmc_common_version: String by project
+val kingmc_platform_version: String by project
 
 plugins {
     id("java")
@@ -10,7 +11,7 @@ plugins {
 }
 
 group = "net.kingmc.platform"
-version = kingmc_version
+version = kingmc_platform_version
 
 repositories {
     mavenCentral()
@@ -28,7 +29,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    implementation("net.kingmc.platform:common:$kingmc_version")
+    api(project(":common"))
     api("com.velocitypowered:velocity-api:3.1.1")
     kapt("com.velocitypowered:velocity-api:3.1.1")
 }
@@ -59,7 +60,7 @@ tasks {
     withType<ShadowJar> {
         archiveBaseName.set("kingmc-bukkit")
         dependencies {
-            val kingmc_version = kingmc_version
+            val kingmc_version = kingmc_common_version
             include(dependency("net.kingmc.common:common:$kingmc_version"))
             include(dependency("net.kingmc.common:application:$kingmc_version"))
             include(dependency("net.kingmc.common:boot:$kingmc_version"))

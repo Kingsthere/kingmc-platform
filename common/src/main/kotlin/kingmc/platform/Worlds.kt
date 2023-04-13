@@ -55,3 +55,10 @@ val WorldFactory.WORLD_NETHER
  */
 val WorldFactory.WORLD_THE_END
     get() = this.getWorld("world_the_end")
+
+/**
+ * Main world
+ */
+@get:WithApplication
+val mainWorld: World
+    get() = currentApplication().worldFactory.mainWorld

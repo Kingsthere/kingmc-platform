@@ -1,6 +1,6 @@
 package kingmc.platform.inventory
 
-import kingmc.platform.SinceMinecraft
+import kingmc.platform.util.Versioned
 
 /**
  * An enum list [InventorySlot]s
@@ -492,7 +492,7 @@ enum class InventorySlots : InventorySlot {
     /**
      * `weapon.offhand`
      */
-    @SinceMinecraft(minecraftVersion = "1.9..")
+    @Versioned(minecraftVersion = "1.9..")
     WEAPON_OFFHAND,
 
     /**
@@ -656,6 +656,31 @@ enum class InventorySlots : InventorySlot {
     CRAFTING_MATRIX_4,
 
     /**
+     * `crafting.matrix.5`
+     */
+    CRAFTING_MATRIX_5,
+
+    /**
+     * `crafting.matrix.6`
+     */
+    CRAFTING_MATRIX_6,
+
+    /**
+     * `crafting.matrix.7`
+     */
+    CRAFTING_MATRIX_7,
+
+    /**
+     * `crafting.matrix.8`
+     */
+    CRAFTING_MATRIX_8,
+
+    /**
+     * `crafting.matrix.9`
+     */
+    CRAFTING_MATRIX_9,
+
+    /**
      * `crafting.result`
      */
     CRAFTING_RESULT,
@@ -669,4 +694,21 @@ enum class InventorySlots : InventorySlot {
      * `beacon`
      */
     BEACON,
+
+    /**
+     * `furnace.fuel`
+     */
+    FURNACE_FUEL,
+
+    /**
+     * `furnace.smelting`
+     */
+    FURNACE_SMELTING,
+
+    /**
+     * `furnace.result`
+     */
+    FURNACE_RESULT;
+
+
 }

@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.nbtapi
 
-import de.tr7zw.changeme.nbtapi.*
+import  de.tr7zw.changeme.nbtapi.*
 
 typealias _NBTAPINBTType = NBTType
 typealias _NBTAPINBTCompound = NBTCompound

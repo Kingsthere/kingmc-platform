@@ -1,7 +1,7 @@
-val kingmc_version: String by project
+val kingmc_platform_version: String by project
 
 group = "net.kingmc.platform"
-version = kingmc_version
+version = kingmc_platform_version
 
 plugins {
     id("java")
@@ -16,6 +16,49 @@ subprojects {
         implementation(project(":bukkit:bukkit-core"))
         implementation(project(":bukkit:bukkit-brigadier"))
     }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("bukkit-nms") {
+//                groupId = "net.kingmc"
+//                artifactId = "platform"
+//                version = version.toString()
+
+            pom {
+                name.set("KingMC Platform Bukkit NMS")
+                packaging = "jar"
+                description.set("A high performance minecraft plugin framework")
+                url.set("https://www.kingmc.net")
+
+                scm {
+                    url.set("https://github.com/Kingsthere/kingmc-platform.git")
+                }
+
+                licenses {
+                    license {
+                        name.set("The MIT License")
+                        url.set("https://mit-license.org/")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("kingsthere")
+                        name.set("Kingsthere")
+                        email.set("kingsthere0@hotmail.com")
+                    }
+                }
+            }
+
+            from(components.getByName("java"))
+        }
+
+    }
+}
+
+signing {
+    sign(publishing.publications["bukkit-nms"])
 }
 
 tasks.withType<Jar> {

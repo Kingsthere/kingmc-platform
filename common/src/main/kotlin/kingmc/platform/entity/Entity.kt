@@ -6,12 +6,13 @@ import kingmc.common.application.WithApplication
 import kingmc.common.text.HoverEventDisplayable
 import kingmc.common.text.Text
 import kingmc.platform.MutableLocatable
-import kingmc.platform.SinceMinecraft
 import kingmc.platform.Vector
 import kingmc.platform.World
 import kingmc.platform.command.CommandSender
 import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.platform.nbt.MutableNBTCompoundHolder
+import kingmc.platform.util.Nameable
+import kingmc.platform.util.Versioned
 import kingmc.util.errorprone.CanIgnoreReturnValue
 import kingmc.util.text.TextDisplayable
 import java.util.*
@@ -24,7 +25,7 @@ import java.util.*
  * @author kingsthere
  */
 @Isolated // Remove entity when application dispose
-interface Entity : CommandSender, MutableLocatable, TextDisplayable, HoverEventDisplayable, MutableNBTCompoundHolder {
+interface Entity : Nameable, CommandSender, MutableLocatable, TextDisplayable, HoverEventDisplayable, MutableNBTCompoundHolder {
     /**
      * The name of this entity
      */
@@ -33,7 +34,7 @@ interface Entity : CommandSender, MutableLocatable, TextDisplayable, HoverEventD
     /**
      * The custom name of this entity
      */
-    val customName: Text
+    override var customName: Text?
 
     /**
      * The uuid of this entity, unlike [entityId] this uuid is for persistence
@@ -73,7 +74,7 @@ interface Entity : CommandSender, MutableLocatable, TextDisplayable, HoverEventD
     /**
      * The entity's current freeze ticks (amount of ticks the entity has been in powdered snow)
      */
-    @SinceMinecraft("1.17..")
+    @Versioned("1.17..")
     var freezeTicks: Int
 
     /**
@@ -84,7 +85,7 @@ interface Entity : CommandSender, MutableLocatable, TextDisplayable, HoverEventD
     /**
      * The entity's maximum freeze ticks
      */
-    @SinceMinecraft("1.17..")
+    @Versioned("1.17..")
     val maxFreezeTicks: Int
 
     /**
@@ -101,7 +102,7 @@ interface Entity : CommandSender, MutableLocatable, TextDisplayable, HoverEventD
      * Gets if the entity is fully frozen (it has been in powdered snow for max
      * freeze ticks)
      */
-    @SinceMinecraft("1.17..")
+    @Versioned("1.17..")
     fun isFrozen(): Boolean
 
     /**

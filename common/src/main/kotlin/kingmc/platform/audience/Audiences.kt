@@ -61,3 +61,23 @@ fun AudienceFactory.broadcast(text: Text) {
 fun AudienceFactory.broadcast(obj: TextDisplayable) {
     all().sendText(obj.asText())
 }
+
+/**
+ * Broadcast a text to all players
+ *
+ * @since 0.0.8
+ */
+@WithApplication
+fun broadcast(text: Text) {
+    all().sendText(text)
+}
+
+/**
+ * Broadcast a text obtained from text displayable specified to all players
+ *
+ * @since 0.0.8
+ */
+@WithApplication
+fun broadcast(obj: TextDisplayable) {
+    all().sendText(obj.asText())
+}

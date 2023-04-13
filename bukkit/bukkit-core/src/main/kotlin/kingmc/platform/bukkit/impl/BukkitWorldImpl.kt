@@ -25,11 +25,11 @@ import java.util.concurrent.CompletableFuture
  * @author kingsthere
  */
 @BukkitImplementation
-class BukkitWorldImpl(val application: Application, private val _bukkitWorld: _BukkitWorld) : BukkitWorld {
+class BukkitWorldImpl(override val application: Application, private val _bukkitWorld: _BukkitWorld) : BukkitWorld {
      private val _chunks: AsyncCache<Pair<Int, Int>, Chunk> = Caffeine.newBuilder()
          .buildAsync { key, executor ->
              CompletableFuture.supplyAsync({
-                 BukkitChunk(PaperLib.getChunkAtAsync(this._bukkitWorld, key.first, key.second).join(), this)
+                 BukkitChunkImpl(PaperLib.getChunkAtAsync(this._bukkitWorld, key.first, key.second).join(), this, application)
              }, executor)
          }
 

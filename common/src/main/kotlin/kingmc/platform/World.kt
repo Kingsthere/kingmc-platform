@@ -1,5 +1,6 @@
 package kingmc.platform
 
+import kingmc.common.application.Application
 import kingmc.common.application.Isolated
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.ParticleRecipient
@@ -41,6 +42,11 @@ interface World : ForwardingAudience, ParticleRecipient, Keyed {
      * On older game instances, worlds will be assigned the Key `minecraft:<world name>`
      */
     override val key: Key
+
+    /**
+     * The application of this world
+     */
+    val application: Application
 
     /**
      * Gets the [Chunk] at the given coordinates

@@ -12,20 +12,33 @@ interface MutableInventory : Inventory, MutableIterable<ItemStack> {
     /**
      * Add an `ItemStack` into this inventory
      *
-     * @return `true` if [itemStack] successfully added to this inventory, for example: if the inventory
-     *  is fulled then you cannot add [itemStack]
+     * @return `true` if [itemStack] successfully added to this inventory
      */
     fun add(itemStack: ItemStack): Boolean
 
     /**
-     * Put an `ItemStack` into specifies [slot]
+     * Set an `ItemStack` into specifies [slot]
      */
-    fun put(slot: InventorySlot, itemStack: ItemStack)
+    operator fun set(slot: InventorySlot, itemStack: ItemStack)
 
     /**
-     * Put an `ItemStack` into specifies [slotId]
+     * Set an `ItemStack` into specifies [slotId]
      */
-    fun put(slotId: Int, itemStack: ItemStack)
+    operator fun set(slotId: Int, itemStack: ItemStack)
+
+    /**
+     * Remove an `ItemStack` that on specifies [slot]
+     *
+     * @return `true` if `ItemStack` successfully removed from this inventory
+     */
+    fun remove(slot: InventorySlot)
+
+    /**
+     * Remove an `ItemStack` that on specifies [slotId]
+     *
+     * @return `true` if `ItemStack` successfully removed from this inventory
+     */
+    fun remove(slotId: Int)
 
     /**
      * Clear all `ItemStack`s inn this inventory

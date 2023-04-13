@@ -14,6 +14,11 @@ import kingmc.util.key.Key
 @Component
 interface ItemFactory  {
     /**
+     * A constant value for an `Air ItemStack`
+     */
+    val AIR: ItemStack
+
+    /**
      * Build an item from a [ItemBuilder] and return
      *
      * @param key the key of the item

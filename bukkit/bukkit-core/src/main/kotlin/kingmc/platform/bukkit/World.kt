@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit
 
-import kingmc.common.application.currentApplication
+import kingmc.common.application.Application
 import kingmc.platform.World
 import kingmc.platform.bukkit.impl.BukkitWorldImpl
 import org.bukkit.WorldBorder
@@ -16,7 +16,7 @@ typealias _BukkitWorldBorder = WorldBorder
  * @see _BukkitLocation
  * @see World
  */
-fun World.asBukkit(): _BukkitWorld = (this as BukkitWorld).asBukkit()
+fun World.asBukkit(): _BukkitWorld = (this as BukkitWorld).toBukkitWorld()
 
 /**
  * Turn an original bukkit world to [World]
@@ -24,7 +24,8 @@ fun World.asBukkit(): _BukkitWorld = (this as BukkitWorld).asBukkit()
  * @since 0.0.3
  * @author kingsthere
  */
-fun _BukkitWorld.asKingMC(): World = BukkitWorldImpl(currentApplication(), this)
+// @WithApplication use parameter [application] instead
+fun _BukkitWorld.asKingMC(application: Application): World = BukkitWorldImpl(application, this)
 //
 ///**
 // * [World] implement in bukkit

@@ -1,5 +1,7 @@
 package kingmc.platform.block
 
+import kingmc.common.application.Application
+import kingmc.common.application.Isolated
 import kingmc.platform.Locatable
 import kingmc.platform.MutableMaterialHolder
 
@@ -13,7 +15,13 @@ import kingmc.platform.MutableMaterialHolder
  * @since 0.0.4
  * @author kingsthere
  */
+@Isolated
 interface Block : Locatable, MutableMaterialHolder {
+    /**
+     * The application of this block
+     */
+    val application: Application
+
     /**
      * Gets a [BlockState] from current block
      */

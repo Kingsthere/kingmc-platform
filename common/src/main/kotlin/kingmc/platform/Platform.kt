@@ -11,7 +11,11 @@ import kingmc.platform.entity.EntityFactory
 import kingmc.platform.event.ListenerManager
 import kingmc.platform.event.Publisher
 import kingmc.platform.extension.ExtensionDispatcher
+import kingmc.platform.inventory.InventoryFactory
 import kingmc.platform.nbt.NBTFactory
+import kingmc.platform.permission.PermissionDispatcher
+import kingmc.platform.permission.PermissionRegistry
+import kingmc.platform.schedule.Scheduler
 
 /**
  * A superinterface designed to represent a kind of platform the runs current application
@@ -70,58 +74,82 @@ interface ExtendablePlatform : Platform {
 }
 
 /**
- * The command manager supports this platform
+ * The command manager supports this application
  */
 val Application.commandFactory: CommandManager
     get() = this.context.getBean(CommandManager::class)
 
 /**
- * The default event publisher supports this platform
+ * The default event publisher supports this application
  */
 val Application.publisher: Publisher
     get() = this.context.getBean(Publisher::class)
 
 /**
- * The listener manager supports this platform
+ * The listener manager supports this application
  */
 val Application.listenerManager: ListenerManager
     get() = this.context.getBean(ListenerManager::class)
 
 /**
- * The world provider supports this platform
+ * The world provider supports this application
  */
 val Application.worldFactory: WorldFactory
     get() = this.context.getBean(WorldFactory::class)
 
 /**
- * The command context factory supports this platform
+ * The command context factory supports this application
  */
 val Application.commandContextFactory: CommandContextFactory
     get() = this.context.getBean(CommandContextFactory::class)
 
 /**
- * The audience factory supports this platform
+ * The audience factory supports this application
  */
 val Application.audienceFactory: AudienceFactory
     get() = this.context.getBean(AudienceFactory::class)
 
 /**
- * The materials support this platform
+ * The materials support this application
  */
 val Application.materialProvider: MaterialProvider
     get() = this.context.getBean(MaterialProvider::class)
 
 /**
- * The entity factory supports this platform
+ * The entity factory supports this application
  */
 val Application.entityFactory: EntityFactory
     get() = this.context.getBean(EntityFactory::class)
 
 /**
- * The nbt factory supports this platform
+ * The nbt factory supports this application
  */
 val Application.nbtFactory: NBTFactory
     get() = this.context.getBean(NBTFactory::class)
+
+/**
+ * The inventory factory supports this application
+ */
+val Application.inventoryFactory: InventoryFactory
+    get() = this.context.getBean(InventoryFactory::class)
+
+/**
+ * The permission registry supports this application
+ */
+val Application.permissionRegistry: PermissionRegistry
+    get() = this.context.getBean(PermissionRegistry::class)
+
+/**
+ * The permission dispatcher supports this application
+ */
+val Application.permissionDispatcher: PermissionDispatcher
+    get() = this.context.getBean(PermissionDispatcher::class)
+
+/**
+ * The permission factory supports this application
+ */
+val Application.scheduler: Scheduler
+    get() = this.context.getBean(Scheduler::class)
 
 /**
  * Gets the platform of this application if this application is a [PlatformApplicationImpl]

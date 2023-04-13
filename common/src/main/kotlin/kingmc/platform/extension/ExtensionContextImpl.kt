@@ -3,6 +3,7 @@ package kingmc.platform.extension
 import kingmc.common.application.ApplicationExposedContext
 import kingmc.common.context.GenericApplicationContext
 import kingmc.platform.context.PlatformApplication
+import java.util.*
 
 /**
  * An implementation of context serves for extensions
@@ -10,7 +11,8 @@ import kingmc.platform.context.PlatformApplication
  * @since 0.0.3
  * @author kingsthere
  */
-class ExtensionContextImpl(name: String, override val extension: ExtensionDefinition) : GenericApplicationContext(name = name), ExtensionContext, ApplicationExposedContext {
+class ExtensionContextImpl(properties: Properties, name: String, override val extension: ExtensionDefinition
+) : GenericApplicationContext(properties, name), ExtensionContext, ApplicationExposedContext {
     /**
      * The application of this extension context
      */

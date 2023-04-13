@@ -22,7 +22,7 @@ interface Inventory : Iterable<ItemStack> {
     /**
      * All slots that this `Inventory` supports
      */
-    val slots: List<InventorySlot>
+    val slots: Set<InventorySlot>
 
     /**
      * The custom title of this inventory
@@ -53,5 +53,5 @@ interface Inventory : Iterable<ItemStack> {
      *
      * @param slot the slot to check if this inventory supports
      */
-    fun isSlotSupported(slot: InventorySlot)
+    fun isSlotSupported(slot: InventorySlot): Boolean
 }

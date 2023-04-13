@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.nbtapi.impl.nbt
 
 import kingmc.common.context.annotation.Component
-import kingmc.platform.SinceMinecraft
+import kingmc.platform.util.Versioned
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit._BukkitChunk
 import kingmc.platform.bukkit.block._BukkitBlock
@@ -36,7 +36,7 @@ class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
     /**
      * Create a nbt compound for specified [block]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     override fun createNBTCompoundForBlock(block: _BukkitBlock): NBTCompound {
         return NBTAPINBTCompoundImpl(_NBTAPINBTBlock(block).data)
     }
@@ -44,7 +44,7 @@ class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
     /**
      * Create a nbt compound for specified [chunk]
      */
-    @SinceMinecraft(minecraftVersion = "1.16.4")
+    @Versioned(minecraftVersion = "1.16.4")
     override fun createNBTCompoundForChunk(chunk: _BukkitChunk): NBTCompound {
         return NBTAPINBTCompoundImpl(_NBTAPINBTChunk(chunk).persistentDataContainer)
     }
