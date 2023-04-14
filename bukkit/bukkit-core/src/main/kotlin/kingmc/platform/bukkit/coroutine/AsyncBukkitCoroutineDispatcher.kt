@@ -1,5 +1,6 @@
 package kingmc.platform.bukkit.coroutine
 
+import kingmc.common.application.WithApplication
 import kingmc.common.application.application
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
@@ -44,12 +45,16 @@ class AsyncBukkitCoroutineDispatcher : AsyncMinecraftCoroutineDispatcher(), Clos
         }
     }
 
-    override fun dispatch(context: CoroutineContext, block: Runnable) {
+    override fun dispatch(context: CoroutineContext, block: @WithApplication Runnable) {
         if (!context.isActive) {
             return
         }
 
-        _runTask(plugin, block)
+        _runTask(plugin, Runnable {
+            this@AsyncBukkitCoroutineDispatcher.application {
+                block.run()
+            }
+        })
     }
 
     /**

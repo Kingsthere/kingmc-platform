@@ -407,7 +407,7 @@ open class FacetLocationProvider : LocationProvider {
      * and direction, world
      *
      * @see Direction
-     * @see World
+     * @see getWorld
      * @since 0.0.1
      */
     override fun createLocation(x: Double, y: Double, z: Double, dir: Direction, world: World): Location =
@@ -417,7 +417,7 @@ open class FacetLocationProvider : LocationProvider {
      * Create a location by the approximate position
      * and world
      *
-     * @see World
+     * @see getWorld
      * @since 0.0.1
      */
     override fun createLocation(x: Double, y: Double, z: Double, world: World): Location =

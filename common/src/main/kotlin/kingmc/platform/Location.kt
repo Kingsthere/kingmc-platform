@@ -11,7 +11,7 @@ package kingmc.platform
  *
  * @since 0.0.1
  * @author kingsthere
- * @see World
+ * @see getWorld
  * @see Location3D
  */
 interface Location : Location3D {
@@ -27,7 +27,7 @@ interface Location : Location3D {
      * The world this location is on
      *
      * @since 0.0.1
-     * @see World
+     * @see getWorld
      */
     val world: World?
 

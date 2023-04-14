@@ -2,7 +2,6 @@ package kingmc.platform.util
 
 import kingmc.common.context.annotation.Component
 import kingmc.common.text.Text
-import kingmc.util.builder.Buildable
 
 /**
  * A superinterface responsible for solve(deserializing)
@@ -26,14 +25,4 @@ interface TextSolver {
      * @since 0.0.3
      */
     fun encode(text: Text): String
-
-    /**
-     * Builder to build a configured text solver
-     *
-     * @since 0.0.3
-     * @author kingsthere
-     */
-    interface Builder : Buildable.Builder<TextSolver> {
-        override fun build(): TextSolver
-    }
 }

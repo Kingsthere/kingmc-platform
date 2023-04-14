@@ -49,7 +49,11 @@ class SyncBukkitCoroutineDispatcher : SyncMinecraftCoroutineDispatcher(), Closea
             return
         }
 
-        _runTask(plugin, block)
+        _runTask(plugin, Runnable {
+            this@SyncBukkitCoroutineDispatcher.application {
+                block.run()
+            }
+        })
     }
 
     override fun close() {

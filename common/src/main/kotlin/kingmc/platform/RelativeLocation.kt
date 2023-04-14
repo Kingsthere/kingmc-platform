@@ -72,7 +72,7 @@ open class RelativeLocation(
      * The world this location is on
      *
      * @since 0.0.1
-     * @see World
+     * @see getWorld
      */
     final override val world: World?
         get() = target.world

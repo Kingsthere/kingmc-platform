@@ -5,7 +5,7 @@ import kingmc.platform.WorldFactory
 
 /**
  * A `WorldFactory` capable to convert [org.bukkit.World] to
- * [World]
+ * [getWorld]
  *
  * @since 0.0.7
  * @author kingsthere

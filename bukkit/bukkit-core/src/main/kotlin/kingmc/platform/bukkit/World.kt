@@ -2,6 +2,7 @@ package kingmc.platform.bukkit
 
 import kingmc.common.application.Application
 import kingmc.platform.World
+import kingmc.platform.getWorld
 import kingmc.platform.bukkit.impl.BukkitWorldImpl
 import org.bukkit.WorldBorder
 
@@ -14,12 +15,12 @@ typealias _BukkitWorldBorder = WorldBorder
  * @since 0.0.3
  * @author kingsthere
  * @see _BukkitLocation
- * @see World
+ * @see getWorld
  */
 fun World.asBukkit(): _BukkitWorld = (this as BukkitWorld).toBukkitWorld()
 
 /**
- * Turn an original bukkit world to [World]
+ * Turn an original bukkit world to [getWorld]
  *
  * @since 0.0.3
  * @author kingsthere

@@ -12,7 +12,7 @@ import java.util.*
  * @since 0.0.7
  */
 @WithApplication
-fun World(name: String): World {
+fun getWorld(name: String): World {
     return requireNotNull(currentApplication().worldFactory.getWorld(name)) { "World with name $name not exists" }
 }
 
@@ -23,7 +23,7 @@ fun World(name: String): World {
  * @since 0.0.7
  */
 @WithApplication
-fun World(key: Key): World {
+fun getWorld(key: Key): World {
     return requireNotNull(currentApplication().worldFactory.getWorld(key)) { "World with key $key not exists" }
 }
 
@@ -34,7 +34,7 @@ fun World(key: Key): World {
  * @since 0.0.7
  */
 @WithApplication
-fun World(uuid: UUID): World {
+fun getWorld(uuid: UUID): World {
     return requireNotNull(currentApplication().worldFactory.getWorld(uuid)) { "World with uuid $uuid not exists" }
 }
 

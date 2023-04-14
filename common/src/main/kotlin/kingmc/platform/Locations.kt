@@ -65,7 +65,7 @@ fun Location3D(x: Number, y: Number, z: Number): Location3D {
  * and direction, world
  *
  * @see Direction
- * @see World
+ * @see getWorld
  * @since 0.0.1
  */
 @WithApplication
@@ -77,7 +77,7 @@ fun Location(x: Double, y: Double, z: Double, dir: Direction, world: World): Loc
  * Create a location by the approximate position
  * and world
  *
- * @see World
+ * @see getWorld
  * @since 0.0.1
  */
 @WithApplication
@@ -114,7 +114,7 @@ interface LocationProvider {
      * Create a location with `x, y, z, direction, world`
      *
      * @see Direction
-     * @see World
+     * @see getWorld
      * @since 0.0.1
      * @return the location created
      */
@@ -123,7 +123,7 @@ interface LocationProvider {
     /**
      * Create a location with `x, y, z, world`
      *
-     * @see World
+     * @see getWorld
      * @since 0.0.1
      * @return the location created
      */

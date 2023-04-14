@@ -12,8 +12,28 @@ import kingmc.platform.util.TextSolver
  * @author kingsthere
  */
 open class MiniMessageTextSolver(val miniMessage: MiniMessage) : TextSolver {
+    // private val _tagResolver = TagResolver.builder()
+    //     .resolver(TagResolver.standard())
+    //     .apply {
+    //         // Solve tag from format context
+    //         val formatContext = this@MiniMessageTextSolver.application.formatContext
+    //         formatContext.forEach {
+    //             if (it.name != null) {
+    //                 tag(it.name!!) { _, _ ->
+    //                     val value = it.value
+    //                     if (value is TextDisplayable) {
+    //                         Tag.inserting(value.asText())
+    //                     } else {
+    //                         Tag.inserting(Text.text(value.toString()))
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     .build()
+
     /**
-     * Resolve from a [String] to a [text]
+     * Resolve from a [String] to a [Text]
      *
      * @since 0.0.3
      */

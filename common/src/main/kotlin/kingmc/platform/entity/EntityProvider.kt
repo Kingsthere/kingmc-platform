@@ -5,7 +5,7 @@ import kingmc.platform.entity.player.Player
 /**
  * Superinterface indicates subclasses is responsible to provide entities
  *
- * @see kingmc.platform.World
+ * @see kingmc.platform.getWorld
  * @since 0.0.7
  * @author kingsthere
  */
