@@ -12,7 +12,6 @@ import kotlin.reflect.KClass
  * @since 0.0.7
  * @author kingsthere
  */
-@Isolated
 abstract class Listener(publisher: Publisher? = null) : Closeable {
     init {
         this.application.addShutdownHook {
