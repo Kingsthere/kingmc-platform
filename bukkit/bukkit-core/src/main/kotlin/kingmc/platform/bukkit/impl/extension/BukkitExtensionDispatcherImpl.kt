@@ -3,6 +3,8 @@ package kingmc.platform.bukkit.impl.extension
 import kingmc.common.OpenAPI
 import kingmc.common.application.WithApplication
 import kingmc.common.application.application
+import kingmc.common.application.currentApplication
+import kingmc.common.application.suspendApplication
 import kingmc.common.context.process.afterProcess
 import kingmc.common.context.process.processBeans
 import kingmc.common.logging.error
@@ -47,11 +49,12 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
      * @return the class loader to load classes for extension extracted from the file
      */
     fun recognizeExtensionFromJarFile(extensionFile: File): ExtensionClassSource? {
-        infoColored("<grey>Extracting extension(s) from $extensionFile...</grey>")
+        infoColored("<grey>Recognizing extension(s) from $extensionFile...</grey>")
 
         return try {
             val classSource = ExtensionClassSource(
-                classLoader = ExtensionClassLoader(extensionFile, OpenAPI.classLoader()!!).apply {
+                file = extensionFile,
+                extensionClassLoader = ExtensionClassLoader(extensionFile, OpenAPI.classLoader()!!).apply {
                     addToClassloaders()
                 },
                 formatContext = driver.formatContext
@@ -69,9 +72,9 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
     /**
      * Load maven dependencies for [extractedExtensions]
      */
-    suspend fun loadExtensionMavenDependencies() {
-        withContext(Dispatchers.IO) {
-            extractedExtensions.forEach { extensionSource ->
+    suspend fun loadExtensionMavenDependencies() = withContext(Dispatchers.IO) {
+        extractedExtensions.forEach { extensionSource ->
+            launch {
                 extensionSource.loadMavenDependencies(driver.dependencyDispatcher, setOf(driver.mavenRepository))
             }
         }
@@ -214,6 +217,7 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
 
     @WithApplication
     suspend fun loadExtensionsFromDirectory(directory: File, lifecycle: Lifecycle<Runnable>) = coroutineScope {
+        val application = currentApplication()
         extensionSourceDirectory = directory
         val loadingExtensions = mutableListOf<ExtensionData>()
 
@@ -231,34 +235,44 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
         }
 
         // Load extension classes
-        extractedExtensions = buildList {
-            directory.listFiles()?.forEach { file ->
-                if (validateExtension(file)) {
-                    try {
-                        recognizeExtensionFromJarFile(file)?.let { source ->
-                            add(source)
+        val scope = CoroutineScope(Dispatchers.IO)
+        extractedExtensions = (directory.listFiles()?.map { file ->
+            scope.async {
+                return@async suspendApplication(application) {
+                    if (validateExtension(file)) {
+                        try {
+                            recognizeExtensionFromJarFile(file)?.let { source ->
+                                return@suspendApplication source
+                            }
+                        } catch (e: Exception) {
+                            error(msg = "Unable to recognize extension for file $file", throwable = e)
                         }
-                    } catch (e: Exception) {
-                        error(msg = "Unable to recognize extension for file $file", throwable = e)
                     }
+                    null
                 }
             }
-        }
+        } ?: emptyList()).mapNotNull { it.await() }
+
+        loadExtensionMavenDependencies()
+
         // Traverse the extensions in the extension
         // directory and load if the file is a valid extension
         // Make dirs if the direction is not exists
-        extractedExtensions.forEach {
-            try {
-                val extension = loadExtension(it, lifecycle)
-                extension.forEach { ex ->
-                    infoColored("<grey>Successfully load extension ${ex.definition.displayName} from ${ex.source}")
+        extractedExtensions.map {
+            launch {
+                suspendApplication(application) {
+                    try {
+                        val extension = loadExtension(it, lifecycle)
+                        extension.forEach { ex ->
+                            infoColored("<grey>Successfully load extension ${ex.definition.displayName} from ${ex.source}")
+                        }
+                        loadingExtensions.addAll(extension)
+                    } catch (e: Exception) {
+                        error(msg = "Unable to load extension from $it", throwable = e)
+                    }
                 }
-                loadingExtensions.addAll(extension)
-            } catch (e: Exception) {
-                error(msg = "Unable to load extension from $it", throwable = e)
             }
-        }
-        loadExtensionMavenDependencies()
+        }.joinAll()
 
         finishLoadExtensionsRecurves(solveExtensionDependencies(loadingExtensions))
         dispatchedExtensions = loadingExtensions
@@ -270,7 +284,7 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
         extension.context.lifecycle().next()
         extension.contextInitializer.dispose()
         extension.application.shutdown()
-        val classLoader = extension.source.classLoader
+        val classLoader = extension.source.extensionClassLoader
         classLoader.close()
         super.disableExtension(extension)
     }

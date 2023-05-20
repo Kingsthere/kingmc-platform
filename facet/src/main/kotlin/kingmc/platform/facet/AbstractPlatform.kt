@@ -1,8 +1,6 @@
 package kingmc.platform.facet
 
-import kingmc.platform.LocationProvider
 import kingmc.platform.Platform
-import kingmc.platform.VectorProvider
 
 /**
  * A facet of [Platform]
@@ -13,9 +11,6 @@ import kingmc.platform.VectorProvider
 abstract class AbstractPlatform(
     override val id: Array<String>
 ) : Platform {
-    override val locations: LocationProvider = FacetLocationProvider()
-    override val vectors: VectorProvider = FacetVectorProvider()
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is AbstractPlatform) return false

@@ -1,8 +1,7 @@
-package kingmc.platform.facet
+package kingmc.platform.impl
 
 import kingmc.platform.NumberConversions
 import kingmc.platform.Vector
-import kingmc.platform.VectorProvider
 import kotlin.math.acos
 import kotlin.math.sqrt
 
@@ -242,30 +241,4 @@ data class FacetVector(
      */
     override fun zero(): Vector =
         FacetVector(0.0, 0.0, 0.0)
-}
-
-/**
- * Common implementation of [VectorProvider]
- *
- * @since 0.0.3
- * @author kingsthere
- */
-@FacetImplementation
-open class FacetVectorProvider : VectorProvider {
-    /**
-     * Create a vector by the approximate position
-     *
-     * @since 0.0.1
-     */
-    override fun create(x: Int, y: Int, z: Int): Vector =
-        FacetVector(x.toDouble(), y.toDouble(), z.toDouble())
-
-    /**
-     * Create a vector by the exact position
-     *
-     * @since 0.0.1
-     */
-    override fun create(x: Double, y: Double, z: Double): Vector =
-        FacetVector(x, y, z)
-
 }

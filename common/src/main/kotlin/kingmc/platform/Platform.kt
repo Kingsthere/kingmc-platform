@@ -27,20 +27,6 @@ import kingmc.util.Version
  */
 interface Platform {
     /**
-     * The locations on this platform
-     *
-     * @since 0.0.3
-     */
-    val locations: LocationProvider
-
-    /**
-     * The vectors on this platform
-     *
-     * @since 0.0.3
-     */
-    val vectors: VectorProvider
-
-    /**
      * The identifiers for this platform, must lowercase
      *
      * @since 0.0.3

@@ -49,6 +49,7 @@ import kingmc.util.format.PropertiesFormatContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.apache.commons.io.FileUtils
 import org.bukkit.plugin.java.JavaPlugin
@@ -111,6 +112,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         loadConfigurationEnvironment()
         loadProperties()
         platform = loadPlatform()
+        println(properties)
     }
 
     val formatContext = PropertiesFormatContext(properties)
@@ -121,7 +123,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         val time = measureTime {
             disposeTempFilesOnExit()
             loadCoroutineEnvironment()
-            runBlocking(Dispatchers.IO) {
+            runBlocking {
                 loadFullEnvironmentSuspend()
             }
             application = loadPlatformApplication()
@@ -226,7 +228,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             emptySet()
         )
     }
-    protected open suspend fun loadFullEnvironmentSuspend() = runBlocking {
+    protected open suspend fun loadFullEnvironmentSuspend() = withContext(Dispatchers.IO) {
         launch {
             KingMCEnvironment::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
         }

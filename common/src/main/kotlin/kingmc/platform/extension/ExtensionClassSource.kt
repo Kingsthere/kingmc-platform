@@ -2,6 +2,7 @@ package kingmc.platform.extension
 
 import io.github.classgraph.AnnotationEnumValue
 import io.github.classgraph.AnnotationInfo
+import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import kingmc.common.context.resource.Resource
 import kingmc.common.context.resource.ResourceLoadException
@@ -9,23 +10,29 @@ import kingmc.common.context.resource.ResourceSource
 import kingmc.common.environment.maven.DependencyDispatcher
 import kingmc.common.environment.maven.DependencyScope
 import kingmc.common.environment.maven.model.*
-import kingmc.common.structure.ClassGraphClassSource
 import kingmc.common.structure.ExperimentalStructureApi
+import kingmc.common.structure.JarFileClassSource
 import kingmc.common.structure.Pluggable
 import kingmc.common.structure.classloader.ExtensionClassLoader
 import kingmc.util.format.FormatContext
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.yaml.snakeyaml.Yaml
+import java.io.File
+import kotlin.properties.Delegates
 
-class ExtensionClassSource(val classLoader: ExtensionClassLoader, val formatContext: FormatContext) : ClassGraphClassSource() {
+open class ExtensionClassSource(
+    file: File,
+    val extensionClassLoader: ExtensionClassLoader,
+    val formatContext: FormatContext,
+) : JarFileClassSource(file, extensionClassLoader) {
     val extensions = mutableListOf<ExtensionDefinition>()
+    protected val classGraph: ClassGraph = ClassGraph()
+        .enableAnnotationInfo()
+        .enableClassInfo()
+        .overrideClasspath(file)
 
-    init {
-        classGraph.overrideClassLoaders(classLoader)
-    }
-
-    val scannedResult: ScanResult = classGraph.scan()
+    var scannedResult: ScanResult by Delegates.notNull()
 
     /**
      * Create an [ExtensionDefinition] from annotation info
@@ -120,6 +127,7 @@ class ExtensionClassSource(val classLoader: ExtensionClassLoader, val formatCont
     @Suppress("UNCHECKED_CAST")
     suspend fun loadMavenDependencies(dependencyDispatcher: DependencyDispatcher, repositories: Collection<Repository>) = coroutineScope {
         try {
+            scannedResult = classGraph.scan()
             val config = extension.getInputStream(classLoader)
 
             // Load maven dependencies from extension.yml

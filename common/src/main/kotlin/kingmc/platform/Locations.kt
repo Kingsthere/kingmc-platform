@@ -1,63 +1,43 @@
 package kingmc.platform
 
 import kingmc.common.application.WithApplication
-import kingmc.common.application.currentApplication
+import kingmc.platform.impl.FacetLocation
+import kingmc.platform.impl.FacetLocation3D
 
 /**
- * Create a location by the position
+ * Create a location by the approximate position
+ * and world
  *
+ * @see getWorld
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Number, y: Number, z: Number): Location {
-    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble())
+fun Location(x: Double, y: Double, z: Double): Location {
+    return Location(x, y, z, Direction.DEFAULT, null)
 }
 
 /**
- * Create a location by the position
+ * Create a location by the approximate position
+ * and world
+ *
+ * @see getWorld
+ * @since 0.0.1
+ */
+@WithApplication
+fun Location(x: Double, y: Double, z: Double, world: World?): Location {
+    return Location(x, y, z, Direction.DEFAULT, world)
+}
+
+/**
+ * Create a location by the approximate position
  * and direction
  *
- * @see Direction
+ * @see getWorld
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Number, y: Number, z: Number, dir: Direction): Location {
-    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), dir)
-}
-
-/**
- * Create a location by the position
- * and world
- *
- * @see Direction
- * @since 0.0.1
- */
-@WithApplication
-fun Location(x: Number, y: Number, z: Number, world: World): Location {
-    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), world)
-}
-
-/**
- * Create a location by the position
- * and world
- *
- * @see Direction
- * @since 0.0.1
- */
-@WithApplication
-fun Location(x: Number, y: Number, z: Number, dir: Direction, world: World): Location {
-    return currentApplication().platform.locations.createLocation(x.toDouble(), y.toDouble(), z.toDouble(), dir, world)
-}
-
-/**
- * Create a location3d
- *
- * @since 0.0.5
- * @see Location3D
- */
-@WithApplication
-fun Location3D(x: Number, y: Number, z: Number): Location3D {
-    return currentApplication().platform.locations.createLocation3D(x.toDouble(), y.toDouble(), z.toDouble())
+fun Location(x: Double, y: Double, z: Double, direction: Direction): Location {
+    return Location(x, y, z, direction, null)
 }
 
 /**
@@ -69,74 +49,65 @@ fun Location3D(x: Number, y: Number, z: Number): Location3D {
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Double, y: Double, z: Double, dir: Direction, world: World): Location {
-    return currentApplication().platform.locations.createLocation(x, y, z, dir, world)
+fun Location(x: Double, y: Double, z: Double, dir: Direction, world: World?): Location {
+    return FacetLocation(x, y, z, dir, world)
 }
 
 /**
- * Create a location by the approximate position
- * and world
+ * Create a location by the position
  *
- * @see getWorld
  * @since 0.0.1
  */
 @WithApplication
-fun Location(x: Double, y: Double, z: Double, world: World): Location {
-    return currentApplication().platform.locations.createLocation(x, y, z, world)
+fun Location(x: Number, y: Number, z: Number): Location {
+    return Location(x, y, z, Direction.DEFAULT)
 }
 
 /**
- * A provider to provide the instances of [Location]: Location
- * implemented by the current platform installed
+ * Create a location by the position
+ * and direction
  *
+ * @see Direction
  * @since 0.0.1
- * @author kingsthere
  */
-interface LocationProvider {
-    /**
-     * Create a location with `x, y, z`
-     *
-     * @since 0.0.1
-     * @return the location created
-     */
-    fun createLocation(x: Double, y: Double, z: Double): Location
+@WithApplication
+fun Location(x: Number, y: Number, z: Number, dir: Direction): Location {
+    return Location(x.toDouble(), y.toDouble(), z.toDouble(), dir, null)
+}
 
-    /**
-     * Create a location with `x, y, z, direction`
-     *
-     * @see Direction
-     * @since 0.0.1
-     * @return the location created
-     */
-    fun createLocation(x: Double, y: Double, z: Double, dir: Direction): Location
+/**
+ * Create a location by the position
+ * and world
+ *
+ * @see Direction
+ * @since 0.0.1
+ */
+@WithApplication
+fun Location(x: Number, y: Number, z: Number, world: World?): Location {
+    return Location(x, y, z, Direction.DEFAULT, world)
+}
 
-    /**
-     * Create a location with `x, y, z, direction, world`
-     *
-     * @see Direction
-     * @see getWorld
-     * @since 0.0.1
-     * @return the location created
-     */
-    fun createLocation(x: Double, y: Double, z: Double, dir: Direction, world: World): Location
+/**
+ * Create a location by the position
+ * and world
+ *
+ * @see Direction
+ * @since 0.0.1
+ */
+@WithApplication
+fun Location(x: Number, y: Number, z: Number, dir: Direction, world: World?): Location {
+    return FacetLocation(x.toDouble(), y.toDouble(), z.toDouble(), dir, world)
+}
 
-    /**
-     * Create a location with `x, y, z, world`
-     *
-     * @see getWorld
-     * @since 0.0.1
-     * @return the location created
-     */
-    fun createLocation(x: Double, y: Double, z: Double, world: World): Location
-
-    /**
-     * Create a location3D with `x, y, z`
-     *
-     * @see Location3D
-     * @since 0.0.1
-     * @return the location created
-     */
-    fun createLocation3D(x: Double, y: Double, z: Double): Location3D
+/**
+ * Create a location3d
+ *
+ * @since 0.0.5
+ * @see Location3D
+ */
+@WithApplication
+fun Location3D(x: Number, y: Number, z: Number): Location3D {
+    return FacetLocation3D(x.toDouble(), y.toDouble(), z.toDouble())
 }
 
 /**

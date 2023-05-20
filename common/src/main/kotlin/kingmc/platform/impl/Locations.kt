@@ -1,4 +1,4 @@
-package kingmc.platform.facet
+package kingmc.platform.impl
 
 import kingmc.platform.*
 import kotlin.math.sqrt
@@ -14,7 +14,7 @@ data class FacetLocation(
     override val y: Double,
     override val z: Double,
     override val direction: Direction,
-    override val world: World?,
+    override val world: World? = null,
 ) : Location {
     /**
      * Adds the location by another.
@@ -373,64 +373,4 @@ data class FacetLocation3D(
     override fun clone(): Location3D {
         return FacetLocation3D(x, y, z)
     }
-}
-
-/**
- * Common implementation of [LocationProvider]
- *
- * @since 0.0.3
- * @author kingsthere
- */
-@FacetImplementation
-open class FacetLocationProvider : LocationProvider {
-
-    /**
-     * Create a location by the position
-     *
-     * @since 0.0.1
-     */
-    override fun createLocation(x: Double, y: Double, z: Double): Location =
-        createLocation(x, y, z, Direction.DEFAULT)
-
-    /**
-     * Create a location by the position
-     * and direction
-     *
-     * @see Direction
-     * @since 0.0.1
-     */
-    override fun createLocation(x: Double, y: Double, z: Double, dir: Direction): Location =
-        FacetLocation(x, y, z, dir, null)
-
-    /**
-     * Create a location by the approximate position
-     * and direction, world
-     *
-     * @see Direction
-     * @see getWorld
-     * @since 0.0.1
-     */
-    override fun createLocation(x: Double, y: Double, z: Double, dir: Direction, world: World): Location =
-        FacetLocation(x, y, z, dir, world)
-
-    /**
-     * Create a location by the approximate position
-     * and world
-     *
-     * @see getWorld
-     * @since 0.0.1
-     */
-    override fun createLocation(x: Double, y: Double, z: Double, world: World): Location =
-        createLocation(x, y, z, Direction.DEFAULT, world)
-
-    /**
-     * Create a location3D with `x, y, z`
-     *
-     * @see Location3D
-     * @since 0.0.1
-     * @return the location created
-     */
-    override fun createLocation3D(x: Double, y: Double, z: Double): Location3D =
-        FacetLocation3D(x, y, z)
-
 }
