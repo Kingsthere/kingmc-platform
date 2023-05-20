@@ -1,7 +1,7 @@
 package kingmc.platform.event
 
 /**
- * `TemporaryListener` is a listener to register into [Publisher] for scoped stuff, such
+ * A `TemporaryListener` is a listener to register into [Publisher] for scoped stuff, such
  * as inventory closing..., this listener register into a [publisher] when instance constructing
  *
  * @param publisher the publisher of this listener to register into
