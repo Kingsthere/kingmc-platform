@@ -1,10 +1,10 @@
 package kingmc.platform.bukkit.adventure.impl.audience
 
-import kingmc.common.text.Text
 import kingmc.platform.Server
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.entity.player.Player
 import kingmc.platform.entity.player.Players
+import kingmc.platform.permission.Permissible
 
 
 /**
@@ -13,12 +13,7 @@ import kingmc.platform.entity.player.Players
  * @since 0.0.4
  * @author kingsthere
  */
-class AllBukkitPlayer(private val _server: Server) : Players {
-    /**
-     * Convert this object into a [Text]
-     */
-    override fun asText(): Text =
-        Text.text("AllPlayers")
+class AllBukkitPlayer(private val _server: Server) : Players, Permissible by Permissible.ALWAYS {
 
     /**
      * Gets the audiences.

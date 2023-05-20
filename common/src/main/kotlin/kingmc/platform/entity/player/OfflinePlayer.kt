@@ -12,8 +12,13 @@ import java.util.*
 interface OfflinePlayer {
     /**
      * The name of this entity
+     *
+     * Names are no longer unique past a single game session. For
+     * persistent storage it is recommended that you use [uuid] instead
+     *
+     * Player name or null if we have not seen a name for this player yet
      */
-    val name: String
+    val name: String?
 
     /**
      * The uuid of this entity

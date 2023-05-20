@@ -17,7 +17,7 @@ import kingmc.platform.util.TextSolver
 @FacetImplementation
 object FacetTextSolvers {
     private val _defaultTextSolver by lazy {
-        application {
+        this@FacetTextSolvers.application {
             val miniMessage: MiniMessage = MiniMessage.builder()
                 .build()
             val textResolver = MiniMessageTextSolver(miniMessage = miniMessage)

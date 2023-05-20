@@ -6,7 +6,13 @@ package kingmc.platform.inventory
  * @since 0.0.6
  * @author kingsthere
  */
-interface AnvilInventory : Inventory
+interface AnvilInventory : Inventory {
+    /**
+     * Get the name to be applied to the repaired item. An empty string denotes
+     * the default item name
+     */
+    val renameText: String
+}
 
 /**
  * Interface to an mutable anvil inventory

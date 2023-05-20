@@ -10,7 +10,6 @@ import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
-import kingmc.util.text.TextDisplayable
 
 /**
  * A receiver of Minecraft media
@@ -24,7 +23,7 @@ import kingmc.util.text.TextDisplayable
  * @since 0.0.3
  * @author kingsthere
  */
-interface Audience : TextCapable, PlayerListCapable, BossBarCapable, TitleCapable, ActionBarCapable, SoundCapable, TextDisplayable {
+interface Audience : TextCapable, PlayerListCapable, BossBarCapable, TitleCapable, ActionBarCapable, SoundCapable {
     companion object {
         val EMPTY: Audience = object : Audience {
             override fun sendText(text: Text) {  }
@@ -48,8 +47,6 @@ interface Audience : TextCapable, PlayerListCapable, BossBarCapable, TitleCapabl
             override fun resetTitle() {  }
 
             override fun sendActionBar(text: Text) {  }
-
-            override fun asText(): Text = Text()
 
             override fun playSound(sound: Sound) {  }
 

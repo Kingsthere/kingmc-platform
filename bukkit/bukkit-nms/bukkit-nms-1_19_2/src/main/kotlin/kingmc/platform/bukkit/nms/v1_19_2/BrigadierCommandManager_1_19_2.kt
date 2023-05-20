@@ -1,12 +1,10 @@
 package kingmc.platform.bukkit.nms.v1_19_2
 
 import kingmc.common.application.application
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Qualifier
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.common.context.condition.ConditionalOnBean
 import kingmc.platform.Releasable
@@ -26,7 +24,7 @@ import kingmc.platform.version.ConditionalOnVersion
 @ConditionalOnBean(BrigadierNMS::class)
 @Scope(BeanScope.SINGLETON)
 @BukkitImplementation
-class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware, Releasable {
+class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, Releasable {
     @Autowired
     @Qualifier("brigadierNMS_1_19_2")
     lateinit var brigadierNMS: BrigadierNMS_1_19_2
@@ -124,13 +122,6 @@ class BrigadierCommandManager_1_19_2 : BrigadierCommandManager, ContextAware, Re
         brigadierNMS.syncCommands()
         _registeredCommands.add(command)
     }
-
-    /**
-     * The context to bean
-     *
-     * **IMPLEMENT NOTE:** Use `lateinit` keyword to implement this property
-     */
-    override lateinit var context: Context
 
     /**
      * Release

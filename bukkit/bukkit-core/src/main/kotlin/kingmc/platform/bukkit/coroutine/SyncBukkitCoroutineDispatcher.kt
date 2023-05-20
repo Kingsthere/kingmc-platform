@@ -36,7 +36,9 @@ class SyncBukkitCoroutineDispatcher : SyncMinecraftCoroutineDispatcher(), Closea
         val task = _runTaskLater(
                 plugin,
                 Runnable {
-                    continuation.apply { resumeUndispatched(Unit) }
+                    this@SyncBukkitCoroutineDispatcher.application {
+                        continuation.apply { resumeUndispatched(Unit) }
+                    }
                 },
                 timeMillis / 50)
         continuation.invokeOnCancellation {

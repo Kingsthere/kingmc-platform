@@ -1,6 +1,5 @@
 package kingmc.platform.entity.player
 
-import kingmc.common.text.Text
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.*
 import kingmc.platform.command.CommandSender
@@ -13,7 +12,12 @@ import kingmc.platform.messaging.PluginMessageSink
  * @since 0.0.3
  * @author kingsthere
  */
-interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, CommandSender, PluginMessageSink {
+interface Players :
+    Iterable<Player>,
+    ParticleRecipient,
+    ForwardingAudience,
+    CommandSender,
+    PluginMessageSink {
     override fun audiences(): Iterable<Player>
 
     override fun iterator(): Iterator<Player> =
@@ -43,17 +47,6 @@ interface Players : Iterable<Player>, ParticleRecipient, ForwardingAudience, Com
     override fun chat(message: String) {
         audiences().forEach { it.chat(message) }
     }
-
-    /**
-     * Convert this object into a [sendText]
-     */
-    override fun asText(): Text =
-        Text {
-            audiences().forEach {
-                append(it.displayName)
-                append(Text.text(","))
-            }
-        }
 
     /**
      * Sends this recipient a Plugin Message on the specified outgoing

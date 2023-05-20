@@ -37,7 +37,9 @@ class AsyncBukkitCoroutineDispatcher : AsyncMinecraftCoroutineDispatcher(), Clos
         val task = _runTaskLater(
                 plugin,
                 Runnable {
-                    continuation.apply { resumeUndispatched(Unit) }
+                    this@AsyncBukkitCoroutineDispatcher.application {
+                        continuation.apply { resumeUndispatched(Unit) }
+                    }
                 },
                 timeMillis / 50)
         continuation.invokeOnCancellation {

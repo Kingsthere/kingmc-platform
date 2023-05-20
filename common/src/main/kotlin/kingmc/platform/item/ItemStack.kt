@@ -2,9 +2,8 @@ package kingmc.platform.item
 
 import kingmc.common.application.currentApplication
 import kingmc.common.text.HoverEventDisplayable
-import kingmc.platform.Material
-import kingmc.platform.MaterialType
-import kingmc.platform.MutableMaterialHolder
+import kingmc.platform.material.Material
+import kingmc.platform.material.MutableMaterialHolder
 import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.platform.nbt.MutableNBTCompoundHolder
 import kingmc.util.Tagged

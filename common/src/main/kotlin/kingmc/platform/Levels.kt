@@ -1,5 +1,7 @@
 package kingmc.platform
 
+import kingmc.platform.util.ChunkPosition
+
 operator fun Chunk.component1(): Int =
     x
 
@@ -26,3 +28,11 @@ fun World.getChunkAt(locatable: Locatable3D) =
  */
 fun World.getBlockAt(locatable: Locatable3D) =
     getBlockAt(locatable.location)
+
+/**
+ * Gets the [Chunk] at the given [ChunkPosition]
+ *
+ * @param position `ChunkPosition` of the chunk
+ * @return Chunk at the given location
+ */
+fun World.getChunkAt(position: ChunkPosition) = this.getChunkAt(position.x, position.z)

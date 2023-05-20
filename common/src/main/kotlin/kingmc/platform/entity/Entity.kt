@@ -203,7 +203,7 @@ interface Entity : Nameable, CommandSender, MutableLocatable, TextDisplayable, H
      * The type of entity this entity is
      */
     @get:WithApplication
-    val type: EntityType<Entity>
+    val type: EntityType
 
     /**
      * The world of entity, the world of an entity shouldn't be `null`

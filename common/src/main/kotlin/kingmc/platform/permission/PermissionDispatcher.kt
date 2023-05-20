@@ -3,7 +3,6 @@ package kingmc.platform.permission
 import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import java.io.Closeable
 
@@ -17,7 +16,7 @@ import java.io.Closeable
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated
-interface PermissionDispatcher : ContextAware, Closeable {
+interface PermissionDispatcher : Closeable {
     /**
      * Permissions created by this factory
      */
@@ -30,10 +29,17 @@ interface PermissionDispatcher : ContextAware, Closeable {
      * @param defaultState the default state to the permission
      * @param children the children to the permission
      */
-    fun createPermission(name: String, defaultState: Boolean = false, children: Set<String>): Permission
+    fun createPermission(name: String, defaultState: Boolean = false, children: Set<Permission>): Permission
 
     /**
      * Create a permission builder and return
      */
     fun createPermissionBuilder(name: String, defaultState: Boolean = false): PermissionBuilder
+
+    /**
+     * Register a permission into this dispatcher
+     *
+     * @param permission the permission to register
+     */
+    fun registerPermission(permission: Permission)
 }

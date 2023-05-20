@@ -3,7 +3,6 @@ package kingmc.platform.audience
 import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.block.Block
 import kingmc.platform.entity.player.Player
@@ -29,7 +28,8 @@ import java.util.function.Predicate
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated
-interface AudienceFactory : Closeable, ContextAware {
+@Deprecated("Use World or Server instead")
+interface AudienceFactory : Closeable {
     /**
      * Gets an `Audience` for all online player
      *

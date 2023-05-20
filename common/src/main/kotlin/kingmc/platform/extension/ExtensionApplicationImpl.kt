@@ -14,12 +14,12 @@ import kingmc.util.format.PropertiesFormatContext
 /**
  * A default implementation of [ExtensionApplication]
  *
- * @since 0.0.3
- * @author kingsthere
- * @see ExtensionApplication
  * @param context the context of this application
  * @param environment the environment to load this application
  * @param project the project that this application is load from
+ * @since 0.0.3
+ * @author kingsthere
+ * @see ExtensionApplication
  */
 class ExtensionApplicationImpl(
     override val platform: Platform,
@@ -29,6 +29,7 @@ class ExtensionApplicationImpl(
     override val loggers: LoggerManager
 ) : ExtensionApplication, LoggerCapableApplication {
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
+
     override val name: String
         get() = (project as ExtensionClassSource).extensions.first().id
 
@@ -57,10 +58,10 @@ class ExtensionApplicationImpl(
 
     val _formatContext by lazy {
         PropertiesFormatContext(this.properties).with(ListFormatArguments(listOf(
-            FormatArgument(0, context.extension.id, "extension.id"),
-            FormatArgument(0, context.extension.name, "extension.name"),
-            FormatArgument(0, context.extension.tag, "extension.tag"),
-            FormatArgument(0, context.extension.description, "extension.description"),
+            FormatArgument(context.extension.id, "extension.id"),
+            FormatArgument(context.extension.displayName, "extension.name"),
+            FormatArgument(context.extension.tag, "extension.tag"),
+            FormatArgument(context.extension.description, "extension.description"),
         )) )
     }
 

@@ -14,11 +14,15 @@ import kingmc.util.format.PropertiesFormatContext
  * @since 0.0.3
  * @author kingsthere
  */
-open class PlatformApplicationImpl(platformOn: Platform, override val context: PlatformContext, override val environment: ApplicationEnvironment,
+open class PlatformApplicationImpl(override val platform: Platform,
+                                   override val context: PlatformContext,
+                                   override val environment: ApplicationEnvironment,
                                    override val loggers: LoggerManager
 ) : PlatformApplication, LoggerCapableApplication {
+    /**
+     * Shutdown hooks to be executed when application [shutdown]
+     */
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
-    override val platform = platformOn
 
     override val name: String
         get() = "platform"
@@ -44,15 +48,19 @@ open class PlatformApplicationImpl(platformOn: Platform, override val context: P
         return true
     }
 
-    val formatContext by lazy {
+    val propertiesFormatContext by lazy {
         PropertiesFormatContext(this.properties)
+    }
+
+    private val _formatContext by lazy {
+        propertiesFormatContext.with(context.getFormatContext())
     }
 
     /**
      * Get the format context that this holder holding
      */
     override fun getFormatContext(): FormatContext {
-        return formatContext.with(context.getFormatContext())
+        return _formatContext
     }
 
     override fun hashCode(): Int {

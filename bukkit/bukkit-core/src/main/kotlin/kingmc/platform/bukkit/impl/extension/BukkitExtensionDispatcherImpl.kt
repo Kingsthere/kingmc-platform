@@ -3,19 +3,22 @@ package kingmc.platform.bukkit.impl.extension
 import kingmc.common.OpenAPI
 import kingmc.common.application.WithApplication
 import kingmc.common.application.application
-import kingmc.common.context.process.insertProcessBeanLifecycle
+import kingmc.common.context.process.afterProcess
+import kingmc.common.context.process.processBeans
+import kingmc.common.logging.error
 import kingmc.common.logging.slf4j.Slf4jLoggerManager
 import kingmc.common.logging.slf4j.Slf4jLoggerWrapper
+import kingmc.common.logging.warn
 import kingmc.common.structure.classloader.ExtensionClassLoader
 import kingmc.platform.ExperimentalPlatformApi
 import kingmc.platform.bukkit.impl.driver.BukkitPlatformDriverImpl
 import kingmc.platform.extension.*
 import kingmc.platform.logging.infoColored
 import kingmc.util.Lifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import java.io.File
+import java.util.function.Consumer
 
 /**
  * Bukkit [ExtensionDispatcher] implementation
@@ -25,151 +28,278 @@ import java.io.File
  */
 class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : AbstractExtensionDispatcher(), ExtensionDispatcher {
     lateinit var extensionSourceDirectory: File
+    lateinit var extractedExtensions: List<ExtensionClassSource>
+    override lateinit var dispatchedExtensions: MutableList<ExtensionData>
 
-    @WithApplication
-    fun loadExtensionsFromDirectory(directory: File, lifecycle: Lifecycle<Runnable>) {
-        extensionSourceDirectory = directory
-        val loadingExtensionData = mutableListOf<ExtensionData>()
-        fun validExtension(extension: File): Boolean {
-            // Check if the extension file is a valid
-            // extension that available to install
-            return extension.extension == "jar"
+    /**
+     * Validate an extension file is valid for this `ExtensionDispatcher` to load
+     */
+    fun validateExtension(extension: File): Boolean {
+        // Check if the extension file is a valid
+        // extension that available to install
+        return extension.extension == "jar"
+    }
+
+    /**
+     * Try to extract extensions from a file
+     *
+     * @param extensionFile file to extract extensions from
+     * @return the class loader to load classes for extension extracted from the file
+     */
+    fun recognizeExtensionFromJarFile(extensionFile: File): ExtensionClassSource? {
+        infoColored("<grey>Extracting extension(s) from $extensionFile...</grey>")
+
+        return try {
+            val classSource = ExtensionClassSource(
+                classLoader = ExtensionClassLoader(extensionFile, OpenAPI.classLoader()!!).apply {
+                    addToClassloaders()
+                },
+                formatContext = driver.formatContext
+            )
+            classSource
+        } catch (e: ClassNotFoundException) {
+            error(msg = "Unable to load extension (Is it up to date or missing dependencies?)", throwable = e)
+            null
+        } catch (e: Exception) {
+            error(msg = "Unable to load extension", throwable = e)
+            null
         }
-        fun fetchExtensionClasses(extension: File): ExtensionClassLoader {
-            infoColored("<grey>Loading extension from $extension...</grey>")
-            val classLoader = ExtensionClassLoader(extension, OpenAPI.classLoader()!!)
-            classLoader.addToClassloaders()
-            return classLoader
+    }
+
+    /**
+     * Load maven dependencies for [extractedExtensions]
+     */
+    suspend fun loadExtensionMavenDependencies() {
+        withContext(Dispatchers.IO) {
+            extractedExtensions.forEach { extensionSource ->
+                extensionSource.loadMavenDependencies(driver.dependencyDispatcher, setOf(driver.mavenRepository))
+            }
         }
-        fun loadExtension(extension: File, classLoader: ExtensionClassLoader): List<ExtensionData> {
-            try {
-                // Load the class loader for extension
-                val source = ExtensionClassSource(extension, classLoader)
+    }
 
-                runBlocking(Dispatchers.IO) {
-                    source.loadDependencies(driver.dependencyDispatcher, setOf(driver.mavenRepository))
-                }
+    fun loadExtension(source: ExtensionClassSource, lifecycle: Lifecycle<Runnable>): List<ExtensionData> {
+        try {
+            // Refresh classes
+            source.load()
+            source.getClasses()
 
-                // Refresh classes
-                source.load()
-                source.getClasses()
+            val extensionLoggers = Slf4jLoggerManager(Slf4jLoggerWrapper(ComponentLogger.logger(source.extensions.first().displayName)))
+            val extensionEnvironment = ExtensionEnvironment(source.classLoader)
+            val extensionDefinition = source.extensions.first()
+            val extensionContext = ExtensionContextImpl(properties = driver.properties, name = extensionDefinition.id, extension = extensionDefinition)
+            val extensionContextInitializer = ExtensionContextInitializer(extensionContext).apply {
+                addSource(source)
+                addParent(driver.application.context)
+            }
 
-                val extensionLoggers = Slf4jLoggerManager(Slf4jLoggerWrapper(ComponentLogger.logger(source.extensions.first().name)))
-                val extensionEnvironment = ExtensionEnvironment(classLoader)
-                val extensionDefinition = source.extensions.first()
-                val extensionContext = ExtensionContextImpl(properties = driver.properties, name = extensionDefinition.id, extension = extensionDefinition)
-                val extensionContextInitializer = ExtensionContextInitializer(extensionContext).apply {
-                    addSource(source)
-                    addParent(driver.application.context)
-                }
-                extensionContext.insertProcessBeanLifecycle(5)
-
-                val application = ExtensionApplicationImpl(driver.platform, extensionContext, extensionEnvironment, source, extensionLoggers)
-                extensionContext.application = application
-
-                val returns = mutableListOf<ExtensionData>()
-                source.extensions.forEach {
-                    // Create data directory for extension
-                    File("$directory/${it.id}").mkdir()
-                    val extensionData = ExtensionData(it, extensionContext, extensionContextInitializer, application, source)
-                    returns.add(extensionData)
-                    loadingExtensionData.add(extensionData)
-                }
-
-                // Load extension lifecycle
-                for (index in 0..4) {
-                    lifecycle.insertPlan(index) {
-                        extensionContext.lifecycle().next()
+            (0..5).forEach { index ->
+                lifecycle.insertPlan(index) {
+                    try {
+                        extensionContext.processBeans(index)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
-                source.extensions.forEach {
-                    application(application) {
-                        infoColored("<gradient:aqua:light_purple>Extension loaded ${it.name}(${it.id}) v. ${it.tag} by ${it.description.contributors.joinToString(", ")}</gradient>")
-                        if (it.description.website != "https://www.example.com/") {
-                            infoColored("<dark_grey>Check the website of this extension <blue>${it.description.website}</blue> for more information")
+            }
+            (0..5).forEach { index ->
+                lifecycle.insertPlan(index) {
+                    try {
+                        extensionContext.afterProcess(index)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            val application = ExtensionApplicationImpl(driver.platform, extensionContext, extensionEnvironment, source, extensionLoggers)
+            extensionContext.application = application
+
+            val returns = mutableListOf<ExtensionData>()
+            source.extensions.forEach {
+                // Create data directory for extension
+                File("$extensionSourceDirectory/${it.id}").mkdir()
+                val extensionData = ExtensionData(it, extensionContext, extensionContextInitializer, application, source)
+                returns.add(extensionData)
+            }
+
+            // Load extension lifecycle
+            for (index in 0..4) {
+                lifecycle.insertPlan(index) {
+                    extensionContext.lifecycle().next()
+                }
+            }
+            source.extensions.forEach {
+                application(application) {
+                    infoColored(StringBuilder().apply {
+                        append("<gradient:aqua:light_purple>Extension ${it.displayName}(${it.id}) v. ${it.tag}")
+                        if (it.description.contributors.isNotEmpty()) {
+                            append(" by ${it.description.contributors.joinToString(", ")}")
+                        }
+                        append(" has been loaded successfully</gradient>")
+                    }.toString())
+                    if (it.description.website != "https://www.example.com/") {
+                        infoColored("<dark_grey>Check the website of this extension <blue>${it.description.website}</blue> for more information")
+                    }
+                }
+            }
+            return returns
+        } catch (e: Exception) {
+            error(msg = "Unable to load recognized extensions from $source", throwable = e)
+            return emptyList()
+        }
+    }
+
+    fun solveExtensionDependencies(extensions: List<ExtensionData>): ExtensionLoadingRoutes {
+        return buildList {
+            val firsts = mutableListOf<ExtensionLoadingRoute>()
+            val callbacks = mutableMapOf<ExtensionData, Consumer<ExtensionLoadingRoute>>()
+
+            fun findExtensionLoadingRoute(extension: ExtensionData, parent: ExtensionLoadingRoute): ExtensionLoadingRoute? {
+                if (parent.extension == extension) {
+                    return parent
+                }
+                for (nextRoute in parent.next) {
+                    findExtensionLoadingRoute(extension, nextRoute)?.let {
+                        return it
+                    }
+                }
+                return null
+            }
+
+            fun findExtensionLoadingRoute(extension: ExtensionData): ExtensionLoadingRoute? {
+                firsts.forEach {
+                    findExtensionLoadingRoute(extension, it)?.let { found ->
+                        return found
+                    }
+                }
+                return null
+            }
+
+            fun findOrCallbackExtensionLoadingRoute(extension: ExtensionData, callback: (ExtensionLoadingRoute) -> Unit) {
+                findExtensionLoadingRoute(extension)?.let {
+                    callback.invoke(it)
+                    return
+                }
+                callbacks.put(extension, callback)
+            }
+
+            extensions.forEach { extension ->
+                // Get extension by the dependency name
+                val dependencies = extension.definition.dependencies
+                if (dependencies.isNotEmpty()) {
+                    for (dependency in extension.definition.dependencies) {
+                        val dependencyExtension = extensions.find { it.definition.id == dependency.id }
+                        if (!dependency.optional) {
+                            dependencyExtension ?: warn("Disable extension ${extension.definition.id} because the required dependencies of this plugin is missing (${dependency.id})")
+                        }
+                        dependencyExtension?.let {
+                            findOrCallbackExtensionLoadingRoute(it) { parentRoute ->
+                                val newedRoute = ExtensionLoadingRoute(extension, mutableListOf())
+                                parentRoute.next.add(newedRoute)
+                                callbacks.remove(extension)?.accept(newedRoute)
+                                extension.contextInitializer.addParent(it.context)
+                            }
+
                         }
                     }
+                } else {
+                    val new = ExtensionLoadingRoute(extension, mutableListOf())
+                    firsts.add(new)
+                    callbacks.remove(extension)?.accept(new)
                 }
-                return returns
-            } catch (e: Exception) {
-                throw ExtensionInitializeException("Unable to load extension from file $extension", e)
             }
+            addAll(firsts)
         }
-        fun finishLoadExtensions() {
-            loadingExtensionData.forEach { extension ->
-                extension.contextInitializer()
-            }
-        }
-        fun loadExtensionDependencies() {
-            loadingExtensionData.forEach { extension ->
-                // Get extension by the dependency name
-                for (dependency in extension.definition.dependencies) {
-                    val dependencyExtension = loadingExtensionData.find { it.definition.id == dependency.id }
-                    if (!dependency.optional) {
-                        dependencyExtension ?: throw ExtensionInitializeException("Unable to load extension ${extension.definition.id} cause the required dependencies of this plugin is not found")
-                    }
-                    dependencyExtension?.let {
-                        extension.contextInitializer.addParent(it.context)
-                    }
-                }
+    }
+
+    @WithApplication
+    suspend fun loadExtensionsFromDirectory(directory: File, lifecycle: Lifecycle<Runnable>) = coroutineScope {
+        extensionSourceDirectory = directory
+        val loadingExtensions = mutableListOf<ExtensionData>()
+
+        fun finishLoadExtensionRecurves(extensionLoadingRoute: ExtensionLoadingRoute) {
+            extensionLoadingRoute.extension.contextInitializer()
+            extensionLoadingRoute.next.forEach {
+                finishLoadExtensionRecurves(it)
             }
         }
 
-        val loadedExtensionClassLoaders = mutableMapOf<File, ExtensionClassLoader>()
+        fun finishLoadExtensionsRecurves(extensionLoadingRoutes: ExtensionLoadingRoutes) {
+            extensionLoadingRoutes.forEach {
+                finishLoadExtensionRecurves(it)
+            }
+        }
+
         // Load extension classes
-        directory.listFiles()?.forEach { file ->
-            if (validExtension(file)) {
-                loadedExtensionClassLoaders.put(file, fetchExtensionClasses(file))
+        extractedExtensions = buildList {
+            directory.listFiles()?.forEach { file ->
+                if (validateExtension(file)) {
+                    try {
+                        recognizeExtensionFromJarFile(file)?.let { source ->
+                            add(source)
+                        }
+                    } catch (e: Exception) {
+                        error(msg = "Unable to recognize extension for file $file", throwable = e)
+                    }
+                }
             }
         }
         // Traverse the extensions in the extension
         // directory and load if the file is a valid extension
         // Make dirs if the direction is not exists
-        val loadedExtensionData = mutableListOf<ExtensionData>()
-        directory.listFiles()?.forEach {
-            // Check if the file is a valid extension
-            if (validExtension(it)) {
-                try {
-                    val loadingExtensions = loadExtension(extension = it, classLoader = loadedExtensionClassLoaders[it]
-                        ?: throw IllegalStateException("Unable to load this extension, because the classloader of this extension is not loaded"))
-                    loadingExtensions.forEach { ex ->
-                        infoColored("<grey>Successfully load extension ${ex.definition.name}")
-                    }
-                    loadedExtensionData.addAll(loadingExtensions)
-                } catch (e: Exception) {
-                    kingmc.common.logging.error("Unable to load extension from file $it, cause:")
-                    e.printStackTrace()
+        extractedExtensions.forEach {
+            try {
+                val extension = loadExtension(it, lifecycle)
+                extension.forEach { ex ->
+                    infoColored("<grey>Successfully load extension ${ex.definition.displayName} from ${ex.source}")
                 }
+                loadingExtensions.addAll(extension)
+            } catch (e: Exception) {
+                error(msg = "Unable to load extension from $it", throwable = e)
             }
         }
-        loadExtensionDependencies()
-        finishLoadExtensions()
-        this.loadedExtensions.addAll(loadedExtensionData)
+        loadExtensionMavenDependencies()
+
+        finishLoadExtensionsRecurves(solveExtensionDependencies(loadingExtensions))
+        dispatchedExtensions = loadingExtensions
     }
 
+    @WithApplication
     override fun disableExtension(extension: ExtensionData) {
+        infoColored("<grey>Disabling extension ${extension.definition.id}(${extension.definition.displayName})...")
         extension.context.lifecycle().next()
         extension.contextInitializer.dispose()
         extension.application.shutdown()
+        val classLoader = extension.source.classLoader
+        classLoader.close()
         super.disableExtension(extension)
     }
 
+    @WithApplication
     fun disableExtensions() {
-        this.loadedExtensions.toList().forEach {
+        val disablingExtensions = this.dispatchedExtensions.toList()
+        disablingExtensions.forEach {
             disableExtension(it)
         }
     }
 
+    @WithApplication
     @ExperimentalPlatformApi
     override fun reload() {
         disableExtensions()
-        val reloadedLifecycle = Lifecycle.create<Runnable>()
-        loadExtensionsFromDirectory(extensionSourceDirectory, reloadedLifecycle)
-        reloadedLifecycle.jump(4)
+        val reloadLifecycle = Lifecycle.create<Runnable>()
+        runBlocking {
+            loadExtensionsFromDirectory(extensionSourceDirectory, reloadLifecycle)
+            reloadLifecycle.jump(4)
+        }
     }
 
+    @WithApplication
     @ExperimentalPlatformApi
     override fun reload(extension: ExtensionData) {
-        TODO("Not yet implemented")
+        disableExtension(extension)
+        val reloadLifecycle = Lifecycle.create<Runnable>()
+        loadExtension(extension.source, reloadLifecycle)
+        reloadLifecycle.jump(4)
     }
 }

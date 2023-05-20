@@ -23,3 +23,22 @@ kingmc:
 
     # Kotlin coroutine version
     kotlinx-coroutine: 1.6.4
+
+  # Extension bundling settings
+  bundling:
+    # Enable so kingmc will try to download bundled extensions and load them on the server
+    enable: true
+
+    # Extensions bundled
+    extensions:
+      toolbox:
+        # The way to load this extension
+        # Builtin - load the extension from specified file that already builtin the kingmc jar
+        # URL - download the extension from specified url, the extension file downloaded will be stored in kingmc extension folder
+        load: url
+
+        # The built-in extension file path to load extension from if you're using "Builtin" to load bundled extension
+        path: "/bundle/toolbox-latest.jar"
+
+        # The extension file url to download extension from if you're using "URL" to load bundled extension
+        url: "https://www.kingmc.net/resources/kingsthere/toolbox/latest.jar"

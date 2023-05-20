@@ -9,7 +9,7 @@ import kingmc.platform.permission.Permissible
 import kingmc.platform.util.InboundConnection
 
 /**
- * Represent a online minecraft player
+ * Represent an online minecraft player
  *
  * @since 0.0.4
  * @author kingsthere
@@ -38,4 +38,21 @@ interface Player : HumanEntity, OfflinePlayer, ParticleRecipient, PluginMessageS
      * `true` if this player is sprinting
      */
     var isSprinting: Boolean
+
+    /**
+     * The current player's ping (in milliseconds)
+     */
+    val ping: Long
+
+    /**
+     * The player's client brand
+     */
+    val clientBrand: String?
+
+    /**
+     * Disconnects the player with the specified reason
+     *
+     * @param reason reason the player disconnected
+     */
+    fun disconnect(reason: Text)
 }

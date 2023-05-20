@@ -20,10 +20,10 @@ interface EntityFactory : Closeable {
     /**
      * Gets a type of entity registered in this entity factory
      */
-    fun getEntityType(key: Key) : EntityType<*>
+    fun getEntityType(key: Key) : EntityType
 
     /**
      * Gets all entity types registered in this factory
      */
-    fun getEntityTypes(): Set<EntityType<*>>
+    fun getEntityTypes(): Set<EntityType>
 }

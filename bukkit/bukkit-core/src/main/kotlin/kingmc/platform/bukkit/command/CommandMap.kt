@@ -9,7 +9,7 @@ import org.bukkit.command.CommandMap
  * @since 0.0.5
  * @author kingsthere
  */
-@Component("commandMap")
+@Component
 interface CommandMap : CommandMap {
     /**
      * Unregister a command by its label name

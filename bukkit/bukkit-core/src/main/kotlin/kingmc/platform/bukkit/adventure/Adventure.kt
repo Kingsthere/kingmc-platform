@@ -4,6 +4,8 @@ import kingmc.common.application.application
 import kingmc.common.context.annotation.Configuration
 import kingmc.common.environment.maven.MavenDependency
 import kingmc.platform.Awake
+import kingmc.platform.Lifecycles
+import kingmc.platform.Priorities
 import kingmc.platform.Releasable
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import net.kyori.adventure.platform.bukkit.BukkitAudiences
@@ -56,7 +58,7 @@ object Adventure : Releasable {
     // net.kyori.adventure.platform.AudienceProvider
     private lateinit var _adventureAudienceProvider: BukkitAudiences
 
-    @Awake(3)
+    @Awake(Lifecycles.ACTIVE, priority = Priorities.NORMAL)
     fun init() {
         _adventureAudienceProvider = this@Adventure.application {
             BukkitAudiences.create(bukkitPlugin)

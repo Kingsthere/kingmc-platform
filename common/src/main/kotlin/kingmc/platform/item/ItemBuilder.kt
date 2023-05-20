@@ -1,6 +1,6 @@
 package kingmc.platform.item
 
-import kingmc.platform.Material
+import kingmc.platform.material.Material
 import kingmc.platform.nbt.MutableNBTCompoundHolder
 import kingmc.util.builder.Buildable
 import kingmc.util.key.Key

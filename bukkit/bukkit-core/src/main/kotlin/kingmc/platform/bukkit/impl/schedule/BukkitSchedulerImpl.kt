@@ -24,7 +24,6 @@ import kotlin.time.Duration
 @Scope(BeanScope.SINGLETON)
 @Isolated // Cancel active tasks when dispose
 class BukkitSchedulerImpl : Scheduler {
-    override lateinit var context: Context
     private val _bukkitPlugin = application { bukkitPlugin }
 
     // Tasks scheduled by this scheduler

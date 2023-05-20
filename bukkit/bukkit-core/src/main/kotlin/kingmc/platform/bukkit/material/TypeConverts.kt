@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.material
 
 import kingmc.common.application.Application
-import kingmc.platform.MaterialType
+import kingmc.platform.material.MaterialType
 import kingmc.platform.materialProvider
 
 /**
@@ -9,7 +9,10 @@ import kingmc.platform.materialProvider
  *
  * @receiver the [MaterialType] to convert
  */
-fun MaterialType<*>.asBukkit() = (this as BukkitMaterialType<*>).toBukkitMaterial()
+val MaterialType<*>.bukkitMaterial
+    get() = (this as BukkitMaterialType<*>).toBukkitMaterial()
+
+val _cachedMaterial = HashMap<_BukkitMaterial, MaterialType<*>>()
 
 /**
  * Convert this [org.bukkit.Material] as a `MaterialType`
@@ -20,5 +23,5 @@ fun MaterialType<*>.asBukkit() = (this as BukkitMaterialType<*>).toBukkitMateria
  */
 // @WithApplication use parameter [application] instead
 fun _BukkitMaterial.asKingMC(application: Application): MaterialType<*> {
-    return (application.materialProvider as BukkitMaterialProvider).getTypeForBukkit(this)
+    return _cachedMaterial.computeIfAbsent(this) { (application.materialProvider as BukkitMaterialProvider).getTypeForBukkit(this) }
 }

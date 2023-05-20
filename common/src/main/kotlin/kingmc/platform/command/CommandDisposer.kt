@@ -1,10 +1,8 @@
 package kingmc.platform.command
 
 import kingmc.common.application.currentApplication
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Releasable
 import kingmc.platform.commandFactory
@@ -17,9 +15,7 @@ import kingmc.platform.commandFactory
  */
 @Component
 @Scope(BeanScope.SINGLETON)
-class CommandDisposer : Releasable, ContextAware {
-    override lateinit var context: Context
-
+class CommandDisposer : Releasable {
     /**
      * Release
      */

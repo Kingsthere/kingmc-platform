@@ -1,9 +1,9 @@
 package kingmc.platform.bukkit.nms.registry
 
-import kingmc.platform.MaterialType
 import kingmc.platform.World
 import kingmc.platform.entity.EntityType
-import kingmc.platform.material.BlockMaterialType
+import kingmc.platform.material.MaterialType
+import kingmc.platform.material.block.BlockMaterialType
 
 /**
  * An enum listed known registries
@@ -11,7 +11,7 @@ import kingmc.platform.material.BlockMaterialType
 sealed class ListedRegistries<T> {
     object BLOCK : ListedRegistries<BlockMaterialType<*>>()
     object ITEM : ListedRegistries<MaterialType<*>>()
-    object ENTITY : ListedRegistries<EntityType<*>>()
+    object ENTITY : ListedRegistries<EntityType>()
     object WORLD : ListedRegistries<World>()
     companion object {
         fun values(): Array<ListedRegistries<*>> {

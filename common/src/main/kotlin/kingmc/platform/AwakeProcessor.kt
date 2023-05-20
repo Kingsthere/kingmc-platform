@@ -1,7 +1,5 @@
 package kingmc.platform
 
-import it.unimi.dsi.fastutil.bytes.Byte2ObjectFunction
-import it.unimi.dsi.fastutil.bytes.Byte2ObjectRBTreeMap
 import kingmc.common.application.application
 import kingmc.common.context.*
 import kingmc.common.context.annotation.Component
@@ -26,13 +24,13 @@ import java.util.*
 @Utility
 @Component("awakeProcessor")
 object AwakeProcessor : BeanProcessor {
-    private val _awakingFunctions: Byte2ObjectRBTreeMap<MutableList<Runnable>> = Byte2ObjectRBTreeMap()
+    private val _awakingFunctions: MutableMap<Byte, MutableList<Runnable>> = TreeMap(compareByDescending { it })
 
     override fun process(context: Context, bean: Any): Boolean {
         val beanClass = bean::class
         beanClass.findFunctionsByAnnotation<Awake>().forEach {
             val awake = it.getAnnotation<Awake>()!!
-            val orderedFunctions = _awakingFunctions.computeIfAbsent(awake.priority, Byte2ObjectFunction { ArrayList() })
+            val orderedFunctions = _awakingFunctions.computeIfAbsent(awake.priority) { ArrayList() }
             orderedFunctions.add {
                 try {
                     if (awake.lifecycle == 1) {

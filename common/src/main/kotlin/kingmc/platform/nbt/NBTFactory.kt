@@ -8,7 +8,7 @@ import kingmc.common.context.annotation.Component
  * @since 0.0.8
  * @author kingsthere
  */
-@Component
+@Component("nbtFactory")
 interface NBTFactory {
     /**
      * Create a new nbt compound

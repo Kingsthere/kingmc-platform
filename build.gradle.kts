@@ -34,10 +34,10 @@ allprojects {
         // Maven local for dev
         mavenLocal()
         // Snapshot repository
-        maven {
-            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            name = "sonatype-snapshot"
-        }
+         maven {
+             url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+             name = "sonatype-snapshot"
+         }
 
         maven {
             url = uri("https://repo.codemc.org/repository/maven-public/")
@@ -56,9 +56,10 @@ allprojects {
         api("net.kingmc.common:file:$kingmc_common_version")
         api("net.kingmc.common:logging:$kingmc_common_version")
         api("net.kingmc.common:structure:$kingmc_common_version")
+        implementation("io.github.classgraph:classgraph:4.8.158")
         api(kotlin("reflect"))
         testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
         testApi("net.kingmc.common:common:$kingmc_test_version")
     }
 

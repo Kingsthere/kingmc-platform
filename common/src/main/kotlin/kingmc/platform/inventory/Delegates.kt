@@ -1,7 +1,6 @@
 package kingmc.platform.inventory
 
 import kingmc.platform.item.ItemStack
-import kotlin.properties.Delegates
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -9,12 +8,12 @@ import kotlin.reflect.KProperty
 /**
  * Create a Delegate property for specified [slot]
  */
-fun Delegates.inventoryItemStack(slot: InventorySlot) = InventorySlotDelegate(slot)
+fun inventoryItemStack(slot: InventorySlot) = InventorySlotDelegate(slot)
 
 /**
  * Create a Delegate property for specified [slot]
  */
-fun Delegates.mutableInventoryItemStack(slot: InventorySlot) = MutableInventorySlotDelegate(slot)
+fun mutableInventoryItemStack(slot: InventorySlot) = MutableInventorySlotDelegate(slot)
 
 class InventorySlotDelegate(val slot: InventorySlot) : ReadOnlyProperty<Inventory, ItemStack> {
     /**

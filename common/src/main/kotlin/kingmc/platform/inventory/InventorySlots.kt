@@ -708,7 +708,27 @@ enum class InventorySlots : InventorySlot {
     /**
      * `furnace.result`
      */
-    FURNACE_RESULT;
+    FURNACE_RESULT,
+
+    /**
+     * `enchanting.item`
+     */
+    ENCHANTING_ITEM,
+
+    /**
+     * `enchanting.secondary`
+     */
+    ENCHANTING_SECONDARY,
+
+    /**
+     * `brewer.ingredient`
+     */
+    BREWER_INGREDIENT,
+
+    /**
+     * `brewer.fuel`
+     */
+    BREWER_FUEL;
 
 
 }

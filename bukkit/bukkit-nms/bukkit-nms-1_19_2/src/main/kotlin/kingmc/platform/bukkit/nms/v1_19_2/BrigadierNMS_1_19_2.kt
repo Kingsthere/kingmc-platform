@@ -296,8 +296,4 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
             ?: WrappedArgumentType(parameter)
     }
 
-    override fun toString(): String {
-        return "BrigadierNMS_1_19_2(minecraftServer=$minecraftServer)"
-    }
-
 }

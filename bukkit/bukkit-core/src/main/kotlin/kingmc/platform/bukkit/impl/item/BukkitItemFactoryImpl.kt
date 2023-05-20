@@ -2,8 +2,6 @@ package kingmc.platform.bukkit.impl.item
 
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
-import kingmc.platform.Material
-import kingmc.platform.MaterialType
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.item.BukkitItemBuilder
 import kingmc.platform.bukkit.item.BukkitItemFactory
@@ -15,6 +13,8 @@ import kingmc.platform.bukkit.nbt.BukkitNBTFactory
 import kingmc.platform.item.Item
 import kingmc.platform.item.ItemBuilder
 import kingmc.platform.item.ItemStack
+import kingmc.platform.material.Material
+import kingmc.platform.material.MaterialType
 import kingmc.platform.nbt.merge
 import kingmc.util.key.Key
 

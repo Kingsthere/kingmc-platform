@@ -1,7 +1,7 @@
 package kingmc.platform.item
 
 import kingmc.common.text.HoverEventDisplayable
-import kingmc.platform.Material
+import kingmc.platform.material.Material
 import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.NBTCompoundHolder
 import kingmc.util.Tagged

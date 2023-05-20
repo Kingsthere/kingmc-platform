@@ -2,7 +2,7 @@ package kingmc.platform.item
 
 import kingmc.common.text.BinaryTagHolder
 import kingmc.common.text.Text
-import kingmc.platform.Material
+import kingmc.platform.material.Material
 import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.getStringList
 import kingmc.util.key.Key

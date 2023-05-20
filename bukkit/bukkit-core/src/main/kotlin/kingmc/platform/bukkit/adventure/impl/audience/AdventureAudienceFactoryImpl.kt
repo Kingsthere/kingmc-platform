@@ -4,7 +4,6 @@ import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import kingmc.common.application.application
 import kingmc.common.application.currentApplication
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
@@ -14,7 +13,7 @@ import kingmc.platform.audience.*
 import kingmc.platform.block.Block
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.adventure.Adventure
-import kingmc.platform.bukkit.adventure.impl.AdventureBukkitServer
+import kingmc.platform.bukkit.adventure.impl.AdventureBukkitServerImpl
 import kingmc.platform.bukkit.audience.*
 import kingmc.platform.bukkit.entity.player.*
 import kingmc.platform.command.CommandSender
@@ -37,8 +36,6 @@ import java.util.function.Predicate
 @Scope(BeanScope.SINGLETON)
 @BukkitImplementation
 class AdventureAudienceFactoryImpl : BukkitAudienceFactory {
-    override lateinit var context: Context
-
     @Autowired
     lateinit var server: Server
 
@@ -96,7 +93,7 @@ class AdventureAudienceFactoryImpl : BukkitAudienceFactory {
         )
     )
     override fun player(bukkitPlayer: _BukkitPlayer): Player {
-        return (currentApplication().server as AdventureBukkitServer).getPlayerForBukkit(bukkitPlayer)
+        return (currentApplication().server as AdventureBukkitServerImpl).getPlayerForBukkit(bukkitPlayer)
     }
 
     @Deprecated("Blocks are no longer supplied by the AudienceFactory, use World.getBlock() instead")

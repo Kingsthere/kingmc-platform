@@ -1,10 +1,8 @@
 package kingmc.platform.bukkit.messaging
 
 import kingmc.common.application.application
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.annotation.Service
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.BukkitImplementation
@@ -15,9 +13,7 @@ import kingmc.platform.messaging.IncomingPluginMessagingChannel
 @Service
 @BukkitImplementation
 @Scope(BeanScope.SINGLETON)
-class BukkitMessenger : FacetMessenger(), ContextAware {
-    override lateinit var context: Context
-
+class BukkitMessenger : FacetMessenger() {
     /**
      * Close a out going plugin messaging channel
      *

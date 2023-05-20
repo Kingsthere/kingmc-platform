@@ -11,10 +11,14 @@ import kingmc.platform.audience.sound.SoundStop
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.bukkit.Bukkit
+import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.audience.BukkitConsole
+import kingmc.platform.permission.Permissible
 
+@BukkitImplementation
 class AdventureBukkitConsoleImpl(private val _adventureConsoleAudience: _AdventureAudience) :
-    BukkitConsole() {
+    BukkitConsole(),
+    Permissible by Permissible.ALWAYS {
     /**
      * The player list that is displaying
      * to this receiver
@@ -37,12 +41,6 @@ class AdventureBukkitConsoleImpl(private val _adventureConsoleAudience: _Adventu
     override fun sendActionBar(text: Text) {
         _adventureConsoleAudience.sendActionBar(text)
     }
-
-    /**
-     * Convert this object into a [Text]
-     */
-    override fun asText(): Text =
-        Text("Console")
 
     /**
      * Show a bossbar to this receiver

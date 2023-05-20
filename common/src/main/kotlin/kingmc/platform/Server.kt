@@ -2,6 +2,7 @@ package kingmc.platform
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
+import kingmc.common.context.annotation.Component
 import kingmc.platform.audience.Audience
 import kingmc.platform.audience.Console
 import kingmc.platform.audience.ForwardingAudience
@@ -11,11 +12,13 @@ import kingmc.platform.messaging.PluginMessageSink
 import java.util.*
 
 /**
- * Represents a server
+ * Represents a server, The `ForwardingAudience` associated with a `Server` represent
+ * all players connected to this server
  *
  * @since 0.0.7
  * @author kingsthere
  */
+@Component
 interface Server : PluginMessageSink, ForwardingAudience {
     /**
      * The console of this server
@@ -32,7 +35,7 @@ interface Server : PluginMessageSink, ForwardingAudience {
     /**
      * Gets every player that has ever played on this server
      */
-    fun getOfflinePlayers(): Array<OfflinePlayer>
+    fun getOfflinePlayers(): List<OfflinePlayer>
 
     /**
      * Gets an online player by its username
@@ -57,7 +60,7 @@ interface Server : PluginMessageSink, ForwardingAudience {
      * @return the offline player get
      */
     @Deprecated("Persistent storage of users should be by UUID as names are no longer unique past a single session")
-    fun getOfflinePlayer(username: String): OfflinePlayer?
+    fun getOfflinePlayer(username: String): OfflinePlayer
 
     /**
      * Gets the audiences to forward to
@@ -72,7 +75,7 @@ interface Server : PluginMessageSink, ForwardingAudience {
      * @param uuid the uuid of the player
      * @return the offline player get
      */
-    fun getOfflinePlayer(uuid: UUID): OfflinePlayer?
+    fun getOfflinePlayer(uuid: UUID): OfflinePlayer
 }
 
 /**
@@ -87,7 +90,7 @@ val onlinePlayers: Collection<Player>
  * A shortcut to get offline players on the server
  */
 @get:WithApplication
-val offlinePlayers: Array<OfflinePlayer>
+val offlinePlayers: List<OfflinePlayer>
     get() = currentApplication().server.getOfflinePlayers()
 
 /**

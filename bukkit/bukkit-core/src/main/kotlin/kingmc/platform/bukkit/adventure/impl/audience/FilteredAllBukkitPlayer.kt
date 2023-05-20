@@ -1,10 +1,10 @@
 package kingmc.platform.bukkit.adventure.impl.audience
 
-import kingmc.common.text.Text
 import kingmc.platform.Server
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.entity.player.Player
 import kingmc.platform.entity.player.Players
+import kingmc.platform.permission.Permissible
 import java.util.function.Predicate
 
 
@@ -14,12 +14,7 @@ import java.util.function.Predicate
  * @since 0.0.4
  * @author kingsthere
  */
-class FilteredAllBukkitPlayer(val _server: Server, private val filter: Predicate<Player>) : Players {
-    /**
-     * Convert this object into a [Text]
-     */
-    override fun asText(): Text =
-        Text.text("All")
+class FilteredAllBukkitPlayer(val _server: Server, private val filter: Predicate<Player>) : Players, Permissible by Permissible.ALWAYS {
 
     /**
      * Gets the audiences.

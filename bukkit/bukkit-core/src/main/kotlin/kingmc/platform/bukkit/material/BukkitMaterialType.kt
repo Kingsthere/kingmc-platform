@@ -2,8 +2,9 @@ package kingmc.platform.bukkit.material
 
 import kingmc.common.text.Text
 import kingmc.common.text.TranslatableText
-import kingmc.platform.MaterialType
+import kingmc.platform.material.MaterialType
 import kingmc.util.key.Key
+import kotlin.reflect.KClass
 
 /**
  * A material implementation supports for materials from bukkit
@@ -12,7 +13,9 @@ import kingmc.util.key.Key
  * @since 0.0.5
  * @author kingsthere
  */
-open class BukkitMaterialType<TData>(private val _bukkitMaterial: _BukkitMaterial) : MaterialType<TData> {
+open class BukkitMaterialType<TData : Any>(private val _bukkitMaterial: _BukkitMaterial,
+                                           override val type: KClass<out TData>
+) : MaterialType<TData> {
     /**
      * Convert this material type to a [org.bukkit.Material]
      */

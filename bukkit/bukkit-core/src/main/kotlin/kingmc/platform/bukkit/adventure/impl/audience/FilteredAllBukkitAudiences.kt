@@ -1,6 +1,5 @@
 package kingmc.platform.bukkit.adventure.impl.audience
 
-import kingmc.common.text.Text
 import kingmc.platform.Server
 import kingmc.platform.audience.Audience
 import kingmc.platform.audience.ForwardingAudience
@@ -15,11 +14,6 @@ import java.util.function.Predicate
  * @author kingsthere
  */
 class FilteredAllBukkitAudiences(private val _server: Server, private val filter: Predicate<Audience>) : ForwardingAudience {
-    /**
-     * Convert this object into a [Text]
-     */
-    override fun asText(): Text =
-        Text.text("All")
 
     /**
      * Gets the audiences.

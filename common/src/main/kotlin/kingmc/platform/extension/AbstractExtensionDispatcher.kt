@@ -7,11 +7,11 @@ package kingmc.platform.extension
  * @author kingsthere
  */
 abstract class AbstractExtensionDispatcher : ExtensionDispatcher {
-    protected val loadedExtensions = mutableListOf<ExtensionData>()
+    protected open val dispatchedExtensions = mutableListOf<ExtensionData>()
 
-    override fun getExtensions(): List<ExtensionData> = loadedExtensions
+    override fun getExtensions(): List<ExtensionData> = dispatchedExtensions
 
     override fun disableExtension(extension: ExtensionData) {
-        loadedExtensions.remove(extension)
+        dispatchedExtensions.remove(extension)
     }
 }

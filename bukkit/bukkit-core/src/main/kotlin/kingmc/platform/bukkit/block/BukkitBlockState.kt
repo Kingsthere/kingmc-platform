@@ -1,10 +1,10 @@
 package kingmc.platform.bukkit.block
 
 import kingmc.platform.Location
-import kingmc.platform.Material
 import kingmc.platform.block.Block
 import kingmc.platform.block.BlockState
 import kingmc.platform.bukkit.asKingMC
+import kingmc.platform.material.Material
 
 class BukkitBlockState(override val block: Block, private val _bukkitBlockState: _BukkitBlockState) : BlockState {
     /**

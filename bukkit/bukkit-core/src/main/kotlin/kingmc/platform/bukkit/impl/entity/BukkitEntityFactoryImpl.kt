@@ -27,14 +27,14 @@ open class BukkitEntityFactoryImpl : BukkitEntityFactory {
     @Autowired
     lateinit var server: BukkitServer
 
-     private val _bukkitEntityTypes: Map<_BukkitEntityType, EntityType<*>> by lazy {
+     private val _bukkitEntityTypes: Map<_BukkitEntityType, EntityType> by lazy {
          buildMap {
              _BukkitEntityType.values().forEach {
-                 put(it, BukkitEntityTypeImpl<Entity>(it))
+                 put(it, BukkitEntityTypeImpl(it))
              }
          }
      }
-    private val _keyedEntityTypes: Map<Key, EntityType<*>>
+    private val _keyedEntityTypes: Map<Key, EntityType>
         get() = buildMap {
             _bukkitEntityTypes.forEach { (bukkitEntityType, entityType) ->
                 put(bukkitEntityType.key.asKingMC(), entityType)
@@ -54,15 +54,15 @@ open class BukkitEntityFactoryImpl : BukkitEntityFactory {
         return BukkitEntityImpl(bukkitEntity, application)
     }
 
-    override fun getEntityTypeForBukkit(bukkitEntityType: _BukkitEntityType): EntityType<*> {
+    override fun getEntityTypeForBukkit(bukkitEntityType: _BukkitEntityType): EntityType {
         return _bukkitEntityTypes[bukkitEntityType]!!
     }
 
-    override fun getEntityType(key: Key): EntityType<*> {
+    override fun getEntityType(key: Key): EntityType {
         return requireNotNull(_keyedEntityTypes[key]) { "Entity type with key $key not found" }
     }
 
-    override fun getEntityTypes(): Set<EntityType<*>> {
+    override fun getEntityTypes(): Set<EntityType> {
         return _keyedEntityTypes.values.toSet()
     }
 

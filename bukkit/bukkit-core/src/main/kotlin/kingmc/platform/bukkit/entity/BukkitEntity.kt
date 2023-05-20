@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.entity
 
-import kingmc.platform.bukkit.audience.BukkitCommandSender
+import kingmc.platform.bukkit.command.BukkitCommandSender
 import kingmc.platform.bukkit.entity.player._BukkitCommandSender
 import kingmc.platform.entity.Entity
 

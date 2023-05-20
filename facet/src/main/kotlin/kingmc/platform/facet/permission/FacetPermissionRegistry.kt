@@ -5,7 +5,7 @@ import kingmc.platform.permission.Permission
 import kingmc.platform.permission.PermissionRegistry
 
 /**
- * Facet [PermissionRegistry] implementation
+ * Facet `PermissionRegistry` implementation
  */
 @FacetImplementation
 open class FacetPermissionRegistry : PermissionRegistry {

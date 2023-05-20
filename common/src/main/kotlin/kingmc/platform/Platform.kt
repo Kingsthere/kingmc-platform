@@ -12,10 +12,12 @@ import kingmc.platform.event.ListenerManager
 import kingmc.platform.event.Publisher
 import kingmc.platform.extension.ExtensionDispatcher
 import kingmc.platform.inventory.InventoryFactory
+import kingmc.platform.material.MaterialProvider
 import kingmc.platform.nbt.NBTFactory
 import kingmc.platform.permission.PermissionDispatcher
 import kingmc.platform.permission.PermissionRegistry
 import kingmc.platform.schedule.Scheduler
+import kingmc.util.Version
 
 /**
  * A superinterface designed to represent a kind of platform the runs current application
@@ -50,7 +52,7 @@ interface Platform {
      *
      * @since 0.0.5
      */
-    val minecraftVersion: String
+    val minecraftVersion: Version
 
     /**
      * The driver that launched this platform

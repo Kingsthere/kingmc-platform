@@ -3,6 +3,7 @@ package kingmc.platform.bukkit.impl
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.driver.PlatformDriver
 import kingmc.platform.facet.AbstractPlatform
+import kingmc.util.Version
 
 /**
  * `Platform implementation for bukkit
@@ -11,7 +12,7 @@ import kingmc.platform.facet.AbstractPlatform
  * @author kingsthere
  */
 @BukkitImplementation
-open class BukkitPlatform(override val minecraftVersion: String,
+open class BukkitPlatform(override val minecraftVersion: Version,
                           override val driver: PlatformDriver,
                           identifiers: Array<String> = arrayOf(),
 ) : AbstractPlatform(arrayOf("bukkit") + identifiers) {

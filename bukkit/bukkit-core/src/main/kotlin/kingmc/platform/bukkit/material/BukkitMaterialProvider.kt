@@ -2,13 +2,17 @@ package kingmc.platform.bukkit.material
 
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
-import kingmc.platform.MaterialProvider
-import kingmc.platform.MaterialType
 import kingmc.platform.bukkit.BukkitImplementation
+import kingmc.platform.bukkit.block.BukkitMaterialData
 import kingmc.platform.bukkit.nms.RegistryNMS
 import kingmc.platform.bukkit.util.asKingMC
+import kingmc.platform.material.MaterialProvider
+import kingmc.platform.material.MaterialType
+import kingmc.platform.material.block.ChestBlock
 import kingmc.util.key.Key
+import org.bukkit.block.data.type.Chest
 import org.bukkit.material.MaterialData
+import java.util.*
 
 /**
  * A [MaterialProvider] implementation for bukkit
@@ -22,7 +26,8 @@ open class BukkitMaterialProvider : MaterialProvider {
     @Autowired
     lateinit var registryNMS: RegistryNMS<*>
 
-    protected val _materialTypesByName: MutableMap<String, MaterialType<*>> = mutableMapOf()
+    protected val _materialTypesByBukkit: MutableMap<_BukkitMaterial, MaterialType<*>> = EnumMap(org.bukkit.Material::class.java)
+    protected val _materialTypesByName: MutableMap<String, MaterialType<*>> = HashMap()
     protected val _materialTypes: MutableMap<Key, MaterialType<*>> = initMaterialTypes()
 
     @Suppress("DEPRECATION")
@@ -30,9 +35,24 @@ open class BukkitMaterialProvider : MaterialProvider {
         val mutableMap: MutableMap<Key, MaterialType<*>> = LinkedHashMap(64)
         _BukkitMaterial.values().forEach {
             if (it.data == MaterialData::class.java) {
-                mutableMap.put(it.key.asKingMC(), BukkitMaterialType<Unit>(it))
-                _materialTypesByName.put(it.name, BukkitMaterialType<Unit>(it))
+                val materialType = BukkitMaterialType(it, Unit::class)
+                mutableMap.put(it.key.asKingMC(), materialType)
+                _materialTypesByBukkit.put(it, materialType)
+                _materialTypesByName.put(it.name, materialType)
+                return@forEach
             }
+            if (it.data == Chest::class.java) {
+                val materialType = BukkitMaterialType(it, ChestBlock::class)
+                mutableMap.put(it.key.asKingMC(), materialType)
+                _materialTypesByBukkit.put(it, materialType)
+                _materialTypesByName.put(it.name, materialType)
+                return@forEach
+            }
+            val materialType = BukkitMaterialType(it, BukkitMaterialData::class)
+            mutableMap.put(it.key.asKingMC(), materialType)
+            _materialTypesByBukkit.put(it, materialType)
+            _materialTypesByName.put(it.name, materialType)
+            return@forEach
         }
         return mutableMap
     }
@@ -76,7 +96,7 @@ open class BukkitMaterialProvider : MaterialProvider {
      * @author kingsthere
      */
     fun getTypeForBukkit(bukkitMaterial: _BukkitMaterial): MaterialType<*> {
-        return _materialTypesByName[bukkitMaterial.name]
+        return _materialTypesByBukkit[bukkitMaterial]
             ?: throw UnsupportedOperationException("Unsupported bukkit material $bukkitMaterial")
     }
 }

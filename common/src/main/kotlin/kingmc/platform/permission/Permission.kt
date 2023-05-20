@@ -23,5 +23,5 @@ interface Permission {
     /**
      * Children permissions of this permission
      */
-    val children: Set<String>
+    val children: Set<Permission>
 }

@@ -1,7 +1,7 @@
 package kingmc.platform.block
 
 import kingmc.platform.Locatable
-import kingmc.platform.MaterialHolder
+import kingmc.platform.material.MaterialHolder
 
 /**
  * Represents a captured state of a block, which will not updated automatically.

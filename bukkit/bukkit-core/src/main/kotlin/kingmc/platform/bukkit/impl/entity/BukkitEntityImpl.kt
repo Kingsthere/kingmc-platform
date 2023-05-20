@@ -14,10 +14,13 @@ import kingmc.platform.bukkit.adventure._AdventureKey
 import kingmc.platform.bukkit.asBukkit
 import kingmc.platform.bukkit.asKingMC
 import kingmc.platform.bukkit.entity.*
+import kingmc.platform.bukkit.entity.player._BukkitPlayer
+import kingmc.platform.bukkit.impl.permission.BukkitPermissibleImpl
 import kingmc.platform.bukkit.nbt.createMutableNBTCompound
 import kingmc.platform.entity.Entity
 import kingmc.platform.entity.EntityType
 import kingmc.platform.nbt.MutableNBTCompound
+import kingmc.platform.permission.Permissible
 import net.kyori.adventure.text.event.HoverEvent
 import java.util.*
 
@@ -28,12 +31,18 @@ import java.util.*
  * @author kingsthere
  */
 @BukkitImplementation
-open class BukkitEntityImpl(protected open val _bukkitEntity: _BukkitEntity, override val application: Application)
-    : BukkitEntity, Audience by Audience.EMPTY {
+open class BukkitEntityImpl(
+    protected open val _bukkitEntity: _BukkitEntity,
+    override val application: Application,
+) : BukkitEntity,
+    Audience by Audience.EMPTY,
+    Permissible by BukkitPermissibleImpl(_bukkitEntity, application) {
     init {
         // Remove entity when application shutdown
-        application.addShutdownHook {
-            this@BukkitEntityImpl.remove()
+        if (_bukkitEntity !is _BukkitPlayer) {
+            application.addShutdownHook {
+                this@BukkitEntityImpl.remove()
+            }
         }
     }
 
@@ -146,9 +155,8 @@ open class BukkitEntityImpl(protected open val _bukkitEntity: _BukkitEntity, ove
             (_bukkitEntity as _BukkitLivingEntity).isInvisible = value
         }
 
-    @Suppress("UNCHECKED_CAST")
-    override val type: EntityType<Entity>
-        get() = _bukkitEntity.type.asKingMC(application) as EntityType<Entity>
+    override val type: EntityType
+        get() = _bukkitEntity.type.asKingMC(application)
 
     override fun chat(message: String) {
         _bukkitEntity.server.dispatchCommand(_bukkitEntity, message.removePrefix("/"))

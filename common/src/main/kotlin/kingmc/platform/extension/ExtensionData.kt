@@ -32,5 +32,5 @@ data class ExtensionData(
     /**
      * The project this extension loaded from
      */
-    val project: ExtensionClassSource
+    val source: ExtensionClassSource
 )

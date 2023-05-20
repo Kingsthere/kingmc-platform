@@ -1,6 +1,5 @@
 package kingmc.platform.facet.permission
 
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Autowired
 import kingmc.platform.facet.FacetImplementation
 import kingmc.platform.permission.Permission
@@ -9,12 +8,10 @@ import kingmc.platform.permission.PermissionDispatcher
 import kingmc.platform.permission.PermissionRegistry
 
 /**
- * Facet [PermissionDispatcher] implementation
+ * Facet `PermissionDispatcher` implementation
  */
 @FacetImplementation
 open class FacetPermissionDispatcher : PermissionDispatcher {
-    override lateinit var context: Context
-
     @Autowired
     lateinit var permissionRegistry: PermissionRegistry
 
@@ -36,11 +33,8 @@ open class FacetPermissionDispatcher : PermissionDispatcher {
      * @param defaultState the default state to the permission
      * @param children the children to the permission
      */
-    override fun createPermission(name: String, defaultState: Boolean, children: Set<String>): Permission {
-        val permission = FacetPermission(name, defaultState, children)
-        _permissions.put(name, permission)
-        permissionRegistry.registerPermission(permission)
-        return permission
+    override fun createPermission(name: String, defaultState: Boolean, children: Set<Permission>): Permission {
+        return FacetPermission(name, defaultState, children)
     }
 
     /**
@@ -48,6 +42,16 @@ open class FacetPermissionDispatcher : PermissionDispatcher {
      */
     override fun createPermissionBuilder(name: String, defaultState: Boolean): PermissionBuilder {
         return FacetPermissionBuilder(name, defaultState, this)
+    }
+
+    override fun registerPermission(permission: Permission) {
+        if (!permission.name.endsWith("*")) {
+            _permissions.put(permission.name, permission)
+            permissionRegistry.registerPermission(permission)
+            permission.children.forEach {
+                registerPermission(it)
+            }
+        }
     }
 
     override fun close() {

@@ -1,8 +1,8 @@
 package kingmc.platform.bukkit.item
 
-import kingmc.platform.Material
 import kingmc.platform.item.Item
 import kingmc.platform.item.ItemBuilder
+import kingmc.platform.material.Material
 import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.util.key.Key
 

@@ -4,7 +4,7 @@ import kingmc.common.application.Application
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.text.Text
-import kingmc.platform.Material
+import kingmc.platform.material.Material
 import kingmc.platform.nbt.*
 import kingmc.util.key.Key
 import kotlin.contracts.ExperimentalContracts

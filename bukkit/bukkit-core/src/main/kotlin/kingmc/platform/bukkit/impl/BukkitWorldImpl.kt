@@ -4,19 +4,26 @@ import com.github.benmanes.caffeine.cache.AsyncCache
 import com.github.benmanes.caffeine.cache.Caffeine
 import io.papermc.lib.PaperLib
 import kingmc.common.application.Application
-import kingmc.common.text.Text
-import kingmc.platform.Chunk
-import kingmc.platform.Location3D
+import kingmc.common.coroutine.ApplicationCoroutineScope
+import kingmc.common.coroutine.asyncMinecraftCoroutineDispatcher
+import kingmc.platform.*
 import kingmc.platform.audience.Audience
 import kingmc.platform.audience.particle.*
 import kingmc.platform.block.Block
-import kingmc.platform.bukkit.*
+import kingmc.platform.bukkit.BukkitImplementation
+import kingmc.platform.bukkit.BukkitServer
+import kingmc.platform.bukkit.BukkitWorld
+import kingmc.platform.bukkit._BukkitWorld
+import kingmc.platform.bukkit.entity.asKingMC
+import kingmc.platform.bukkit.impl.block.BukkitBlockImpl
 import kingmc.platform.bukkit.util.asKingMC
+import kingmc.platform.entity.Entity
+import kingmc.platform.entity.EntityType
 import kingmc.platform.entity.player.Player
-import kingmc.platform.server
 import kingmc.util.key.Key
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import java.util.*
-import java.util.concurrent.CompletableFuture
 
 /**
  * Official implementation of [BukkitWorld]
@@ -27,11 +34,7 @@ import java.util.concurrent.CompletableFuture
 @BukkitImplementation
 class BukkitWorldImpl(override val application: Application, private val _bukkitWorld: _BukkitWorld) : BukkitWorld {
      private val _chunks: AsyncCache<Pair<Int, Int>, Chunk> = Caffeine.newBuilder()
-         .buildAsync { key, executor ->
-             CompletableFuture.supplyAsync({
-                 BukkitChunkImpl(PaperLib.getChunkAtAsync(this._bukkitWorld, key.first, key.second).join(), this, application)
-             }, executor)
-         }
+         .buildAsync()
 
      val _players: List<Player>
          get() = buildList {
@@ -50,20 +53,26 @@ class BukkitWorldImpl(override val application: Application, private val _bukkit
         get() = _bukkitWorld.key.asKingMC()
 
     override fun getChunkAt(x: Int, z: Int): Chunk {
-        TODO("Not yet implemented")
+        return _chunks.synchronous().get(x to z) { _ ->
+            BukkitChunkImpl(_bukkitWorld.getChunkAt(x, z), this, application)
+        }!!
     }
 
-    override fun getChunkAt(location: Location3D): Chunk {
-        TODO("Not yet implemented")
+    override fun getChunkAt(location: Location3D): Chunk = getChunkAt(location.blockX shr 4, location.blockY shr 4)
+
+    override fun getChunkAtAsync(x: Int, z: Int): Deferred<Chunk> = ApplicationCoroutineScope(asyncMinecraftCoroutineDispatcher).async {
+        BukkitChunkImpl(PaperLib.getChunkAtAsync(this@BukkitWorldImpl._bukkitWorld, x, z).join(), this@BukkitWorldImpl, application)
+    }
+
+    override fun getChunkAtAsync(location: Location3D): Deferred<Chunk> {
+        return getChunkAtAsync(location.blockX shr 4, location.blockY shr 4)
     }
 
     override fun getBlockAt(x: Int, y: Int, z: Int): Block {
-        TODO("Not yet implemented")
+        return BukkitBlockImpl(_bukkitWorld.getBlockAt(x, y, z), application)
     }
 
-    override fun getBlockAt(location: Location3D): Block {
-        TODO("Not yet implemented")
-    }
+    override fun getBlockAt(location: Location3D): Block = getBlockAt(location.blockX, location.blockY, location.blockZ)
 
     override val minHeight: Int
         get() = _bukkitWorld.minHeight
@@ -80,11 +89,49 @@ class BukkitWorldImpl(override val application: Application, private val _bukkit
             _bukkitWorld.fullTime = value
         }
 
-    override fun audiences(): Iterable<Audience> = _players
-
-    override fun asText(): Text {
-        return Text(name)
+    /**
+     * Gets all entities from this provider
+     *
+     * @return The entities
+     */
+    override fun getEntities(): List<Entity> {
+        return _bukkitWorld.entities.map {
+            it.asKingMC(application)
+        }
     }
+
+    /**
+     * Get multiple entity by its type
+     *
+     * @param entityType the type of entity
+     * @return Each entity is an entity of [entityType]
+     */
+    override fun getEntities(entityType: EntityType): List<Entity> {
+        return getEntities().filter { it.type == entityType }
+    }
+
+    /**
+     * Gets a single entity by its [entity id][Entity.entityId]
+     *
+     * @param entityId the entityId of the entity
+     * @return Entity with id [entityId], or `null` if entity with [entityId] is not exists
+     */
+    override fun getEntity(entityId: Int): Entity? {
+        return _bukkitWorld.entities.find { it.entityId == entityId }?.asKingMC(application)
+    }
+
+    /**
+     * Gets a single entity by its type
+     *
+     * @param entityType the type of entity
+     * @return Entity is an entity of [entityType], or `null` if
+     *         entity that is an entity of [entityType] not exists
+     */
+    override fun getEntity(entityType: EntityType): Entity? {
+        return getEntities().find { it.type == entityType }
+    }
+
+    override fun audiences(): Iterable<Audience> = _players
 
     override fun sendParticle(particle: Particle<*>) {
         _players.forEach { it.sendParticle(particle) }

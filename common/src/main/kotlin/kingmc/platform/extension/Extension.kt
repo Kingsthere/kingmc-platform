@@ -95,7 +95,15 @@ annotation class Extension(
         val id: String,
 
         /**
-         * Is this dependency optional?, if the dependency
+         * The url of the dependency, this url is used to specify the dependency to
+         * download if the dependency is missing. You can leave it to default (`empty string`), but if
+         * the dependency is missing then kingmc will download it by its [id] which
+         * may not be the correct result you wanted
+         */
+        val url: String = "",
+
+        /**
+         * Whether this dependency optional or not, if the dependency
          * is not optional then when the server trying to load
          * the extension without the specified dependenct will not load
          */

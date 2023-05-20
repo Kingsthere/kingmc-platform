@@ -3,14 +3,13 @@ package kingmc.platform.bukkit.impl.entity
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.entity.BukkitEntityType
 import kingmc.platform.bukkit.entity._BukkitEntityType
-import kingmc.platform.entity.Entity
 import kingmc.util.key.Key
 
 /**
  * An official implementation of [BukkitEntityType]
  */
 @BukkitImplementation
-class BukkitEntityTypeImpl<TEntity : Entity>(val bukkitEntityType: _BukkitEntityType) : BukkitEntityType<TEntity> {
+class BukkitEntityTypeImpl(val bukkitEntityType: _BukkitEntityType) : BukkitEntityType {
     override val key: Key
         get() = Key(bukkitEntityType.key.namespace, bukkitEntityType.key.key)
 
@@ -20,7 +19,7 @@ class BukkitEntityTypeImpl<TEntity : Entity>(val bukkitEntityType: _BukkitEntity
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is BukkitEntityTypeImpl<*>) return false
+        if (other !is BukkitEntityTypeImpl) return false
 
         if (key != other.key) return false
 

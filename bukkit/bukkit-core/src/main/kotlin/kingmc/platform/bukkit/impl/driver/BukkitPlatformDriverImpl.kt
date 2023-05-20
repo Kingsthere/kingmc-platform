@@ -25,6 +25,7 @@ import kingmc.common.logging.slf4j.Slf4jLogger
 import kingmc.common.logging.slf4j.Slf4jLoggerManager
 import kingmc.common.logging.slf4j.Slf4jLoggerWrapper
 import kingmc.common.structure.JarFileClassSource
+import kingmc.common.structure.classloader.ExtensionClassLoader
 import kingmc.platform.BukkitJavaPlugin
 import kingmc.platform.ExperimentalPlatformApi
 import kingmc.platform.Platforms
@@ -39,9 +40,11 @@ import kingmc.platform.bukkit.impl.paper.PaperImplementation
 import kingmc.platform.bukkit.impl.paper.PaperPlatform
 import kingmc.platform.bukkit.impl.spigot.SpigotImplementation
 import kingmc.platform.bukkit.impl.spigot.SpigotPlatform
+import kingmc.platform.bukkit.paperlib.PaperLib
 import kingmc.platform.context.*
 import kingmc.platform.logging.infoColored
 import kingmc.util.Lifecycle
+import kingmc.util.Version
 import kingmc.util.format.PropertiesFormatContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +59,8 @@ import java.io.InputStream
 import java.util.*
 import java.util.function.Consumer
 import java.util.regex.Pattern
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 val VERSION_REGEX = Pattern.compile("(?i)\\(MC: (\\d\\.\\d+\\.?\\d+?)?(?: Pre-Release )?(\\d)?\\)")!!
 
@@ -94,6 +99,11 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             mkdirs()
         }
     }
+    val driverDirectory: File = File("$baseDirectory/drivers").apply {
+        if (!exists()) {
+            mkdirs()
+        }
+    }
 
     init {
         OpenAPI.supportClassLoader(_bukkitJavaPlugin.classLoader)
@@ -103,37 +113,46 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         platform = loadPlatform()
     }
 
-    protected val formatContext = PropertiesFormatContext(properties)
+    val formatContext = PropertiesFormatContext(properties)
     val mavenRepository = repository("{ kingmc.environment.maven-repository }", formatContext)
 
+    @OptIn(ExperimentalTime::class)
     override fun load() {
-        disposeTempFilesOnExit()
-        loadCoroutineEnvironment()
-        runBlocking(Dispatchers.IO) {
-            loadFullEnvironmentSuspend()
+        val time = measureTime {
+            disposeTempFilesOnExit()
+            loadCoroutineEnvironment()
+            runBlocking(Dispatchers.IO) {
+                loadFullEnvironmentSuspend()
+            }
+            application = loadPlatformApplication()
+            contextLifecycle = (application.context as LifecycleContext).lifecycle()
+
+            application(this.application) {
+                // Log the current kingmc framework information
+                info("")
+                infoColored("""<gradient:green:aqua> _  ___             __  __  _____  """)
+                infoColored("""<gradient:green:aqua>| |/ (_)           |  \/  |/ ____| """)
+                infoColored("""<gradient:green:aqua>| ' / _ _ __   __ _| \  / | |      """)
+                infoColored("""<gradient:green:aqua>|  < | | '_ \ / _` | |\/| | |      """)
+                infoColored("""<gradient:green:aqua>| . \| | | | | (_| | |  | | |____  """)
+                infoColored("""<gradient:green:aqua>|_|\_\_|_| |_|\__, |_|  |_|\_____| """)
+                infoColored("""<gradient:green:aqua>               __/ |               """)
+                infoColored("""<gradient:green:aqua>              |___/                """)
+                infoColored("""<grey>v: ${KingMC.VERSION} 2018 - 2023 ©""")
+                info("")
+
+                infoColored("<yellow>Booting up by driver $this")
+
+                runBlocking {
+                    info("Loading extensions from $extensionDirectory...")
+                    extensionDispatcher.loadExtensionsFromDirectory(extensionDirectory, contextLifecycle)
+                }
+
+            }
         }
-        application = loadPlatformApplication()
-        contextLifecycle = (application.context as LifecycleContext).lifecycle()
 
         application(this.application) {
-            // Log the current kingmc framework information
-            info("")
-            infoColored("""<gradient:green:aqua> _  ___             __  __  _____  """)
-            infoColored("""<gradient:green:aqua>| |/ (_)           |  \/  |/ ____| """)
-            infoColored("""<gradient:green:aqua>| ' / _ _ __   __ _| \  / | |      """)
-            infoColored("""<gradient:green:aqua>|  < | | '_ \ / _` | |\/| | |      """)
-            infoColored("""<gradient:green:aqua>| . \| | | | | (_| | |  | | |____  """)
-            infoColored("""<gradient:green:aqua>|_|\_\_|_| |_|\__, |_|  |_|\_____| """)
-            infoColored("""<gradient:green:aqua>               __/ |               """)
-            infoColored("""<gradient:green:aqua>              |___/                """)
-            infoColored("""<grey>v: ${KingMC.VERSION} 2018 - 2023 ©""")
-            info("")
-
-            infoColored("<yellow>Booting up by driver $this")
-
-            extensionDispatcher.loadExtensionsFromDirectory(extensionDirectory, contextLifecycle)
-
-            infoColored("<grey>KingMC framework launched successfully on platform $platform")
+            infoColored("<green>KingMC framework launched successfully on platform $platform in $time")
         }
 
         // Lifecycle.const (stage 0)
@@ -152,6 +171,14 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         val context = PlatformContextImpl(properties, "kingmc")
         contextInitializer = PlatformContextInitializer(context).apply {
             addSource(source)
+            driverDirectory.listFiles()?.forEach {
+                if (it.extension == "jar") {
+                    _rawLogger.info("Loading driver from $it")
+                    val driverClassLoader = ExtensionClassLoader(it, OpenAPI.classLoader()!!)
+                    driverClassLoader.addToClassloaders()
+                    addSource(JarFileClassSource(it, driverClassLoader).apply { load() })
+                }
+            }
         }
 
         val application: PlatformApplication = PlatformApplicationImpl(platform, context, environment, loggers)
@@ -207,6 +234,9 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             Adventure::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
         }
         launch {
+            PaperLib::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
+        }
+        launch {
             Class.forName("kingmc.platform.bukkit.nbtapi.NBTAPIEnvironment").kotlin.loadDependenciesSuspend(dependencyDispatcher, formatContext)
         }
         launch {
@@ -217,7 +247,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         // Fetch minecraft version use regex
         val versionMatcher = checkNotNull(VERSION_REGEX.matcher(Bukkit.getVersion())) { "Unable to fetch minecraft version" }
         versionMatcher.find()
-        val minecraftVersion = (checkNotNull(versionMatcher.group(1)) { "Unable to fetch minecraft version" })
+        val minecraftVersion = Version(checkNotNull(versionMatcher.group(1)) { "Unable to fetch minecraft version" })
         // Instantiate `Platform` instance
         return try {
             Class.forName("com.destroystokyo.paper.PaperConfig")
@@ -279,6 +309,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         }
         this.properties = loadingProperties
     }
+
     @Throws(IOException::class)
     protected fun loadProperties(path: String, consumer: Consumer<InputStream>) {
         // Jar builtin properties

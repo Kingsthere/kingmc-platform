@@ -1,9 +1,7 @@
 package kingmc.platform.facet
 
-import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.Releasable
 import kingmc.platform.event.Listener
@@ -18,9 +16,7 @@ import kingmc.platform.event.ListenerManager
 @Component
 @Scope(BeanScope.SINGLETON)
 @FacetImplementation
-abstract class FacetListenerManager : ListenerManager, ContextAware, Releasable {
-    override lateinit var context: Context
-
+abstract class FacetListenerManager : ListenerManager, Releasable {
     protected val _registeredListeners: MutableSet<Listener> = mutableSetOf()
 
     /**

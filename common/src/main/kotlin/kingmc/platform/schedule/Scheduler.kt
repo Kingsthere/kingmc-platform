@@ -4,7 +4,6 @@ import kingmc.common.application.Isolated
 import kingmc.common.application.WithApplication
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
-import kingmc.common.context.aware.ContextAware
 import kingmc.common.context.beans.BeanScope
 import java.io.Closeable
 import kotlin.time.Duration
@@ -18,7 +17,7 @@ import kotlin.time.Duration
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated // Cancel active tasks when dispose
-interface Scheduler : Closeable, ContextAware {
+interface Scheduler : Closeable {
     /**
      * Schedule and run a delayed [task]
      *

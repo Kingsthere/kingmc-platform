@@ -5,8 +5,10 @@ import kingmc.common.application.Isolated
 import kingmc.platform.audience.ForwardingAudience
 import kingmc.platform.audience.particle.ParticleRecipient
 import kingmc.platform.block.Block
+import kingmc.platform.entity.EntityProvider
 import kingmc.util.key.Key
 import kingmc.util.key.Keyed
+import kotlinx.coroutines.Deferred
 import java.util.*
 
 /**
@@ -24,7 +26,7 @@ import java.util.*
  * @author kingsthere
  */
 @Isolated
-interface World : ForwardingAudience, ParticleRecipient, Keyed {
+interface World : EntityProvider, ForwardingAudience, ParticleRecipient, Keyed {
     /**
      * The uuid of this world
      */
@@ -64,6 +66,23 @@ interface World : ForwardingAudience, ParticleRecipient, Keyed {
      * @return Chunk at the given location
      */
     fun getChunkAt(location: Location3D): Chunk
+
+    /**
+     * Gets the [Chunk] at the given coordinates, loading it asynchronously if needed.
+     *
+     * @param x X-coordinate of the chunk
+     * @param z Z-coordinate of the chunk
+     * @return Chunk at the given coordinates
+     */
+    fun getChunkAtAsync(x: Int, z: Int): Deferred<Chunk>
+
+    /**
+     * Gets the [Chunk] at the given [Location3D]
+     *
+     * @param location Location of the chunk
+     * @return Chunk at the given location
+     */
+    fun getChunkAtAsync(location: Location3D): Deferred<Chunk>
 
     /**
      * Gets the [Block] at the given [x], [y], [z]

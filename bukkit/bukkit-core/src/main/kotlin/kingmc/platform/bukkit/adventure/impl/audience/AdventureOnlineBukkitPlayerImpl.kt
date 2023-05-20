@@ -19,7 +19,7 @@ import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.asBukkit
 import kingmc.platform.bukkit.asKingMC
-import kingmc.platform.bukkit.audience.BukkitParticleAnimationTask
+import kingmc.platform.bukkit.audience.particle.BukkitParticleAnimationTask
 import kingmc.platform.bukkit.audience.particle.bukkit
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import kingmc.platform.bukkit.entity.player.BukkitPlayer
@@ -52,7 +52,9 @@ open class AdventureOnlineBukkitPlayerImpl(
     protected var _bukkitPlayer: _BukkitPlayer,
     protected var _adventureAudience: _AdventureAudience,
     application: Application,
-) : BukkitPlayer, BukkitHumanEntityImpl(_bukkitPlayer, application) {
+) : BukkitPlayer,
+    BukkitHumanEntityImpl(_bukkitPlayer, application) {
+
     override fun sendText(text: Text) {
         this.ensurePlayerOnline()
         _adventureAudience.sendMessage(text)
@@ -117,6 +119,14 @@ open class AdventureOnlineBukkitPlayerImpl(
             this.ensurePlayerOnline()
             _bukkitPlayer.isSneaking = value
         }
+    override val ping: Long
+        get() = _bukkitPlayer.ping.toLong()
+    override val clientBrand: String?
+        get() = TODO()
+
+    override fun disconnect(reason: Text) {
+        _bukkitPlayer.kickPlayer(reason.serializeFromTextToLegacy())
+    }
 
     /**
      * Gets the first date and time that this player was witnessed on this

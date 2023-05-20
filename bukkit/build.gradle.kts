@@ -12,9 +12,7 @@ plugins {
 }
 
 dependencies {
-    // api("net.kingmcplatform:bukkit-nms-1_19_2:0.0.4:obfuscated")
     implementation("de.tr7zw:item-nbt-api:2.11.1")
-    // runtimeOnly(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
     api(project(":bukkit:bukkit-nbtapi"))
     api(project(":bukkit:bukkit-brigadier"))
     api(project(":bukkit:bukkit-core"))
@@ -132,7 +130,8 @@ tasks {
             include(dependency("org.ow2.asm:asm-util:9.3"))
             include(dependency("org.ow2.asm:asm-commons:9.3"))
             include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
-            include(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
+
+            // include(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
             include(project(":bukkit:bukkit-brigadier"))
             include(project(":bukkit:bukkit-nbtapi"))
             include(project(":bukkit:bukkit-core"))

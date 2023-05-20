@@ -1,6 +1,7 @@
 package kingmc.platform.command
 
 import kingmc.platform.audience.Audience
+import kingmc.platform.permission.Permissible
 
 /**
  * Represent a command sender that capable for send commands
@@ -9,7 +10,7 @@ import kingmc.platform.audience.Audience
  * @author kingsthere
  * @see Audience
  */
-interface CommandSender : Audience {
+interface CommandSender : Audience, Permissible {
     /**
      * To let this command sender send a chat message
      *

@@ -4,23 +4,17 @@ import kingmc.platform.permission.Permission
 import kingmc.platform.permission.PermissionBuilder
 
 /**
- * Facet [PermissionBuilder] implementation
+ * Facet `PermissionBuilder` implementation
  */
-open class FacetPermissionBuilder(val name: String, val defaultState: Boolean, val factory: FacetPermissionDispatcher) : PermissionBuilder {
-    val children: MutableSet<String> = mutableSetOf()
+open class FacetPermissionBuilder(override var name: String, val defaultState: Boolean, val facetFactory: FacetPermissionDispatcher) : PermissionBuilder {
+    val children: MutableSet<Permission> = mutableSetOf()
 
-    /**
-     * Add a child permission to this
-     */
-    override fun addChild(permission: String): PermissionBuilder {
+    override fun permission(permission: Permission): PermissionBuilder {
         children.add(permission)
         return this
     }
 
     override fun build(): Permission {
-        val permission = factory.createPermission(name, defaultState, children)
-        factory._permissions.put(name, permission)
-        factory.permissionRegistry.registerPermission(permission)
-        return permission
+        return facetFactory.createPermission(name, defaultState, children)
     }
 }

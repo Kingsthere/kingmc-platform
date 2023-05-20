@@ -4,7 +4,9 @@ import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Server
+import kingmc.platform.bukkit.entity.player._BukkitOfflinePlayer
 import kingmc.platform.bukkit.entity.player._BukkitPlayer
+import kingmc.platform.entity.player.OfflinePlayer
 import kingmc.platform.entity.player.Player
 import kingmc.platform.server
 
@@ -29,6 +31,14 @@ interface BukkitServer : Server {
      * @return player
      */
     fun getPlayerForBukkit(bukkitPlayer: _BukkitPlayer): Player
+
+    /**
+     * Gets a [OfflinePlayer] for bukkit offline player [bukkitOfflinePlayer]
+     *
+     * @param bukkitOfflinePlayer the bukkit offline player
+     * @return player
+     */
+    fun getOfflinePlayerForBukkit(bukkitOfflinePlayer: _BukkitOfflinePlayer): OfflinePlayer
 }
 
 /**

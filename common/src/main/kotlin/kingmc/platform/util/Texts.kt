@@ -1,3 +1,5 @@
+@file:Utility
+
 package kingmc.platform.util
 
 import kingmc.common.application.WithApplication
@@ -10,6 +12,7 @@ import kingmc.platform.audience.title.DEFAULT_TIMES
 import kingmc.platform.audience.title.Title
 import kingmc.platform.audience.title.TitlePart
 import kingmc.platform.audience.title.TitlePartType
+import kingmc.util.Utility
 import kingmc.util.text.TextDisplayable
 
 /**

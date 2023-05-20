@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val kingmc_platform_version: String by project
 
 group = "net.kingmc.platform"
@@ -9,6 +11,11 @@ plugins {
     `maven-publish`
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 dependencies {
     implementation("org.spigotmc:spigot:$spigot_version")
     // Junit test
@@ -17,6 +24,12 @@ dependencies {
 
 sourceSets.main {
     java.srcDirs("src/main/java", "src/main/kotlin")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 tasks.withType<Jar> {

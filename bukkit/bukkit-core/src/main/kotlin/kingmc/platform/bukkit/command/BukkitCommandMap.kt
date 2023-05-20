@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.SimpleCommandMap
 import java.lang.reflect.Field
 
-@Component("bukkitCommandMap")
+@Component
 class BukkitCommandMap : CommandMap, org.bukkit.command.CommandMap {
     private val classCraftServer: Class<*> by lazy {
         Class.forName(

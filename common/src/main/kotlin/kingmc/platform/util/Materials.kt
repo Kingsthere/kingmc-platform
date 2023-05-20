@@ -1,7 +1,10 @@
+@file:Utility
+
 package kingmc.platform.util
 
-import kingmc.platform.MaterialType
-import kingmc.platform.material.BlockMaterialType
+import kingmc.platform.material.MaterialType
+import kingmc.platform.material.block.BlockMaterialType
+import kingmc.util.Utility
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 

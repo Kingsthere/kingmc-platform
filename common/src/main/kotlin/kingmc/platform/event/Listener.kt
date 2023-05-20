@@ -1,7 +1,6 @@
 package kingmc.platform.event
 
 import kingmc.common.application.*
-import kingmc.common.context.annotation.Component
 import kingmc.platform.publisher
 import java.io.Closeable
 import java.util.*
@@ -14,7 +13,6 @@ import kotlin.reflect.KClass
  * @author kingsthere
  */
 @Isolated
-@Component
 abstract class Listener(publisher: Publisher? = null) : Closeable {
     init {
         this.application.addShutdownHook {

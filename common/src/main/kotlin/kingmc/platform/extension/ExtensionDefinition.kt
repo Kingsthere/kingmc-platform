@@ -15,16 +15,16 @@ data class ExtensionDefinition(
     val id: String,
 
     /**
-     * The name of this extension for human visual
+     * The display name of this extension for human visual
      */
-    val name: String,
+    val displayName: String,
 
     /**
      * The tag(or version) of this plugin to
      * identity the version & branches of this
      * plugin
      */
-    val tag: String = "0.0.0.1",
+    val tag: String = "0.0.1",
 
     /**
      * The description of this extension
@@ -34,12 +34,7 @@ data class ExtensionDefinition(
     /**
      * The dependencies of this extension
      */
-    val dependencies: Array<out Dependency> = arrayOf(),
-
-    /**
-     * The class that defined this extension
-     */
-    val clazz: Class<*>
+    val dependencies: Array<out Dependency> = arrayOf()
 ) {
     /**
      * Determining the description of an extension, this annotation
@@ -101,7 +96,15 @@ data class ExtensionDefinition(
         val id: String,
 
         /**
-         * Is this dependency optional?, if the dependency
+         * The url of the dependency, this url is used to specify the dependency to
+         * download if the dependency is missing. You can leave it to default (`empty string`), but if
+         * the dependency is missing then kingmc will download it by its [id] which
+         * may not be the correct result you wanted
+         */
+        val url: String = "",
+
+        /**
+         * Whether this dependency optional or not, if the dependency
          * is not optional then when the server trying to load
          * the extension without the specified dependenct will not load
          */
@@ -115,7 +118,7 @@ data class ExtensionDefinition(
         other as ExtensionDefinition
 
         if (id != other.id) return false
-        if (name != other.name) return false
+        if (displayName != other.displayName) return false
         if (tag != other.tag) return false
         if (description != other.description) return false
         if (!dependencies.contentEquals(other.dependencies)) return false
@@ -125,7 +128,7 @@ data class ExtensionDefinition(
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + name.hashCode()
+        result = 31 * result + displayName.hashCode()
         result = 31 * result + tag.hashCode()
         result = 31 * result + description.hashCode()
         result = 31 * result + dependencies.contentHashCode()

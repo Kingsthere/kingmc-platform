@@ -35,21 +35,21 @@ open class PlatformContextInitializer(context: PlatformContext) :
                 }
                 if (bean.beanClass.hasAnnotation<ConditionalOnVersion>()) {
                     val annotation = bean.beanClass.getAnnotation<ConditionalOnVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version != Version(annotation.value)) {
                         return@Predicate false
                     }
                 }
                 if (bean.beanClass.hasAnnotation<ConditionalSinceVersion>()) {
                     val annotation = bean.beanClass.getAnnotation<ConditionalSinceVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version < Version(annotation.value)) {
                         return@Predicate false
                     }
                 }
                 if (bean.beanClass.hasAnnotation<ConditionalBeforeVersion>()) {
                     val annotation = bean.beanClass.getAnnotation<ConditionalBeforeVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version >= Version(annotation.value)) {
                         return@Predicate false
                     }
@@ -71,21 +71,21 @@ open class PlatformContextInitializer(context: PlatformContext) :
                 }
                 if (element.hasAnnotation<ConditionalOnVersion>()) {
                     val annotation = element.getAnnotation<ConditionalOnVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version != Version(annotation.value)) {
                         return@Predicate false
                     }
                 }
                 if (element.hasAnnotation<ConditionalSinceVersion>()) {
                     val annotation = element.getAnnotation<ConditionalSinceVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version < Version(annotation.value)) {
                         return@Predicate false
                     }
                 }
                 if (element.hasAnnotation<ConditionalBeforeVersion>()) {
                     val annotation = element.getAnnotation<ConditionalBeforeVersion>()!!
-                    val version = Version(context.application.platform.minecraftVersion)
+                    val version = context.application.platform.minecraftVersion
                     if (version >= Version(annotation.value)) {
                         return@Predicate false
                     }

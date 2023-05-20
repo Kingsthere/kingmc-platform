@@ -2,7 +2,7 @@ package kingmc.platform.item
 
 import kingmc.common.application.WithApplication
 import kingmc.common.context.annotation.Component
-import kingmc.platform.Material
+import kingmc.platform.material.Material
 import kingmc.util.key.Key
 
 /**

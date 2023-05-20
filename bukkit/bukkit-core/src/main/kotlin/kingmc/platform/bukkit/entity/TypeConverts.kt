@@ -34,6 +34,6 @@ fun Entity.asBukkit(): _BukkitEntity = (this as BukkitEntity).toBukkitEntity()
  * @author kingsthere
  */
 // @WithApplication use parameter [application[ instead
-fun _BukkitEntityType.asKingMC(application: Application): EntityType<*> {
+fun _BukkitEntityType.asKingMC(application: Application): EntityType {
     return (application.entityFactory as BukkitEntityFactory).getEntityTypeForBukkit(this)
 }

@@ -6,6 +6,7 @@ import kingmc.platform.command.model.BlockingHandler
 import kingmc.platform.command.model.CommandExecutor
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Node
+import kingmc.platform.command.parameter.Parameters
 
 /**
  * A shortcut to set the name of this handler
@@ -75,10 +76,19 @@ fun Node.handler(name: String, configurer: @WithApplication Handler.() -> Unit =
  * Set the executor of current handler
  */
 @WithApplication
-fun <THandler : Handler> THandler.execute(executor: @WithApplication (CommandContext) -> CommandResult) =
+fun <THandler : Handler> THandler.executes(executor: @WithApplication CommandExecutor) =
     this.apply {
-        this.executor = CommandExecutor { context: CommandContext ->
-            executor(context)
+        this.executor = executor
+    }
+
+/**
+ * Set the executor of current handler
+ */
+@WithApplication
+fun <THandler : Handler> THandler.executes(executor: @WithApplication (CommandSender, Parameters) -> CommandResult) =
+    this.apply {
+        this.executor = CommandExecutor { context ->
+            executor(context.invoker, context.parameters)
         }
     }
 

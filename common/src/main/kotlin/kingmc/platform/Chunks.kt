@@ -1,5 +1,7 @@
 package kingmc.platform
 
+import kingmc.platform.material.MaterialType
+
 
 /**
  * Get block type for block at corresponding coordinate in the chunk

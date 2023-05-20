@@ -23,5 +23,5 @@ interface BukkitEntityFactory : EntityFactory {
      *
      * @param bukkitEntityType the bukkit entity type to get from
      */
-    fun getEntityTypeForBukkit(bukkitEntityType: _BukkitEntityType): EntityType<*>
+    fun getEntityTypeForBukkit(bukkitEntityType: _BukkitEntityType): EntityType
 }
