@@ -6,7 +6,22 @@ package kingmc.platform
  * @since 0.0.7
  * @author kingsthere
  */
-data class Region(val first: Location3D, val second: Location3D)
+data class Region(val first: Location3D, val second: Location3D) : Iterable<Location3D> {
+    val coveredLocations by lazy {
+        buildList {
+            for (x in first.blockX..second.blockX) {
+                for (y in first.blockY..second.blockY) {
+                    for (z in first.blockZ..second.blockZ) {
+                        add(Location3D(x, y, z))
+                    }
+                }
+            }
+        }
+    }
+
+    override fun iterator(): Iterator<Location3D> = coveredLocations.iterator()
+
+}
 
 /**
  * Create a region by x1, y1, z1, x2, y2, z2
