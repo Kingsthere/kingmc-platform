@@ -1,16 +1,22 @@
 package kingmc.platform.bukkit.impl.command
 
 import kingmc.common.application.Application
-import kingmc.platform.audience.Audience
+import kingmc.platform.audience._AdventureAudience
 import kingmc.platform.block.Block
-import kingmc.platform.bukkit.Bukkit
-import kingmc.platform.bukkit.command.BukkitBlockCommandSender
+import kingmc.platform.bukkit.adventure.Adventure
 import kingmc.platform.bukkit.entity.player._BukkitBlockCommandSender
 import kingmc.platform.bukkit.impl.block.BukkitBlockImpl
+import kingmc.platform.bukkit.impl.permission.BukkitPermissibleImpl
+import kingmc.platform.command.BlockCommandSender
 import kingmc.platform.permission.Permissible
 
-class BukkitBlockCommandSenderImpl(private val _bukkitBlockCommandSender: _BukkitBlockCommandSender, val application: Application)
-    : BukkitBlockCommandSender(), Audience by Audience.EMPTY, Permissible by Permissible.ALWAYS {
+class BukkitBlockCommandSenderImpl(
+    private val _bukkitBlockCommandSender: _BukkitBlockCommandSender,
+    adventureAudience: _AdventureAudience = Adventure.getAudienceProvider().sender(_bukkitBlockCommandSender),
+    application: Application,
+    permissibleDelegate: Permissible = BukkitPermissibleImpl(_bukkitBlockCommandSender, application)
+) : BukkitCommandSenderImpl(_bukkitBlockCommandSender, adventureAudience, application, permissibleDelegate), BlockCommandSender {
+
     private val _block = BukkitBlockImpl(_bukkitBlockCommandSender.block, application)
 
     /**
@@ -18,16 +24,5 @@ class BukkitBlockCommandSenderImpl(private val _bukkitBlockCommandSender: _Bukki
      */
     override fun getBlock(): Block {
         return _block
-    }
-
-    /**
-     * To let this command sender send a
-     * chat message
-     *
-     * @since 0.0.3
-     * @author kingsthere
-     */
-    override fun chat(message: String) {
-        Bukkit.dispatchCommand(this._bukkitBlockCommandSender, message.removePrefix("/"))
     }
 }

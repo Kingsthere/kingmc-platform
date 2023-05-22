@@ -3,7 +3,6 @@ package kingmc.platform.bukkit
 import kingmc.common.application.Application
 import kingmc.platform.Direction
 import kingmc.platform.Location
-import kingmc.platform.platform
 
 typealias _BukkitLocation = org.bukkit.Location
 
@@ -20,7 +19,7 @@ fun Location.asBukkit(): _BukkitLocation =
 // @WithApplication use parameter [application] instead
 fun _BukkitLocation.asKingMC(application: Application): Location {
     this.world?.let {
-        return application.platform.locations.createLocation(
+        return Location(
             this.x,
             this.y,
             this.z,
@@ -28,7 +27,7 @@ fun _BukkitLocation.asKingMC(application: Application): Location {
             it.asKingMC(application)
         )
     } ?: let {
-        return application.platform.locations.createLocation(
+        return Location(
             this.x,
             this.y,
             this.z,

@@ -84,6 +84,11 @@ open class AdventureOnlineBukkitPlayerImpl(
         return _bukkitPlayer
     }
 
+    override fun command(command: String) {
+        this.ensurePlayerOnline()
+        _bukkitPlayer.server.dispatchCommand(_bukkitPlayer, command)
+    }
+
     override var displayName: Text
         get() {
             this.ensurePlayerOnline()
@@ -220,7 +225,7 @@ open class AdventureOnlineBukkitPlayerImpl(
     override var velocity: Vector
         get() {
             this.ensurePlayerOnline()
-            return _bukkitPlayer.velocity.asKingMC(application)
+            return _bukkitPlayer.velocity.asKingMC()
         }
         set(value) {
             this.ensurePlayerOnline()

@@ -52,7 +52,7 @@ open class BukkitEntityImpl(
     override fun toBukkitEntity(): _BukkitEntity = _bukkitEntity
 
     override var velocity: Vector
-        get() = _bukkitEntity.velocity.asKingMC(application)
+        get() = _bukkitEntity.velocity.asKingMC()
         set(value) {
             _bukkitEntity.velocity = value.asBukkit()
         }
@@ -158,8 +158,8 @@ open class BukkitEntityImpl(
     override val type: EntityType
         get() = _bukkitEntity.type.asKingMC(application)
 
-    override fun chat(message: String) {
-        _bukkitEntity.server.dispatchCommand(_bukkitEntity, message.removePrefix("/"))
+    override fun command(command: String) {
+        _bukkitEntity.server.dispatchCommand(_bukkitEntity, command)
     }
 
     override val name: String

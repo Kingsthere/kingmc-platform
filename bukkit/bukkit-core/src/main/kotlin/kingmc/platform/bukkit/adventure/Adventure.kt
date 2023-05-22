@@ -56,7 +56,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences
 )
 object Adventure : Releasable {
     // net.kyori.adventure.platform.AudienceProvider
-    private lateinit var _adventureAudienceProvider: BukkitAudiences
+    private var _adventureAudienceProvider: BukkitAudiences? = null
 
     @Awake(Lifecycles.ACTIVE, priority = Priorities.NORMAL)
     fun init() {
@@ -70,12 +70,13 @@ object Adventure : Releasable {
      */
     fun getAudienceProvider(): BukkitAudiences {
         return _adventureAudienceProvider
+            ?: throw IllegalStateException("Adventure audience provider is not ready yet, the getAudienceProvider statement should only called after Lifecycles.ACTIVE")
     }
 
     /**
      * Release the adventure audience provider
      */
     override fun release() {
-         _adventureAudienceProvider.close()
+         _adventureAudienceProvider?.close()
     }
 }
