@@ -58,8 +58,6 @@ public class BukkitJavaPlugin extends JavaPlugin {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onLoad() {
-        long stopwatch = System.currentTimeMillis();
-
         OpenAPI.supportClassLoader(this.getClass().getClassLoader());
 
         if (!kingmcRoot.exists()) {

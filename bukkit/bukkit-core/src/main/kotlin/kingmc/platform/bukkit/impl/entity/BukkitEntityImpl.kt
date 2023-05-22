@@ -25,7 +25,7 @@ import net.kyori.adventure.text.event.HoverEvent
 import java.util.*
 
 /**
- * An official implementation of [BukkitEntity]
+ * A simple implementation of [BukkitEntity]
  *
  * @since 0.0.7
  * @author kingsthere
