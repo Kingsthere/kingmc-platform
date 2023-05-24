@@ -3,7 +3,7 @@ package kingmc.platform.bukkit.impl.schedule
 import kingmc.common.application.Isolated
 import kingmc.common.application.WithApplication
 import kingmc.common.application.application
-import kingmc.common.context.Context
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
@@ -24,7 +24,7 @@ import kotlin.time.Duration
 @Scope(BeanScope.SINGLETON)
 @Isolated // Cancel active tasks when dispose
 class BukkitSchedulerImpl : Scheduler {
-    private val _bukkitPlugin = application { bukkitPlugin }
+    private val _bukkitPlugin = withApplication { bukkitPlugin }
 
     // Tasks scheduled by this scheduler
     internal val _scheduledTasks: MutableSet<ScheduledTask> = mutableSetOf()
@@ -38,7 +38,7 @@ class BukkitSchedulerImpl : Scheduler {
      */
     override fun scheduleDelayedTask(task: @WithApplication Runnable, delay: Duration): ScheduledTask {
         val bukkitTask = Bukkit.getScheduler().runTaskLater(_bukkitPlugin, Runnable {
-            application {
+            withApplication {
                 task.run()
             }
         }, delay.inTicks)
@@ -56,7 +56,7 @@ class BukkitSchedulerImpl : Scheduler {
      */
     override fun scheduleRepeatedlyTask(task: @WithApplication Runnable, interval: Duration): ScheduledTask {
         val bukkitTask = Bukkit.getScheduler().runTaskTimer(_bukkitPlugin, Runnable {
-            application {
+            withApplication {
                 task.run()
             }
         }, 0, interval.inTicks)

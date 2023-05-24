@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.adventure
 
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Configuration
 import kingmc.common.environment.maven.MavenDependency
 import kingmc.platform.Awake
@@ -60,7 +60,7 @@ object Adventure : Releasable {
 
     @Awake(Lifecycles.ACTIVE, priority = Priorities.NORMAL)
     fun init() {
-        _adventureAudienceProvider = this@Adventure.application {
+        _adventureAudienceProvider = this@Adventure.withApplication {
             BukkitAudiences.create(bukkitPlugin)
         }
     }

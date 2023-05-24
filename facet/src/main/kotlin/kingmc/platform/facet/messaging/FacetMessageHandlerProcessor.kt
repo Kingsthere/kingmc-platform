@@ -1,6 +1,6 @@
 package kingmc.platform.facet.messaging
 
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.Context
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.process.BeanProcessor
@@ -24,7 +24,7 @@ object FacetMessageHandlerProcessor : BeanProcessor {
 
     override fun process(context: Context, bean: Any): Boolean {
         if (bean::class.hasAnnotation<PluginMessageChannelHandler>()) {
-            bean.application {
+            bean.withApplication {
                 val messageHandler = ClassMessageHandler(bean::class)
                 val messageChannel = messenger.getIncomingPluginMessagingChannel(messageHandler.channel)
                 _registeredMessageHandlers.put(messageHandler, messageChannel.registerHandler(messageHandler))
@@ -36,7 +36,7 @@ object FacetMessageHandlerProcessor : BeanProcessor {
 
     override fun dispose(context: Context, bean: Any) {
         if (bean::class.hasAnnotation<PluginMessageChannelHandler>()) {
-            bean.application {
+            bean.withApplication {
                 val messageHandler = ClassMessageHandler(bean::class)
                 val messageChannel = messenger.getIncomingPluginMessagingChannel(messageHandler.channel)
                 messageChannel.unregisterHandler(_registeredMessageHandlers[messageHandler]!!)

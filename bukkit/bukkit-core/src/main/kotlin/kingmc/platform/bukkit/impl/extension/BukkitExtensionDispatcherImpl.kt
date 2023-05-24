@@ -2,9 +2,9 @@ package kingmc.platform.bukkit.impl.extension
 
 import kingmc.common.OpenAPI
 import kingmc.common.application.WithApplication
-import kingmc.common.application.application
 import kingmc.common.application.currentApplication
-import kingmc.common.application.suspendApplication
+import kingmc.common.application.withApplication
+import kingmc.common.application.withApplicationSuspend
 import kingmc.common.context.process.afterProcess
 import kingmc.common.context.process.processBeans
 import kingmc.common.logging.error
@@ -132,7 +132,7 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
                 }
             }
             source.extensions.forEach {
-                application(application) {
+                withApplication(application) {
                     infoColored(StringBuilder().apply {
                         append("<gradient:aqua:light_purple>Extension ${it.displayName}(${it.id}) v. ${it.tag}")
                         if (it.description.contributors.isNotEmpty()) {
@@ -238,11 +238,11 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
         val scope = CoroutineScope(Dispatchers.IO)
         extractedExtensions = (directory.listFiles()?.map { file ->
             scope.async {
-                return@async suspendApplication(application) {
+                return@async withApplicationSuspend(application) {
                     if (validateExtension(file)) {
                         try {
                             recognizeExtensionFromJarFile(file)?.let { source ->
-                                return@suspendApplication source
+                                return@withApplicationSuspend source
                             }
                         } catch (e: Exception) {
                             error(msg = "Unable to recognize extension for file $file", throwable = e)
@@ -260,7 +260,7 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
         // Make dirs if the direction is not exists
         extractedExtensions.map {
             launch {
-                suspendApplication(application) {
+                withApplicationSuspend(application) {
                     try {
                         val extension = loadExtension(it, lifecycle)
                         extension.forEach { ex ->

@@ -1,6 +1,8 @@
 package kingmc.platform.event
 
 import kingmc.common.application.*
+import kingmc.platform.event.subscription.BlockingSubscription
+import kingmc.platform.event.subscription.Subscription
 import kingmc.platform.publisher
 import java.io.Closeable
 import java.util.*
@@ -51,13 +53,13 @@ abstract class Listener(publisher: Publisher? = null) : Closeable {
     @Suppress("UNCHECKED_CAST")
     @WithApplication
     fun <TEvent : Any> subscribe(eventClass: KClass<TEvent>,
-                                 callback: @WithApplication suspend (TEvent) -> Unit,
+                                 callback: @WithApplication (TEvent) -> Unit,
                                  priority: Byte,
                                  ignoreCancelled: Boolean,
                                  publisher: Publisher,
                                  application: Application = currentApplication()
     ): Subscription<TEvent> {
-        val subscription = LambdaSubscription(eventClass, callback, priority, ignoreCancelled, publisher, application)
+        val subscription = BlockingSubscription(eventClass, callback, priority, ignoreCancelled, publisher, application)
         this.subscriptions.add(subscription as Subscription<Any>)
         return subscription
     }
@@ -101,6 +103,6 @@ inline fun <reified TEvent : Any> Listener.subscribe(
     ignoreCancelled: Boolean = true,
     publisher: Publisher = this.publisher,
     application: Application = currentApplication(),
-    noinline callback: @WithApplication suspend (TEvent) -> Unit) {
+    noinline callback: @WithApplication (TEvent) -> Unit) {
     this.subscribe(TEvent::class, callback, priority, ignoreCancelled, publisher, application)
 }

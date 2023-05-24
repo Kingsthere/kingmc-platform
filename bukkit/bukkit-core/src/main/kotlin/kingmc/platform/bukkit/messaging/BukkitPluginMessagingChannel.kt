@@ -1,7 +1,7 @@
 package kingmc.platform.bukkit.messaging
 
 import kingmc.common.application.Application
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import kingmc.platform.bukkit.getPlayerForBukkit
@@ -40,7 +40,7 @@ class BukkitPluginMessagingChannel(name: String, val application: Application) :
     override fun onPluginMessageReceived(channel: String, player: Player, byteMessage: ByteArray) {
         registeredMessageHandlers.forEach { entry ->
             if (entry.channel.name == channel) {
-                val message = application(application) {
+                val message = withApplication(application) {
                     arrayDataInputMessage(getPlayerForBukkit(player), channel, byteMessage)
                 }
                 entry.handler(message)

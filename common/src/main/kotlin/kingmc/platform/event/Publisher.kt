@@ -1,6 +1,7 @@
 package kingmc.platform.event
 
 import kingmc.common.context.annotation.Component
+import kingmc.platform.event.subscription.Subscription
 import java.io.Closeable
 
 /**
@@ -13,7 +14,7 @@ import java.io.Closeable
 @Component
 interface Publisher : Closeable {
     /**
-     * Register a subscription this publisher
+     * Register a subscription to this publisher
      *
      * Normally you use [Listener.subscribe] instead of just using this
      */

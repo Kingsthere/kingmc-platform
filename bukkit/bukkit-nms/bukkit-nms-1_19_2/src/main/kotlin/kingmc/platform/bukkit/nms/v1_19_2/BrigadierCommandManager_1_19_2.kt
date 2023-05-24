@@ -1,6 +1,7 @@
 package kingmc.platform.bukkit.nms.v1_19_2
 
 import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Qualifier

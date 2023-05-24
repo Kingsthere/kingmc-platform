@@ -20,7 +20,7 @@ import kingmc.util.annotation.Extended
 @Extended(Component::class)
 @Retention
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.ANNOTATION_CLASS)
-@WithApplication // When @Awake function called by processor it auto surrounded with application {  }
+@WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
 annotation class Awake (
     /**
      * The lifecycle to call the function if this

@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import kingmc.common.application.Application
 import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.condition.ConditionalOnBean
@@ -43,7 +44,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
     lateinit var minecraftServer: MinecraftServerNMS_1_19_2
 
     init {
-        application {
+        withApplication {
             info("Using ${this@BrigadierNMS_1_19_2::class.qualifiedName} as brigadier support...")
         }
     }
@@ -103,7 +104,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                 if (handler.parameters.size == 0) {
                     // Insert empty root parameters executor
                     executes { css ->
-                        return@executes application(handler.application) {
+                        return@executes withApplication(handler.application) {
                             try {
                                 val parameters = Parameters.EMPTY
                                 val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
@@ -118,7 +119,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                     // Insert default root parameters executor
                     if (handler.requiredParameters == 0) {
                         executes { css ->
-                            return@executes application(handler.application) {
+                            return@executes withApplication(handler.application) {
                                 try {
                                     val parameters = Parameters.EMPTY_WITH_DEFAULT
                                     val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
@@ -158,7 +159,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                 if (handler.parameters.size == 0) {
                     // Insert empty root parameters executor
                     executes { css ->
-                        return@executes application(handler.application) {
+                        return@executes withApplication(handler.application) {
                             try {
                                 val parameters = Parameters.EMPTY
                                 val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
@@ -173,7 +174,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                     // Insert default root parameters executor
                     if (handler.requiredParameters == 0) {
                         executes { css ->
-                            return@executes application(handler.application) {
+                            return@executes withApplication(handler.application) {
                                 try {
                                     val parameters = Parameters.EMPTY_WITH_DEFAULT
                                     val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
@@ -205,7 +206,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
             if (handler.parameters.size == 0) {
                 // Insert empty root parameters executor
                 executes { css ->
-                    return@executes application(owner.application) {
+                    return@executes withApplication(owner.application) {
                         try {
                             val parameters = Parameters.EMPTY
                             val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
@@ -230,7 +231,7 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
     ): ArgumentBuilder<CommandListenerWrapper, *> {
         return deserializeCommandParameter(deserializing, this@BrigadierNMS_1_19_2.application).apply {
                     executes { css ->
-                        return@executes application(handler.application) {
+                        return@executes withApplication(handler.application) {
                             try {
                                 val parameters = BrigadierParameters_1_19_2(css, listed.subList(0, index + 1))
                                 val commandContext = CommandContext(getCommandSender(css), parameters, css.input)

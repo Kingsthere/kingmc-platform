@@ -1,14 +1,19 @@
 package kingmc.platform.event
 
-import kingmc.common.application.suspendApplication
+import kingmc.common.application.withApplication
+import kingmc.common.application.withApplicationSuspend
+import kingmc.platform.event.subscription.BlockingSubscription
+import kingmc.platform.event.subscription.Subscription
+import kingmc.platform.event.subscription.SuspendSubscription
 import kotlinx.coroutines.runBlocking
 import java.util.*
+import kotlin.reflect.KClass
 
 /**
  * An abstract implementation of [Publisher]
  */
 abstract class AbstractPublisher : Publisher {
-    protected val subscriptions: MutableSet<Subscription<Any>> = TreeSet(compareBy { it })
+    protected val subscriptions: MutableMap<KClass<*>, MutableSet<Subscription<Any>>> = HashMap()
 
     /**
      * Register a subscription this publisher
@@ -16,7 +21,7 @@ abstract class AbstractPublisher : Publisher {
      * Normally you use [Listener.subscribe] instead of just using this
      */
     override fun subscribe(subscription: Subscription<Any>) {
-        this.subscriptions.add(subscription)
+        this.subscriptions.computeIfAbsent(subscription.eventType) { TreeSet() }.add(subscription)
     }
 
     /**
@@ -25,7 +30,7 @@ abstract class AbstractPublisher : Publisher {
      * Normally you use [Listener.unsubscribe] instead of just using this
      */
     override fun unsubscribe(subscription: Subscription<Any>) {
-        this.subscriptions.remove(subscription)
+        this.subscriptions[subscription.eventType]?.remove(subscription)
     }
 
     /**
@@ -36,15 +41,45 @@ abstract class AbstractPublisher : Publisher {
     }
 
     /**
-     * Call an event and block current thread till every subscription proceed the event
+     * Call an event and block current thread till every subscription proceed the event, it
+     * uses [runBlocking] to start coroutine so [SuspendSubscription] can handle events
      *
      * @param event the event to call
      * @return the event called
      */
     override fun <TEvent : Any> callEvent(event: TEvent): TEvent {
-        return runBlocking {
-            callEventSuspend(event)
+        this@AbstractPublisher.subscriptions[event::class]?.forEach {
+            if (it.ignoreCancelled) {
+                if (!checkEventCancelled(it)) {
+                    if (it is BlockingSubscription<Any>) {
+                        withApplication(it.application) {
+                            it.handler.invoke(event)
+                        }
+                    }
+                    if (it is SuspendSubscription<Any>) {
+                        runBlocking {
+                            withApplicationSuspend(it.application) {
+                                it.handler.invoke(event)
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (it is BlockingSubscription<Any>) {
+                    withApplication(it.application) {
+                        it.handler.invoke(event)
+                    }
+                }
+                if (it is SuspendSubscription<Any>) {
+                    runBlocking {
+                        withApplicationSuspend(it.application) {
+                            it.handler.invoke(event)
+                        }
+                    }
+                }
+            }
         }
+        return event
     }
 
     /**
@@ -54,16 +89,30 @@ abstract class AbstractPublisher : Publisher {
      * @return the event called
      */
     override suspend fun <TEvent : Any> callEventSuspend(event: TEvent): TEvent {
-        this@AbstractPublisher.subscriptions.forEach {
+        this@AbstractPublisher.subscriptions[event::class]?.forEach {
             if (it.ignoreCancelled) {
                 if (!checkEventCancelled(it)) {
-                    suspendApplication(it.application) {
-                        it.invoke(event)
+                    if (it is BlockingSubscription<Any>) {
+                        withApplication(it.application) {
+                            it.handler.invoke(event)
+                        }
+                    }
+                    if (it is SuspendSubscription<Any>) {
+                        withApplicationSuspend(it.application) {
+                            it.handler.invoke(event)
+                        }
                     }
                 }
             } else {
-                suspendApplication(it.application) {
-                    it.invoke(event)
+                if (it is BlockingSubscription<Any>) {
+                    withApplication(it.application) {
+                        it.handler.invoke(event)
+                    }
+                }
+                if (it is SuspendSubscription<Any>) {
+                    withApplicationSuspend(it.application) {
+                        it.handler.invoke(event)
+                    }
                 }
             }
         }

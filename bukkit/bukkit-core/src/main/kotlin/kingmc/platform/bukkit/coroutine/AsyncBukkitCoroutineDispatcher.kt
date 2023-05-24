@@ -2,6 +2,7 @@ package kingmc.platform.bukkit.coroutine
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
@@ -20,7 +21,7 @@ import kotlin.coroutines.CoroutineContext
 @Component
 @Scope(BeanScope.SINGLETON)
 class AsyncBukkitCoroutineDispatcher : AsyncMinecraftCoroutineDispatcher(), Closeable {
-    private val plugin = application { bukkitPlugin }
+    private val plugin = withApplication { bukkitPlugin }
     private val _runTaskLater: (Plugin, Runnable, Long) -> BukkitTask =
                 bukkitScheduler::runTaskLaterAsynchronously
     private val _runTask: (Plugin, Runnable) -> BukkitTask =
@@ -37,7 +38,7 @@ class AsyncBukkitCoroutineDispatcher : AsyncMinecraftCoroutineDispatcher(), Clos
         val task = _runTaskLater(
                 plugin,
                 Runnable {
-                    this@AsyncBukkitCoroutineDispatcher.application {
+                    this@AsyncBukkitCoroutineDispatcher.withApplication {
                         continuation.apply { resumeUndispatched(Unit) }
                     }
                 },
@@ -53,7 +54,7 @@ class AsyncBukkitCoroutineDispatcher : AsyncMinecraftCoroutineDispatcher(), Clos
         }
 
         _runTask(plugin, Runnable {
-            this@AsyncBukkitCoroutineDispatcher.application {
+            this@AsyncBukkitCoroutineDispatcher.withApplication {
                 block.run()
             }
         })

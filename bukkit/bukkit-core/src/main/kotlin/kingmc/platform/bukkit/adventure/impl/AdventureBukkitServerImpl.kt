@@ -1,6 +1,7 @@
 package kingmc.platform.bukkit.adventure.impl
 
 import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.platform.audience.Console
@@ -11,9 +12,11 @@ import kingmc.platform.bukkit.adventure.impl.audience.AdventureBukkitConsoleImpl
 import kingmc.platform.bukkit.adventure.impl.audience.AdventureOnlineBukkitPlayerImpl
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import kingmc.platform.bukkit.driver.bukkitServer
+import kingmc.platform.bukkit.entity.player._BukkitCommandSender
 import kingmc.platform.bukkit.entity.player._BukkitOfflinePlayer
 import kingmc.platform.bukkit.entity.player._BukkitPlayer
 import kingmc.platform.bukkit.impl.entity.player.BukkitOfflinePlayerImpl
+import kingmc.platform.command.CommandSender
 import kingmc.platform.entity.player.OfflinePlayer
 import kingmc.platform.entity.player.Player
 import kingmc.platform.messaging.OutputMessage
@@ -40,12 +43,12 @@ class AdventureBukkitServerImpl : BukkitServer {
     /**
      * [org.bukkit.Server] instance
      */
-    val _bukkitServer = application { bukkitServer }
+    val _bukkitServer = withApplication { bukkitServer }
 
     /**
      * [org.bukkit.plugin.Plugin] instance
      */
-    val _bukkitPlugin = application { bukkitPlugin }
+    val _bukkitPlugin = withApplication { bukkitPlugin }
 
     @Autowired
     lateinit var adventure: Adventure
@@ -144,6 +147,10 @@ class AdventureBukkitServerImpl : BukkitServer {
         return _players.computeIfAbsent(bukkitPlayer) {
             AdventureOnlineBukkitPlayerImpl(it, adventure.getAudienceProvider().player(it), application)
         }
+    }
+
+    override fun getCommandSenderForBukkit(bukkitCommandSender: _BukkitCommandSender): CommandSender {
+        TODO("Not yet implemented")
     }
 
     override fun getOfflinePlayerForBukkit(bukkitOfflinePlayer: _BukkitOfflinePlayer): OfflinePlayer {

@@ -1,6 +1,6 @@
 package kingmc.platform
 
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.*
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.process.BeanProcessor
@@ -34,14 +34,14 @@ object AwakeProcessor : BeanProcessor {
             orderedFunctions.add {
                 try {
                     if (awake.lifecycle == 1) {
-                        bean.application {
+                        bean.withApplication {
                             if (context.checkElementCondition(it)) {
                                 context.callFunctionWithContext(it, bean)
                             }
                         }
                     } else {
                         bean.contextLifecycle.insertPlan(awake.lifecycle) {
-                            bean.application {
+                            bean.withApplication {
                                 if (context.checkElementCondition(it)) {
                                     context.callFunctionWithContext(it, bean)
                                 }
@@ -49,7 +49,7 @@ object AwakeProcessor : BeanProcessor {
                         }
                     }
                 } catch (e: Exception) {
-                    bean.application {
+                    bean.withApplication {
                         error("An error occurred trying to invoke method $it")
                         e.printStackTrace()
                     }

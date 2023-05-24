@@ -3,6 +3,7 @@ package kingmc.platform.bukkit.adventure.impl.audience
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component

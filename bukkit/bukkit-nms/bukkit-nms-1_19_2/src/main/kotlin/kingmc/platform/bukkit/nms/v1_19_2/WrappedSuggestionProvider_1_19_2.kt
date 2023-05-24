@@ -7,8 +7,8 @@ import com.mojang.brigadier.suggestion.SuggestionProvider
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import kingmc.common.application.Application
-import kingmc.common.application.application
-import kingmc.common.application.suspendApplication
+import kingmc.common.application.withApplication
+import kingmc.common.application.withApplicationSuspend
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
 import kingmc.platform.command.CommandContext
 import kingmc.platform.command.parameter.Parameters
@@ -30,13 +30,13 @@ class WrappedSuggestionProvider_1_19_2(
         builder: SuggestionsBuilder,
     ): CompletableFuture<Suggestions> {
         val future = CompletableFuture<Suggestions>()
-        application(outerApplication) {
+        withApplication(outerApplication) {
             val wrappedSender = brigadierNMS.getCommandSender(css)
             val wrappedSuggestionBuilder =
                 kingmc.platform.command.suggestion.SuggestionsBuilder(builder.input, builder.start)
             val parameters = Parameters.EMPTY
             CoroutineScope(coroutineDispatcher).launch {
-                suspendApplication(outerApplication) {
+                withApplicationSuspend(outerApplication) {
                     suggestionProvider.invoke(wrappedSuggestionBuilder, CommandContext(wrappedSender, parameters, css.input))
                     val suggestions = wrappedSuggestionBuilder.build()
                     future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))

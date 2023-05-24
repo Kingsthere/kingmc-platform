@@ -1,6 +1,6 @@
 package kingmc.platform.facet.text
 
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Bean
 import kingmc.common.context.annotation.Configuration
 import kingmc.common.text.MiniMessage
@@ -17,7 +17,7 @@ import kingmc.platform.util.TextSolver
 @FacetImplementation
 object FacetTextSolvers {
     private val _defaultTextSolver by lazy {
-        this@FacetTextSolvers.application {
+        this@FacetTextSolvers.withApplication {
             val miniMessage: MiniMessage = MiniMessage.builder()
                 .build()
             val textResolver = MiniMessageTextSolver(miniMessage = miniMessage)

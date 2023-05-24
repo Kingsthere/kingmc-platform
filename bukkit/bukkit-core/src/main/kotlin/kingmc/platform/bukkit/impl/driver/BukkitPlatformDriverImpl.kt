@@ -6,7 +6,7 @@ import com.electronwill.nightconfig.toml.TomlFormat
 import com.electronwill.nightconfig.yaml.YamlFormat
 import kingmc.common.KingMC
 import kingmc.common.OpenAPI
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.LifecycleContext
 import kingmc.common.context.initializer.ContextInitializer
 import kingmc.common.context.process.insertProcessBeanLifecycle
@@ -129,7 +129,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             application = loadPlatformApplication()
             contextLifecycle = (application.context as LifecycleContext).lifecycle()
 
-            application(this.application) {
+            withApplication(this.application) {
                 // Log the current kingmc framework information
                 info("")
                 infoColored("""<gradient:green:aqua> _  ___             __  __  _____  """)
@@ -153,7 +153,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             }
         }
 
-        application(this.application) {
+        withApplication(this.application) {
             infoColored("<green>KingMC framework launched successfully on platform $platform in $time")
         }
 
