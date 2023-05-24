@@ -1,6 +1,6 @@
 package kingmc.platform.bukkit.event
 
-import kingmc.common.application.application
+import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Awake
 import kingmc.platform.Releasable
@@ -8,7 +8,7 @@ import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import kingmc.platform.event.AbstractPublisher
-import kingmc.platform.event.Subscription
+import kingmc.platform.event.subscription.Subscription
 import kingmc.util.reflect.findFunction
 import org.bukkit.event.*
 import org.bukkit.event.block.*
@@ -47,7 +47,7 @@ class BukkitPublisher : AbstractPublisher(), Listener, Releasable {
         val eventType = subscription.eventType
         if (eventType.isSubclassOf(Event::class)) {
             // Register handler to bukkit
-            application {
+            withApplication {
                 @Suppress("UNCHECKED_CAST")
                 registerBukkitHandle(eventType as KClass<out Event>)
             }
