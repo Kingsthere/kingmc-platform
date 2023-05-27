@@ -24,18 +24,34 @@ kingmc:
     # Kotlin coroutine version
     kotlinx-coroutine: 1.6.4
 
-  # Extension bundling settings
-  bundling:
-    # Enable so kingmc will try to download bundled extensions and load them on the server
-    enable: true
+  # Extensions settings
+  extensions:
+    # If enabled, kingmc will automatically download dependent extensions
+    # required by installed extensions
+    auto-download:
+      # Enable auto-download
+      enable: true
 
-    # Extensions bundled
-    extensions:
+      # The source to download missing extensions from
+      # KingMC - Download missing extensions (by id declared) from kingmc forum (https://www.kingmc.net/)
+      # URL - Download missing extensions (by url declared) from specified url
+      source: [url, kingmc]
+
+      # A black list of extensions, so kingmc won't automatically download them
+      blacklist:
+        - some_extension # Extension id
+
+    # Extension bundling settings
+    bundling:
+      # Enable so kingmc will try to download bundled extensions and load them on the server
+      enable: true
+
+      # Extensions bundled
       toolbox:
-        # The way to load this extension
+        # The ways to load this extension
         # Builtin - load the extension from specified file that already builtin the kingmc jar
         # URL - download the extension from specified url, the extension file downloaded will be stored in kingmc extension folder
-        load: url
+        load: [url, builtin]
 
         # The built-in extension file path to load extension from if you're using "Builtin" to load bundled extension
         path: "/bundle/toolbox-latest.jar"
