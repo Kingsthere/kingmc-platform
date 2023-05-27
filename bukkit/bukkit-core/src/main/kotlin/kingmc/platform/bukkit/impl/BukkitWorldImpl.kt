@@ -36,6 +36,8 @@ class BukkitWorldImpl(override val application: Application, private val _bukkit
      private val _chunks: AsyncCache<Pair<Int, Int>, Chunk> = Caffeine.newBuilder()
          .buildAsync()
 
+    private val _worldBorder: WorldBorder = BukkitWorldBorderImpl(_bukkitWorld.worldBorder)
+
      val _players: List<Player>
          get() = buildList {
              _bukkitWorld.players.forEach {
@@ -88,6 +90,8 @@ class BukkitWorldImpl(override val application: Application, private val _bukkit
         set(value) {
             _bukkitWorld.fullTime = value
         }
+    override val worldBorder: WorldBorder
+        get() = _worldBorder
 
     /**
      * Gets all entities from this provider

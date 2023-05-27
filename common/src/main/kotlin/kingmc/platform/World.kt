@@ -132,5 +132,10 @@ interface World : EntityProvider, ForwardingAudience, ParticleRecipient, Keyed {
      */
     var fullTime: Long
 
+    /**
+     * The world border of this world
+     */
+    val worldBorder: WorldBorder
+
     companion object
 }

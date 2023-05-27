@@ -6,7 +6,7 @@ import kingmc.platform.facet.AbstractPlatform
 import kingmc.util.Version
 
 /**
- * `Platform implementation for bukkit
+ * `Platform` implementation for bukkit
  *
  * @since 0.0.3
  * @author kingsthere

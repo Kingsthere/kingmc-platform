@@ -3,6 +3,7 @@ package kingmc.platform.bukkit
 import kingmc.common.application.Application
 import kingmc.platform.Direction
 import kingmc.platform.Location
+import kingmc.platform.Location3D
 
 typealias _BukkitLocation = org.bukkit.Location
 
@@ -14,6 +15,14 @@ fun Location.asBukkit(): _BukkitLocation =
         this.z,
         this.direction.yaw,
         this.direction.pitch
+    )
+
+fun Location3D.asBukkit(): _BukkitLocation =
+    _BukkitLocation(
+        null,
+        this.x,
+        this.y,
+        this.z,
     )
 
 // @WithApplication use parameter [application] instead
@@ -34,4 +43,13 @@ fun _BukkitLocation.asKingMC(application: Application): Location {
             Direction(this.yaw, this.pitch)
         )
     }
+}
+
+// @WithApplication use parameter [application] instead
+fun _BukkitLocation.asKingMCLocation3D(): Location3D {
+    return Location3D(
+        this.x,
+        this.y,
+        this.z
+    )
 }
