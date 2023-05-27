@@ -1,10 +1,7 @@
 package kingmc.platform.bukkit.impl.extension
 
 import kingmc.common.OpenAPI
-import kingmc.common.application.WithApplication
-import kingmc.common.application.currentApplication
-import kingmc.common.application.withApplication
-import kingmc.common.application.withApplicationSuspend
+import kingmc.common.application.*
 import kingmc.common.context.process.afterProcess
 import kingmc.common.context.process.processBeans
 import kingmc.common.logging.error
@@ -57,7 +54,8 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
                 extensionClassLoader = ExtensionClassLoader(extensionFile, OpenAPI.classLoader()!!).apply {
                     addToClassloaders()
                 },
-                formatContext = driver.formatContext
+                parentFormatContext = driver.formatContext,
+                properties = application.properties
             )
             classSource
         } catch (e: ClassNotFoundException) {
@@ -82,10 +80,6 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
 
     fun loadExtension(source: ExtensionClassSource, lifecycle: Lifecycle<Runnable>): List<ExtensionData> {
         try {
-            // Refresh classes
-            source.load()
-            source.getClasses()
-
             val extensionLoggers = Slf4jLoggerManager(Slf4jLoggerWrapper(ComponentLogger.logger(source.extensions.first().displayName)))
             val extensionEnvironment = ExtensionEnvironment(source.classLoader)
             val extensionDefinition = source.extensions.first()
@@ -242,6 +236,9 @@ class BukkitExtensionDispatcherImpl(val driver: BukkitPlatformDriverImpl) : Abst
                     if (validateExtension(file)) {
                         try {
                             recognizeExtensionFromJarFile(file)?.let { source ->
+                                source.loadExtensionDefinitions()
+                                source.loadProperties()
+                                source.loadFormatContext()
                                 return@withApplicationSuspend source
                             }
                         } catch (e: Exception) {

@@ -1,6 +1,5 @@
 package kingmc.platform.bukkit.impl.driver
 
-import com.electronwill.nightconfig.core.Config
 import com.electronwill.nightconfig.core.file.FileConfig
 import com.electronwill.nightconfig.toml.TomlFormat
 import com.electronwill.nightconfig.yaml.YamlFormat
@@ -43,6 +42,7 @@ import kingmc.platform.bukkit.impl.spigot.SpigotPlatform
 import kingmc.platform.bukkit.paperlib.PaperLib
 import kingmc.platform.context.*
 import kingmc.platform.logging.infoColored
+import kingmc.platform.util.loadConfigIntoProperties
 import kingmc.util.Lifecycle
 import kingmc.util.Version
 import kingmc.util.format.PropertiesFormatContext
@@ -64,6 +64,10 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
 val VERSION_REGEX = Pattern.compile("(?i)\\(MC: (\\d\\.\\d+\\.?\\d+?)?(?: Pre-Release )?(\\d)?\\)")!!
+
+const val FILENAME_CONFIG_PROPERTIES = "config.properties"
+const val FILENAME_CONFIG_TOML = "config.toml"
+const val FILENAME_CONFIG_YAML = "config.yml"
 
 /**
  * `PlatformDriver` implementation for bukkit
@@ -269,7 +273,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
 
         try {
             // Load config with .properties format
-            loadProperties("config.properties") { properties ->
+            loadProperties(FILENAME_CONFIG_PROPERTIES) { properties ->
                 try {
                     loadingProperties.load(properties)
                 } catch (e: IOException) {
@@ -277,7 +281,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
                 }
             }
             // Load config with .toml format
-            loadPropertiesFile("config.toml") { file ->
+            loadPropertiesFile(FILENAME_CONFIG_TOML) { file ->
                 FileConfig.of(file, TomlFormat.instance()).use { fileConfig ->
                     fileConfig.load()
                     loadConfigIntoProperties(
@@ -287,16 +291,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
                 }
             }
             // Load config with .yml/.yaml format
-            loadPropertiesFile("config.yml") { file ->
-                FileConfig.of(file, YamlFormat.defaultInstance()).use { fileConfig ->
-                    fileConfig.load()
-                    loadConfigIntoProperties(
-                        fileConfig,
-                        loadingProperties
-                    )
-                }
-            }
-            loadPropertiesFile("config.yaml") { file ->
+            loadPropertiesFile(FILENAME_CONFIG_YAML) { file ->
                 FileConfig.of(file, YamlFormat.defaultInstance()).use { fileConfig ->
                     fileConfig.load()
                     loadConfigIntoProperties(
@@ -328,35 +323,27 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             externalInputStream.use { consumer.accept(externalInputStream) }
         }
     }
+
     @Throws(IOException::class)
     protected fun loadPropertiesFile(path: String, consumer: Consumer<File>) {
         // Jar builtin properties
         val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
         builtinInputStream.use {
-            if (builtinInputStream != null) {
-                val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
-                FileUtils.copyInputStreamToFile(builtinInputStream, tempFile)
-                consumer.accept(tempFile)
-            }
-        }
-        // External properties
-        val externalFile = File(_bukkitJavaPlugin.kingmcRoot, path)
-        if (externalFile.exists()) {
-            val externalInputStream: InputStream = FileInputStream(externalFile)
-            externalInputStream.use {
-                val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
-                FileUtils.copyInputStreamToFile(externalInputStream, tempFile)
-                consumer.accept(tempFile)
-            }
-        }
-    }
-    protected fun loadConfigIntoProperties(config: Config, properties: Properties, path: String = "") {
-        for (entry in config.entrySet()) {
-            val value = entry.getValue<Any>()
-            if (value is Config) {
-                loadConfigIntoProperties(value, properties, path + "${entry.key}.")
+            // KingMC will create external config.xxx file instead
+            // if (builtinInputStream != null) {
+            //     val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
+            //     FileUtils.copyInputStreamToFile(builtinInputStream, tempFile)
+            //     consumer.accept(tempFile)
+            // }
+
+            val externalFile = File(_bukkitJavaPlugin.kingmcRoot, path)
+            if (externalFile.exists()) {
+                consumer.accept(externalFile)
             } else {
-                properties[path + entry.key] = entry.getValue()
+                if (externalFile.createNewFile()) {
+                    FileUtils.copyInputStreamToFile(builtinInputStream, externalFile)
+                    consumer.accept(externalFile)
+                }
             }
         }
     }

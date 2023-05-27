@@ -1,5 +1,8 @@
 package kingmc.platform.extension
 
+import com.electronwill.nightconfig.core.file.FileConfig
+import com.electronwill.nightconfig.toml.TomlFormat
+import com.electronwill.nightconfig.yaml.YamlFormat
 import io.github.classgraph.AnnotationEnumValue
 import io.github.classgraph.AnnotationInfo
 import io.github.classgraph.ClassGraph
@@ -14,25 +17,77 @@ import kingmc.common.structure.ExperimentalStructureApi
 import kingmc.common.structure.JarFileClassSource
 import kingmc.common.structure.Pluggable
 import kingmc.common.structure.classloader.ExtensionClassLoader
+import kingmc.platform.baseFile
+import kingmc.platform.util.loadConfigIntoProperties
 import kingmc.util.format.FormatContext
+import kingmc.util.format.PropertiesFormatContext
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.apache.commons.io.FileUtils
 import org.yaml.snakeyaml.Yaml
 import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStream
+import java.util.*
+import java.util.function.Consumer
 import kotlin.properties.Delegates
 
 open class ExtensionClassSource(
     file: File,
     val extensionClassLoader: ExtensionClassLoader,
-    val formatContext: FormatContext,
+    val parentFormatContext: FormatContext,
+    val properties: Properties
 ) : JarFileClassSource(file, extensionClassLoader) {
-    val extensions = mutableListOf<ExtensionDefinition>()
+    var extensions: List<ExtensionDefinition> = ArrayList<ExtensionDefinition>()
+    var formatContext: FormatContext by Delegates.notNull()
     protected val classGraph: ClassGraph = ClassGraph()
         .enableAnnotationInfo()
         .enableClassInfo()
         .overrideClasspath(file)
 
     var scannedResult: ScanResult by Delegates.notNull()
+
+    @Throws(IOException::class)
+    protected fun loadProperties(path: String, extension: ExtensionDefinition, consumer: Consumer<InputStream>) {
+        // Jar builtin properties
+        val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
+        builtinInputStream.use {
+            if (builtinInputStream != null) {
+                consumer.accept(builtinInputStream)
+            }
+        }
+        // External properties
+        val externalFile = File(baseFile("extensions/${extension.id}/"), path)
+        if (externalFile.exists()) {
+            val externalInputStream: InputStream = FileInputStream(externalFile)
+            externalInputStream.use { consumer.accept(externalInputStream) }
+        }
+    }
+
+    @Throws(IOException::class)
+    protected fun loadPropertiesFile(path: String, extension: ExtensionDefinition, consumer: Consumer<File>) {
+        // Jar builtin properties
+        val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
+        builtinInputStream.use {
+            // KingMC will create external config.xxx file instead
+            // if (builtinInputStream != null) {
+            //     val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
+            //     FileUtils.copyInputStreamToFile(builtinInputStream, tempFile)
+            //     consumer.accept(tempFile)
+            // }
+
+            val externalFile = File(baseFile("extensions/${extension.id}/"), path)
+            if (externalFile.exists()) {
+                consumer.accept(externalFile)
+            } else {
+                if (externalFile.createNewFile()) {
+                    FileUtils.copyInputStreamToFile(builtinInputStream, externalFile)
+                    consumer.accept(externalFile)
+                }
+            }
+        }
+    }
 
     /**
      * Create an [ExtensionDefinition] from annotation info
@@ -83,6 +138,7 @@ open class ExtensionClassSource(
             }.toTypedArray())
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun scanMavenDependencies(): List<Triple<Dependency, Repository, List<JarRelocation>>> = buildList {
         val mavenDependencyContainerClass = "kingmc.common.environment.maven.MavenDependency.Container"
         val relocateContainerClass = "kingmc.common.environment.maven.Relocate.Container"
@@ -102,8 +158,8 @@ open class ExtensionClassSource(
                     ), repository(
                         url = parameterValues.getValue("repository") as String,
                         formatContext = formatContext
-                    ), relocations.map {
-                        val relocationParameterValues = it.parameterValues
+                    ), relocations.map { relocation ->
+                        val relocationParameterValues = relocation.parameterValues
                         return@map jarRelocation(
                             pattern = relocationParameterValues.getValue("pattern") as String,
                             relocatedPattern = relocationParameterValues.getValue("relocatedPattern") as String,
@@ -118,10 +174,43 @@ open class ExtensionClassSource(
     fun scanExtensions(): List<ExtensionDefinition> = buildList {
         val extensionClass = Extension::class.java
         scannedResult.getClassesWithAnnotation(extensionClass).forEach {
-            @Suppress("UNCHECKED_CAST")
             val values = it.getAnnotationInfo(extensionClass)
             add(createExtension(values))
         }
+    }
+
+    fun loadProperties() {
+        extensions.forEach { extension ->
+            loadProperties("config.properties", extension) {
+                properties.load(it)
+            }
+            loadPropertiesFile("config.toml", extension) {
+                FileConfig.of(file, TomlFormat.instance()).use { fileConfig ->
+                    fileConfig.load()
+                    loadConfigIntoProperties(
+                        fileConfig,
+                        properties,
+                    )
+                }
+            }
+            loadPropertiesFile("config.yml", extension) {
+                FileConfig.of(file, YamlFormat.defaultInstance()).use { fileConfig ->
+                    fileConfig.load()
+                    loadConfigIntoProperties(
+                        fileConfig,
+                        properties,
+                    )
+                }
+            }
+        }
+    }
+
+    fun loadFormatContext() {
+        formatContext = parentFormatContext.with(PropertiesFormatContext(properties))
+    }
+
+    fun loadExtensionDefinitions() {
+        extensions = scanExtensions()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -183,10 +272,11 @@ open class ExtensionClassSource(
     }
 
     override fun whenLoadClass(clazz: Class<*>) {
-        if (clazz.isAnnotationPresent(Extension::class.java)) {
-            val extension = clazz.getAnnotation(Extension::class.java)
-            extensions.add(createExtension(extension))
-        }
+        // Extensions definitions is load by ClassGraph
+        // if (clazz.isAnnotationPresent(Extension::class.java)) {
+        //     val extension = clazz.getAnnotation(Extension::class.java)
+        //     extensions.add(createExtension(extension))
+        // }
     }
 
     override fun toString(): String {
