@@ -20,6 +20,10 @@ interface Players :
     PluginMessageSink {
     override fun audiences(): Iterable<Player>
 
+    override fun command(command: String) {
+        audiences().forEach { it.command(command) }
+    }
+
     override fun iterator(): Iterator<Player> =
         audiences().iterator()
 
