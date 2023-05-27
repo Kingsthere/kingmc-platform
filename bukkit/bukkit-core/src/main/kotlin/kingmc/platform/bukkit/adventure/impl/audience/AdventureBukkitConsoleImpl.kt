@@ -52,15 +52,8 @@ class AdventureBukkitConsoleImpl(private val _adventureConsoleAudience: _Adventu
         throw UnsupportedOperationException("A console could not receive this kind of media")
     }
 
-    /**
-     * To let this command sender send a
-     * chat message
-     *
-     * @since 0.0.3
-     * @author kingsthere
-     */
-    override fun chat(message: String) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), message)
+    override fun command(command: String) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)
     }
 
     /**
