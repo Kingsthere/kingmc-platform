@@ -56,10 +56,18 @@ fun CoroutineContextSuspendHandler(name: String, config: @WithApplication Corout
 }
 
 /**
+ * A shortcut to register a [Header] into command manager of current application
+ */
+@WithApplication
+fun <TNode : Header> registerCommand(node: TNode): Command<TNode> {
+    return currentApplication().commandFactory.register(node)
+}
+
+/**
  * Register a [Header] into this command manager
  */
 fun <TNode : Header> CommandManager.register(node: TNode): Command<TNode> {
-    val command = RegisteredCommandImpl(node)
+    val command = CommandImpl(node)
     this.register(command)
     return command
 }

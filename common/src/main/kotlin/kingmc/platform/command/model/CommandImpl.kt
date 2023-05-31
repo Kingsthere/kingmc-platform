@@ -6,4 +6,4 @@ package kingmc.platform.command.model
  * @since 0.0.3
  * @author kingsthere
  */
-open class RegisteredCommandImpl<TData>(override val data: TData) : Command<TData>
+open class CommandImpl<TData>(override val data: TData) : Command<TData>
