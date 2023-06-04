@@ -1,9 +1,12 @@
 package kingmc.platform.command
 
+import kingmc.common.application.WithApplication
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.parameter.*
+import kingmc.platform.command.suggestion.BlockingSuggestionProvider
 import kingmc.platform.command.suggestion.SuggestionProvider
 import kingmc.platform.command.suggestion.SuggestionsBuilder
+import kingmc.platform.command.suggestion.SuspendSuggestionProvider
 
 val Handler.currentIndex: Int
     get() = this.parameters.size
@@ -129,11 +132,18 @@ fun <TParameter : CommandParameter<*>> TParameter.suggestion(suggester: Suggesti
         this.suggestion = suggester
     }
 
+/**
+ * Set the possible suggestion provider of this parameter
+ */
+fun <TParameter : CommandParameter<*>> TParameter.blockingSuggestion(suggester: @WithApplication SuggestionsBuilder.(CommandContext) -> Unit) =
+    this.apply {
+        this.suggestion = BlockingSuggestionProvider(suggester)
+    }
 
 /**
- * Set the possible suggestion provider(in lambda) of this parameter
+ * Set the possible suggestion provider of this parameter
  */
-fun <TParameter : CommandParameter<*>> TParameter.suggestion(suggester: suspend SuggestionsBuilder.(CommandContext) -> Unit) =
+fun <TParameter : CommandParameter<*>> TParameter.suspendSuggestion(suggester: @WithApplication suspend SuggestionsBuilder.(CommandContext) -> Unit) =
     this.apply {
-        this.suggestion = SuggestionProvider { builder, context -> suggester.invoke(builder, context) }
+        this.suggestion = SuspendSuggestionProvider(suggester)
     }

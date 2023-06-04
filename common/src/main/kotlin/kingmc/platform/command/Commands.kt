@@ -2,7 +2,7 @@ package kingmc.platform.command
 
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
-import kingmc.platform.command.coroutine.CoroutineContextSuspendHandler
+import kingmc.platform.command.coroutine.CoroutineContextHandler
 import kingmc.platform.command.model.*
 import kingmc.platform.commandFactory
 import kingmc.util.KingMCDsl
@@ -51,8 +51,8 @@ fun BlockingHandler(name: String = ".root", config: @WithApplication BlockingHan
 }
 
 @WithApplication
-fun CoroutineContextSuspendHandler(name: String, config: @WithApplication CoroutineContextSuspendHandler.() -> Unit): CoroutineContextSuspendHandler {
-    return CoroutineContextSuspendHandler(name = name, application = currentApplication()).apply(config)
+fun CoroutineContextHandler(name: String, config: @WithApplication CoroutineContextHandler.() -> Unit): CoroutineContextHandler {
+    return CoroutineContextHandler(name = name, application = currentApplication()).apply(config)
 }
 
 /**

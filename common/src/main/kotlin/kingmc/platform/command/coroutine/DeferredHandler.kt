@@ -2,7 +2,6 @@ package kingmc.platform.command.coroutine
 
 import kingmc.platform.command.CommandContext
 import kingmc.platform.command.CommandResult
-import kingmc.platform.command.model.CommandExecutor
 import kingmc.platform.command.model.Handler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -15,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
  * @since 0.0.3
  * @author kingsthere
  */
-abstract class SuspendedHandler : Handler {
+abstract class DeferredHandler : Handler {
     /**
      * The coroutine context to run this handler
      *
@@ -29,9 +28,9 @@ abstract class SuspendedHandler : Handler {
         val coroutineScope = CoroutineScope(context)
 
         return DeferredCommandResult(coroutineScope, coroutineScope.async {
-            return@async this@SuspendedHandler.executor.invoke(commandContext)
+            return@async this@DeferredHandler.executor.invoke(commandContext)
         })
     }
 
-    abstract override var executor: CommandExecutor
+    abstract override var executor: CommandContext.() -> CommandResult
 }

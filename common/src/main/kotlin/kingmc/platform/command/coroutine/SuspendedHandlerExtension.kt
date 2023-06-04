@@ -12,8 +12,8 @@ import kotlin.coroutines.CoroutineContext
  * @since 0.0.3
  * @author kingsthere
  */
-fun Node.suspendHandler(coroutineContext: CoroutineContext? = null, configurer: SuspendedHandler.() -> Unit = {  }, application: Application): SuspendedHandler {
-    val handler: SuspendedHandler = object : CoroutineContextSuspendHandler(coroutineContext, executor = { failed() }, application = application) {  }
+fun Node.suspendHandler(coroutineContext: CoroutineContext? = null, configurer: DeferredHandler.() -> Unit = {  }, application: Application): DeferredHandler {
+    val handler: DeferredHandler = object : CoroutineContextHandler(coroutineContext, executor = { failed() }, application = application) {  }
     configurer.invoke(handler)
     this.handlers.add(handler)
     return handler
@@ -25,7 +25,7 @@ fun Node.suspendHandler(coroutineContext: CoroutineContext? = null, configurer: 
  * @since 0.0.3
  * @author kingsthere
  */
-fun <THandler : SuspendedHandler> THandler.context(coroutineContext: CoroutineContext?): SuspendedHandler =
+fun <THandler : DeferredHandler> THandler.context(coroutineContext: CoroutineContext?): DeferredHandler =
     this.apply {
         this.coroutineContext = coroutineContext
     }

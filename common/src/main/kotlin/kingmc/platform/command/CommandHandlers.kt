@@ -87,9 +87,7 @@ fun <THandler : Handler> THandler.executes(executor: @WithApplication CommandExe
 @WithApplication
 fun <THandler : Handler> THandler.executes(executor: @WithApplication (CommandSender, Parameters) -> CommandResult) =
     this.apply {
-        this.executor = CommandExecutor { context ->
-            executor(context.invoker, context.parameters)
-        }
+        this.executor = { executor(invoker, parameters) }
     }
 
 /**

@@ -26,12 +26,20 @@ abstract class FacetListenerManager : ListenerManager, Releasable {
         close()
     }
 
+    val registerListener = Facet<Listener, Unit> { listener ->
+        _registeredListeners.add(listener)
+        listener.activate()
+    }
+
     /**
      * Register a listener to this listener manager
      */
-    override fun registerListener(listener: Listener) {
-        _registeredListeners.add(listener)
-        listener.activate()
+    @FacetAvailable
+    final override fun registerListener(listener: Listener) = registerListener.invoke(listener)
+
+    val unregisterListener = Facet<Listener, Unit> { listener ->
+        _registeredListeners.remove(listener)
+        listener.close()
     }
 
     /**
@@ -39,24 +47,28 @@ abstract class FacetListenerManager : ListenerManager, Releasable {
      *
      * @throws IllegalArgumentException if the [listener] is not registered in this listener manager
      */
-    override fun unregisterListener(listener: Listener) {
-        _registeredListeners.remove(listener)
-        listener.close()
+    @FacetAvailable
+    final override fun unregisterListener(listener: Listener) = unregisterListener.invoke(listener)
+
+    val getRegisteredListener = Facet<Set<Listener>> {
+        return@Facet _registeredListeners
     }
 
     /**
      * Gets listeners registered in this listener manager
      */
-    override fun getRegisteredListeners(): Set<Listener> {
-        return _registeredListeners
+    @FacetAvailable
+    override fun getRegisteredListeners(): Set<Listener> = getRegisteredListener.invoke()
+
+    val close = Facet<Unit> {
+        _registeredListeners.forEach {
+            it.close()
+        }
     }
 
     /**
      * Close this listener manager
      */
-    override fun close() {
-        _registeredListeners.forEach {
-            it.close()
-        }
-    }
+    @FacetAvailable
+    override fun close() = close.invoke()
 }

@@ -13,7 +13,7 @@ import kingmc.common.text.Text
 @Component
 interface TextSolver {
     /**
-     * Resolve from a [String] to a [text]
+     * Resolve from a [String] to a text
      *
      * @since 0.0.3
      */

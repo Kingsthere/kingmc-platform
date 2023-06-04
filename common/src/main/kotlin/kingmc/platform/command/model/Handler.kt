@@ -36,7 +36,7 @@ interface Handler {
      *
      * @see invoke
      */
-    var executor: CommandExecutor
+    var executor: CommandContext.() -> CommandResult
 
     /**
      * The aliases of this handler

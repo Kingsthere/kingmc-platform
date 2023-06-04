@@ -15,9 +15,7 @@ abstract class AbstractPlatform(
         if (this === other) return true
         if (other !is AbstractPlatform) return false
 
-        if (!id.contentEquals(other.id)) return false
-
-        return true
+        return id.contentEquals(other.id)
     }
 
     override fun hashCode(): Int {
