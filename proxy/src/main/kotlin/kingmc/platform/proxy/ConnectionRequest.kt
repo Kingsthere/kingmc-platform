@@ -1,6 +1,7 @@
 package kingmc.platform.proxy
 
 import kingmc.platform.proxy.entity.player.ProxiedPlayer
+import kotlinx.coroutines.Deferred
 
 /**
  * An interface describe a request to connect a `ProxiedServer` proxied by the `ProxyServer`
@@ -15,17 +16,18 @@ interface ConnectionRequest {
     val invoker: ProxiedPlayer
 
     /**
-     * The raw target `ProxiedServer` is connecting without being redirected
+     * The target `ProxiedServer` is connecting without being modified
      */
-    val rawTarget: ProxiedServer
+    val target: ProxiedServer
 
     /**
-     * The result target `ProxiedServer` is connecting within being redirected
+     * The target server we actually tried to connect to
      */
+    @Deprecated("Use ConnectionResult.attemptedConnection instead")
     val resultTarget: ProxiedServer
 
     /**
      * The result to this connection request
      */
-    var result: ConnectionResult
+    val result: Deferred<ConnectionResult>
 }

@@ -1,6 +1,9 @@
 package kingmc.platform.velocity.entity.player
 
-import kingmc.platform.entity.player.Player
+import kingmc.common.application.Application
+import kingmc.platform.proxy.entity.player.ProxiedPlayer
+import kingmc.platform.server
+import kingmc.platform.velocity.VelocityProxyServer
 import kingmc.platform.velocity._VelocityPlayer
 import kingmc.platform.velocity.command.VelocityCommandSender
 
@@ -10,9 +13,17 @@ import kingmc.platform.velocity.command.VelocityCommandSender
  * @since 0.0.9
  * @author kingsthere
  */
-interface VelocityPlayer : Player, VelocityCommandSender {
+interface VelocityPlayer : ProxiedPlayer, VelocityCommandSender {
     /**
      * Convert this velocity player to a [com.velocitypowered.api.proxy.Player]
      */
     fun toVelocityPlayer(): _VelocityPlayer
 }
+
+/**
+ * Convert this [com.velocitypowered.api.proxy.Player] to kingmc `Player`
+ *
+ * @receiver velocity player to convert to
+ * @return `Player` instance converted
+ */
+fun _VelocityPlayer.asKingMC(application: Application) = (application.server as VelocityProxyServer).getPlayerForVelocity(this)

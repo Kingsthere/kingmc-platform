@@ -31,6 +31,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     api(project(":common"))
     api(project(":proxy"))
+    api(project(":facet"))
     api("com.velocitypowered:velocity-api:3.1.1")
     kapt("com.velocitypowered:velocity-api:3.1.1")
 }
@@ -58,8 +59,11 @@ publishing {
 }
 
 tasks {
+    sourcesJar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
     withType<ShadowJar> {
-        archiveBaseName.set("kingmc-bukkit")
+        archiveBaseName.set("kingmc-velocity")
         dependencies {
             val kingmc_version = kingmc_common_version
             include(dependency("net.kingmc.common:common:$kingmc_version"))
@@ -81,14 +85,8 @@ tasks {
             include(dependency("org.ow2.asm:asm:9.3"))
             include(dependency("org.ow2.asm:asm-util:9.3"))
             include(dependency("org.ow2.asm:asm-commons:9.3"))
-            include(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
-            include(project(":bukkit:bukkit-brigadier"))
-            include(project(":bukkit:bukkit-nbtapi"))
-            include(project(":bukkit:bukkit-core"))
         }
         relocate("me.lucko", "kingmc.library")
-        relocate("de.tr7zw.changeme", "kingmc.platform.bukkit")
-        relocate("dev.jorel", "kingmc.platform.bukkit.compatible")
         from(sourceSets.main.get().output)
     }
     build {

@@ -25,7 +25,7 @@ interface BukkitPlatformDriver : PlatformDriver {
     val bukkitPluginInstance: JavaPlugin
 
     /**
-     * The `Platform` instance indicate which this driver running on
+     * The `Platform` instance indicates which this driver running on
      */
     override val platform: BukkitPlatform
 

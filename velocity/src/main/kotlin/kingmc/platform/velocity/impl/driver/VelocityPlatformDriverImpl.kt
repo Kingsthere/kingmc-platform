@@ -1,4 +1,4 @@
-package kingmc.platform.bukkit.impl.driver
+package kingmc.platform.velocity.impl.driver
 
 import com.electronwill.nightconfig.core.file.FileConfig
 import com.electronwill.nightconfig.toml.TomlFormat
@@ -25,24 +25,17 @@ import kingmc.common.logging.slf4j.Slf4jLoggerManager
 import kingmc.common.logging.slf4j.Slf4jLoggerWrapper
 import kingmc.common.structure.JarFileClassSource
 import kingmc.common.structure.classloader.ExtensionClassLoader
-import kingmc.platform.BukkitJavaPlugin
+import kingmc.common.text.Text
 import kingmc.platform.ExperimentalPlatformApi
 import kingmc.platform.Platforms
-import kingmc.platform.bukkit.Bukkit
-import kingmc.platform.bukkit.BukkitImplementation
-import kingmc.platform.bukkit._BukkitServer
-import kingmc.platform.bukkit.adventure.Adventure
-import kingmc.platform.bukkit.driver.BukkitPlatformDriver
-import kingmc.platform.bukkit.impl.BukkitPlatform
-import kingmc.platform.bukkit.impl.extension.BukkitExtensionDispatcherImpl
-import kingmc.platform.bukkit.impl.paper.PaperImplementation
-import kingmc.platform.bukkit.impl.paper.PaperPlatform
-import kingmc.platform.bukkit.impl.spigot.SpigotImplementation
-import kingmc.platform.bukkit.impl.spigot.SpigotPlatform
-import kingmc.platform.bukkit.paperlib.PaperLib
 import kingmc.platform.context.*
 import kingmc.platform.logging.infoColored
 import kingmc.platform.util.loadConfigIntoProperties
+import kingmc.platform.velocity.VelocityImplementation
+import kingmc.platform.velocity.VelocityJavaPlugin
+import kingmc.platform.velocity.driver.VelocityPlatformDriver
+import kingmc.platform.velocity.impl.VelocityPlatform
+import kingmc.platform.velocity.impl.extension.VelocityExtensionDispatcherImpl
 import kingmc.util.Lifecycle
 import kingmc.util.Version
 import kingmc.util.format.PropertiesFormatContext
@@ -52,7 +45,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.apache.commons.io.FileUtils
-import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -70,35 +62,32 @@ const val FILENAME_CONFIG_TOML = "config.toml"
 const val FILENAME_CONFIG_YAML = "config.yml"
 
 /**
- * `PlatformDriver` implementation for bukkit
+ * `PlatformDriver` implementation for velocity
  *
  * @since 0.0.7
  * @author kingsthere
  */
-@BukkitImplementation
-@SpigotImplementation
-@PaperImplementation
-open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaPlugin) : BukkitPlatformDriver {
-    override val platform: BukkitPlatform
+@VelocityImplementation
+open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: VelocityJavaPlugin) : VelocityPlatformDriver {
+    override val platform: VelocityPlatform
     private val _rawLogger: Slf4jLogger = ComponentLogger.logger("KingMC")
     override val logger: Slf4jLoggerWrapper = Slf4jLoggerWrapper(_rawLogger)
     override lateinit var properties: Properties
     override val dependencyDispatcher: DependencyDispatcher = DependencyDispatcher(
-        root = File("${_bukkitJavaPlugin.kingmcRoot}/libraries"),
+        root = File("${_velocityJavaPlugin.kingmcRoot}/libraries"),
         logger = logger
     )
 
-    override val bukkitPluginInstance: JavaPlugin = _bukkitJavaPlugin
-    override val bukkitServerClass: Class<out _BukkitServer> = _bukkitJavaPlugin.server::class.java
-    override val pluginFile: File = _bukkitJavaPlugin.file
+    override val velocityPluginInstance: VelocityJavaPlugin = _velocityJavaPlugin
+    override val pluginFile: File = _velocityJavaPlugin.file
 
-    override val extensionDispatcher: BukkitExtensionDispatcherImpl = BukkitExtensionDispatcherImpl(this)
+    override val extensionDispatcher: VelocityExtensionDispatcherImpl = VelocityExtensionDispatcherImpl(this)
 
     override lateinit var application: PlatformApplication
     lateinit var contextInitializer: ContextInitializer
     lateinit var contextLifecycle: Lifecycle<Runnable>
 
-    override val baseDirectory: File = _bukkitJavaPlugin.kingmcRoot
+    override val baseDirectory: File = _velocityJavaPlugin.kingmcRoot
     val extensionDirectory: File = File("$baseDirectory/extensions").apply {
         if (!exists()) {
             mkdirs()
@@ -111,7 +100,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
     }
 
     init {
-        OpenAPI.supportClassLoader(_bukkitJavaPlugin.classLoader)
+        OpenAPI.supportClassLoader(_velocityJavaPlugin.classLoader)
 
         loadConfigurationEnvironment()
         loadProperties()
@@ -168,7 +157,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
     }
 
     override fun loadPlatformApplication(): PlatformApplication {
-        val classLoader = _bukkitJavaPlugin.classLoader
+        val classLoader = _velocityJavaPlugin.classLoader
         val source = JarFileClassSource(pluginFile, classLoader)
         source.load()
         val environment = PlatformApplicationEnvironment(classLoader)
@@ -236,37 +225,14 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         launch {
             KingMCEnvironment::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
         }
-        launch {
-            Adventure::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
-        }
-        launch {
-            PaperLib::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
-        }
-        launch {
-            Class.forName("kingmc.platform.bukkit.nbtapi.NBTAPIEnvironment").kotlin.loadDependenciesSuspend(dependencyDispatcher, formatContext)
-        }
-        launch {
-            Class.forName("kingmc.platform.bukkit.brigadier.BrigadierEnvironment").kotlin.loadDependenciesSuspend(dependencyDispatcher, formatContext)
-        }
+        // launch {
+        //     Adventure::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
+        // }
     }
-    protected open fun loadPlatform(): BukkitPlatform {
-        // Fetch minecraft version use regex
-        val versionMatcher = checkNotNull(VERSION_REGEX.matcher(Bukkit.getVersion())) { "Unable to fetch minecraft version" }
-        versionMatcher.find()
-        val minecraftVersion = Version(checkNotNull(versionMatcher.group(1)) { "Unable to fetch minecraft version" })
-        val bukkitVersion = Bukkit.getBukkitVersion()
-        // Instantiate `Platform` instance
-        return try {
-            Class.forName("com.destroystokyo.paper.PaperConfig")
-            PaperPlatform(minecraftVersion, bukkitVersion, this)
-        } catch (e1: ClassNotFoundException) {
-            try {
-                Class.forName("org.spigotmc.SpigotConfig")
-                SpigotPlatform(minecraftVersion, bukkitVersion, this)
-            } catch (e2: ClassNotFoundException) {
-                BukkitPlatform(minecraftVersion, bukkitVersion, this)
-            }
-        }
+    protected open fun loadPlatform(): VelocityPlatform {
+        val server = _velocityJavaPlugin.server
+        val version = server.version
+        return VelocityPlatform(Version.LATEST, version.name, version.vendor, version.version, this)
     }
     @Throws(IOException::class)
     protected fun loadProperties() {
@@ -303,7 +269,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Bukkit.shutdown()
+            _velocityJavaPlugin.server.shutdown(Text("Failed to load properties for kingmc framework ${e}"))
         }
         this.properties = loadingProperties
     }
@@ -318,7 +284,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
             }
         }
         // External properties
-        val externalFile = File(_bukkitJavaPlugin.kingmcRoot, path)
+        val externalFile = File(_velocityJavaPlugin.kingmcRoot, path)
         if (externalFile.exists()) {
             val externalInputStream: InputStream = FileInputStream(externalFile)
             externalInputStream.use { consumer.accept(externalInputStream) }
@@ -332,12 +298,12 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         builtinInputStream.use {
             // KingMC will create external config.xxx file instead
             // if (builtinInputStream != null) {
-            //     val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
+            //     val tempFile = File.createTempFile(path, ".tmp", _velocityJavaPlugin.tempFolder)
             //     FileUtils.copyInputStreamToFile(builtinInputStream, tempFile)
             //     consumer.accept(tempFile)
             // }
 
-            val externalFile = File(_bukkitJavaPlugin.kingmcRoot, path)
+            val externalFile = File(_velocityJavaPlugin.kingmcRoot, path)
             if (externalFile.exists()) {
                 consumer.accept(externalFile)
             } else {
@@ -372,6 +338,6 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
     }
 
     protected fun disposeTempFilesOnExit() {
-        _bukkitJavaPlugin.tempFolder.deleteOnExit()
+        _velocityJavaPlugin.tempFolder.deleteOnExit()
     }
 }

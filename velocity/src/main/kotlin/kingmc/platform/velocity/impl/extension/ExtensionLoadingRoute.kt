@@ -1,4 +1,4 @@
-package kingmc.platform.bukkit.impl.extension
+package kingmc.platform.velocity.impl.extension
 
 import kingmc.platform.extension.ExtensionData
 

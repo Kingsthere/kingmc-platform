@@ -1,5 +1,7 @@
 package kingmc.platform.proxy
 
+import kingmc.common.text.Text
+import kingmc.platform.util.Favicon
 import kingmc.platform.util.ProtocolVersion
 import kingmc.util.errorprone.Immutable
 import java.util.*
@@ -8,14 +10,24 @@ import java.util.*
  * Represents a 1.7 or above server list ping response
  */
 @Immutable
-data class ServerPing(val version: ProtocolVersion) {
+data class ServerPing(
+    val version: Version,
+    val players: Players?,
+    val description: Text,
+    val favicon: Favicon?,
+) {
     /**
      * A data class describe the protocol version of a server ping response
      *
      * @property protocol the protocol number
      * @param name the name to the protocol
      */
-    data class Version(val protocol: Int, val name: String)
+    data class Version(val protocol: Int, val name: String) {
+        /**
+         * Convert this `Version` to a `ProtocolVersion`
+         */
+        fun asProtocolVersion() = ProtocolVersion.getProtocolVersion(protocol)
+    }
 
     /**
      * A data class describe players information to a server ping response

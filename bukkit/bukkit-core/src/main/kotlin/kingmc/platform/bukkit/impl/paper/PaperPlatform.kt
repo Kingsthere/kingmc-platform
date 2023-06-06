@@ -8,10 +8,10 @@ import kingmc.util.Version
  * Paper platform compatible
  */
 @PaperImplementation
-open class PaperPlatform(minecraftVersion: Version, driver: PlatformDriver, identifiers: Array<String> = arrayOf())
-    : SpigotPlatform(minecraftVersion, driver, arrayOf("paper") + identifiers) {
+open class PaperPlatform(minecraftVersion: Version, bukkitVersion: String, driver: PlatformDriver, identifiers: Array<String> = arrayOf())
+    : SpigotPlatform(minecraftVersion, bukkitVersion, driver, arrayOf("paper") + identifiers) {
 
     override fun toString(): String {
-        return "Bukkit(Paper) $minecraftVersion"
+        return "Bukkit(Paper)-$bukkitVersion (MC: $minecraftVersion)"
     }
 }

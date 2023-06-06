@@ -27,7 +27,7 @@ interface Player : HumanEntity, OfflinePlayer, ParticleRecipient, PluginMessageS
      * The display name of this player, unlike [customName], it works for the player-list and
      * the scoreboard
      */
-    val displayName: Text
+    var displayName: Text
 
     /**
      * `true` if this player is sneaking

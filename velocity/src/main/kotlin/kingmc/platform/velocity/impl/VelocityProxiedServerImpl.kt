@@ -1,69 +1,63 @@
 package kingmc.platform.velocity.impl
 
-import kingmc.common.text.Text
 import kingmc.platform.audience.Console
 import kingmc.platform.entity.player.OfflinePlayer
 import kingmc.platform.entity.player.Player
 import kingmc.platform.messaging.OutputMessage
-import kingmc.platform.proxy.ProxiedServer
 import kingmc.platform.proxy.ServerInfo
+import kingmc.platform.proxy.ServerPing
+import kingmc.platform.util.Favicon
+import kingmc.platform.velocity.VelocityProxiedServer
 import kingmc.platform.velocity.VelocityProxyServer
-import kingmc.platform.velocity._VelocityPlayer
 import kingmc.platform.velocity._VelocityProxiedServer
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
-class VelocityProxiedServerImpl(val _velocityProxiedServer: _VelocityProxiedServer) : VelocityProxyServer {
+/**
+ * Velocity `ProxiedServer` implementation
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+class VelocityProxiedServerImpl(val proxyServer: VelocityProxyServer, private val _velocityProxiedServer: _VelocityProxiedServer) : VelocityProxiedServer {
     override fun asVelocityProxiedServer(): _VelocityProxiedServer = _velocityProxiedServer
 
-    override fun getProxiedServerForVelocity(velocityProxiedServer: _VelocityProxiedServer): ProxiedServer {
-        TODO("Not yet implemented")
-    }
+    override val serverInfo: ServerInfo
+        get() {
+            val velocityServerInfo = _velocityProxiedServer.serverInfo
+            return ServerInfo(velocityServerInfo.name, velocityServerInfo.address)
+        }
 
-    override fun getPlayerForVelocity(velocityPlayer: _VelocityPlayer): Player {
-        TODO("Not yet implemented")
-    }
-
-    override val proxiedServers: Collection<ProxiedServer>
-        get() = TODO("Not yet implemented")
-
-    override fun getProxiedServer(name: String): ProxiedServer? {
-        TODO("Not yet implemented")
-    }
-
-    override fun registerProxiedServer(serverInfo: ServerInfo): ProxiedServer {
-        TODO("Not yet implemented")
-    }
-
-    override fun registerProxiedServer(server: ProxiedServer) {
-        TODO("Not yet implemented")
-    }
-
-    override fun unregisterProxiedServer(serverInfo: ServerInfo) {
-        TODO("Not yet implemented")
-    }
-
-    override fun unregisterProxiedServer(server: ProxiedServer) {
-        TODO("Not yet implemented")
+    override fun ping(): Deferred<ServerPing> {
+        val deferred = CompletableDeferred<ServerPing>()
+        _velocityProxiedServer.ping().thenAccept { ping ->
+            val pingInstance = ServerPing(ServerPing.Version(ping.version.protocol, ping.version.name),
+                ping.players.getOrNull()?.let { players -> ServerPing.Players(players.online, players.max, players.sample.map { ServerPing.SamplePlayer(it.name, it.id) }) },
+                ping.descriptionComponent,
+                ping.favicon.getOrNull()?.let { favicon -> Favicon(favicon.base64Url) })
+            deferred.complete(pingInstance)
+        }
+        return deferred
     }
 
     override val console: Console
         get() = TODO("Not yet implemented")
 
-    override fun getOnlinePlayers(): Collection<Player> {
-        TODO("Not yet implemented")
-    }
+    override fun getOnlinePlayers(): Collection<Player> = _velocityProxiedServer.playersConnected.map { proxyServer.getPlayerForVelocity(it) }
 
     override fun getOfflinePlayers(): List<OfflinePlayer> {
         TODO("Not yet implemented")
     }
 
-    override fun getPlayer(username: String): Player? {
-        TODO("Not yet implemented")
-    }
+    override fun getPlayer(username: String): Player? =
+        _velocityProxiedServer.playersConnected.find { it.username == username }
+            ?.let { proxyServer.getPlayerForVelocity(it) }
 
-    override fun getPlayer(uuid: UUID): Player? {
-        TODO("Not yet implemented")
-    }
+    override fun getPlayer(uuid: UUID): Player? =
+        _velocityProxiedServer.playersConnected.find { it.uniqueId == uuid }
+            ?.let { proxyServer.getPlayerForVelocity(it) }
 
     @Deprecated("Persistent storage of users should be by UUID as names are no longer unique past a single session")
     override fun getOfflinePlayer(username: String): OfflinePlayer {
@@ -80,8 +74,4 @@ class VelocityProxiedServerImpl(val _velocityProxiedServer: _VelocityProxiedServ
 
     override val listeningPluginChannels: Set<String>
         get() = TODO("Not yet implemented")
-
-    fun asText(): Text {
-        TODO("Not yet implemented")
-    }
 }

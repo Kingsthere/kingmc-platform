@@ -18,7 +18,7 @@ interface ProxiedServer : Server {
     val serverInfo: ServerInfo
 
     /**
-     * Ping this server and return a deferred [ServerPing] as result
+     * Ping this server and return a [ServerPing] as result
      */
     fun ping(): Deferred<ServerPing>
 }

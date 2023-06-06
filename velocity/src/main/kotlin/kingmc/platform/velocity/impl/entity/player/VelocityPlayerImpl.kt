@@ -1,22 +1,17 @@
 package kingmc.platform.velocity.impl.entity.player
 
 import kingmc.common.application.Application
-import kingmc.common.text.Mark
 import kingmc.common.text.Text
-import kingmc.common.text.serializer.deserializeFromJsonToText
+import kingmc.common.text.serializer.deserializeFromLegacyToText
 import kingmc.platform.Location
 import kingmc.platform.Vector
-import kingmc.platform.audience.bossbar.BossBar
+import kingmc.platform.audience.Audience
 import kingmc.platform.audience.particle.*
-import kingmc.platform.audience.playerlist.PlayerList
-import kingmc.platform.audience.sound.Sound
-import kingmc.platform.audience.sound.SoundStop
-import kingmc.platform.audience.title.Title
-import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.entity.Entity
 import kingmc.platform.entity.EntityType
 import kingmc.platform.entity.damage.DamageSource
 import kingmc.platform.entity.damage.ModifiedDamage
+import kingmc.platform.impl.adventure.AdventureAudience
 import kingmc.platform.inventory.Inventory
 import kingmc.platform.inventory.InventoryView
 import kingmc.platform.inventory.MainHand
@@ -25,21 +20,52 @@ import kingmc.platform.messaging.OutputMessage
 import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.platform.permission.Permission
 import kingmc.platform.permission.PermissionState
+import kingmc.platform.proxy.ConnectionRequest
+import kingmc.platform.proxy.ProxiedServer
 import kingmc.platform.util.ProtocolVersion
+import kingmc.platform.velocity.VelocityProxyServer
 import kingmc.platform.velocity._VelocityPlayer
+import kingmc.platform.velocity.asVelocity
 import kingmc.platform.velocity.command._VelocityCommandSender
 import kingmc.platform.velocity.entity.player.VelocityPlayer
+import kingmc.platform.velocity.impl.VelocityConnectionRequestImpl
 import net.kyori.adventure.text.event.HoverEvent
 import java.net.InetSocketAddress
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
-class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer {
+/**
+ * A simple `VelocityPlayer` implementation
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+class VelocityPlayerImpl(
+    private val _velocityProxyServer: VelocityProxyServer,
+    private val _velocityPlayer: _VelocityPlayer,
+    override val application: Application,
+) :
+    VelocityPlayer,
+    Audience by AdventureAudience(_velocityPlayer) {
     override fun toVelocityPlayer(): _VelocityPlayer = _velocityPlayer
+    override val currentServer: ProxiedServer
+        get() = _velocityProxyServer.getProxiedServerForVelocity(_velocityPlayer.currentServer.get().server)
 
+    override fun tryConnect(target: ProxiedServer): ConnectionRequest = VelocityConnectionRequestImpl(
+        _velocityConnectionRequest = _velocityPlayer.createConnectionRequest(target.asVelocity()),
+        _velocityProxyServer = _velocityProxyServer,
+        invoker = this
+    )
+
+    @Deprecated("This value is controlled only by the client and is therefore unreliable\n                            and vulnerable to spoofing and/or desync depending on the context/time \n                            which it is accessed")
     override val isOnGround: Boolean
         get() = TODO("Not yet implemented")
-    override val displayName: Text
-        get() = _velocityPlayer.username.deserializeFromJsonToText()
+    var _displayName = _velocityPlayer.username.deserializeFromLegacyToText()
+    override var displayName: Text
+        get() = _displayName
+        set(value) {
+            _displayName = value
+        }
     override var isSneaking: Boolean
         get() = TODO("Not yet implemented")
         set(value) {}
@@ -52,11 +78,11 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
         get() = TODO("Not yet implemented")
 
     override fun disconnect(reason: Text) {
-        TODO("Not yet implemented")
+        _velocityPlayer.disconnect(reason)
     }
 
     override val name: String
-        get() = TODO("Not yet implemented")
+        get() = _velocityPlayer.username
     override val inventory: PlayerInventory
         get() = TODO("Not yet implemented")
     override val isBlocking: Boolean
@@ -99,9 +125,7 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
         get() = TODO("Not yet implemented")
         set(value) {}
     override val uuid: UUID
-        get() = TODO("Not yet implemented")
-    override val application: Application
-        get() = TODO("Not yet implemented")
+        get() = _velocityPlayer.uniqueId
     override var velocity: Vector
         get() = TODO("Not yet implemented")
         set(value) {}
@@ -141,6 +165,7 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
         TODO("Not yet implemented")
     }
 
+    @Deprecated("entities may have multiple passengers", replaceWith = ReplaceWith("addPassenger"))
     override fun setPassenger(passenger: Entity): Boolean {
         TODO("Not yet implemented")
     }
@@ -185,64 +210,14 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
         get() = TODO("Not yet implemented")
 
     override fun chat(message: String) {
-        TODO("Not yet implemented")
+        _velocityPlayer.spoofChatInput(message)
     }
 
-    override fun sendText(text: Text) {
-        TODO("Not yet implemented")
+    override fun command(command: String) {
+        _velocityPlayer.spoofChatInput("/$command")
     }
 
-    override fun sendText(text: Text, vararg marks: Mark) {
-        TODO("Not yet implemented")
-    }
-
-    override var playerlist: PlayerList
-        get() = TODO("Not yet implemented")
-        set(value) {}
-
-    override fun showBossBar(bossBar: BossBar) {
-        TODO("Not yet implemented")
-    }
-
-    override fun hideBossBar(bossBar: BossBar) {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendTitle(title: Title) {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T : Any> sendTitlePart(titlePart: TitlePartType<T>, value: T) {
-        TODO("Not yet implemented")
-    }
-
-    override fun clearTitle() {
-        TODO("Not yet implemented")
-    }
-
-    override fun resetTitle() {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendActionBar(text: Text) {
-        TODO("Not yet implemented")
-    }
-
-    override fun playSound(sound: Sound) {
-        TODO("Not yet implemented")
-    }
-
-    override fun playSound(sound: Sound, location: Location) {
-        TODO("Not yet implemented")
-    }
-
-    override fun stopSound(soundStop: SoundStop) {
-        TODO("Not yet implemented")
-    }
-
-    override fun asText(): Text {
-        TODO("Not yet implemented")
-    }
+    override fun asText(): Text = displayName
 
     override fun getPermission(permission: Permission): PermissionState {
         TODO("Not yet implemented")
@@ -278,10 +253,13 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
     override var absorptionAmount: Double
         get() = TODO("Not yet implemented")
         set(value) {}
+
+    @Deprecated("Use `Attribute.GENERIC_MAX_HEALTH` instead")
     override var maxHealth: Double
         get() = TODO("Not yet implemented")
         set(value) {}
 
+    @Deprecated("Use `Attribute.GENERIC_MAX_HEALTH` instead")
     override fun resetMaxHealth() {
         TODO("Not yet implemented")
     }
@@ -331,15 +309,13 @@ class VelocityPlayerImpl(val _velocityPlayer: _VelocityPlayer) : VelocityPlayer 
     override val listeningPluginChannels: Set<String>
         get() = TODO("Not yet implemented")
     override val remoteAddress: InetSocketAddress
-        get() = TODO("Not yet implemented")
+        get() = _velocityPlayer.remoteAddress
     override val virtualHost: InetSocketAddress?
-        get() = TODO("Not yet implemented")
+        get() = _velocityPlayer.virtualHost.getOrNull()
     override val isActive: Boolean
         get() = TODO("Not yet implemented")
     override val protocolVersion: ProtocolVersion
-        get() = TODO("Not yet implemented")
+        get() = ProtocolVersion.getProtocolVersion(_velocityPlayer.protocolVersion.protocol)
 
-    override fun toVelocityCommandSender(): _VelocityCommandSender {
-        TODO("Not yet implemented")
-    }
+    override fun toVelocityCommandSender(): _VelocityCommandSender = _velocityPlayer
 }

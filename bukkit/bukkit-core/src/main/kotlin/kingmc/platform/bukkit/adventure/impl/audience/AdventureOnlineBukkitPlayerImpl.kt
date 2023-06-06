@@ -625,9 +625,7 @@ open class AdventureOnlineBukkitPlayerImpl(
         other as AdventureOnlineBukkitPlayerImpl
 
         if (name != other.name) return false
-        if (uuid != other.uuid) return false
-
-        return true
+        return uuid == other.uuid
     }
 
     /**

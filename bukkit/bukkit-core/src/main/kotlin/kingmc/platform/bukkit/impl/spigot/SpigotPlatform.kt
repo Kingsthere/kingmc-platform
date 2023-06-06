@@ -8,10 +8,10 @@ import kingmc.util.Version
  * Spigot platform compatible
  */
 @SpigotImplementation
-open class SpigotPlatform(minecraftVersion: Version, driver: PlatformDriver, identifiers: Array<String> = arrayOf())
-    : BukkitPlatform(minecraftVersion, driver, arrayOf("spigot") + identifiers) {
+open class SpigotPlatform(minecraftVersion: Version, bukkitVersion: String, driver: PlatformDriver, identifiers: Array<String> = arrayOf())
+    : BukkitPlatform(minecraftVersion, bukkitVersion, driver, arrayOf("spigot") + identifiers) {
 
     override fun toString(): String {
-        return "Bukkit(Spigot) $minecraftVersion"
+        return "Bukkit(spigot)-$bukkitVersion (MC: $minecraftVersion)"
     }
 }

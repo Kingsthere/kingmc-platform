@@ -11,9 +11,6 @@ import net.kyori.adventure.title.TitlePart
 typealias _AdventureForwardingAudience = ForwardingAudience
 typealias _AdventureAudience = Audience
 
-// Deprecated for removal
-// typealias MessageType = MessageType
-
 typealias AdventureBossBar = BossBar
 typealias AdventureTitle = Title
 typealias AdventureTitlePart<T> = TitlePart<T>

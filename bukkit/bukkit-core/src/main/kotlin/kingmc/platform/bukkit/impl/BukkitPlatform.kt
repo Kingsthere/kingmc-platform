@@ -13,10 +13,11 @@ import kingmc.util.Version
  */
 @BukkitImplementation
 open class BukkitPlatform(override val minecraftVersion: Version,
+                          val bukkitVersion: String,
                           override val driver: PlatformDriver,
                           identifiers: Array<String> = arrayOf(),
 ) : AbstractPlatform(arrayOf("bukkit") + identifiers) {
     override fun toString(): String {
-        return "Bukkit $minecraftVersion"
+        return "Bukkit-$bukkitVersion (MC: $minecraftVersion)"
     }
 }

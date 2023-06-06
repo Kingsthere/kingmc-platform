@@ -1,7 +1,10 @@
 package kingmc.platform.proxy
 
+import kingmc.common.application.WithApplication
+import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Component
 import kingmc.platform.Server
+import kingmc.platform.server
 
 /**
  * A `ProxyServer` similar to a `Server` forward players connected to sub-servers
@@ -36,15 +39,6 @@ interface ProxyServer : Server {
     fun registerProxiedServer(serverInfo: ServerInfo): ProxiedServer
 
     /**
-     * Try to register a server
-     *
-     * @param server the server to register
-     * @throws IllegalArgumentException if server with same [ServerInfo.name] already registered into
-     *                                  this `ProxyServer`
-     */
-    fun registerProxiedServer(server: ProxiedServer)
-
-    /**
      * Unregister a proxied server from this `ProxyServer`
      *
      * @param serverInfo the server info of the server to unregister
@@ -58,3 +52,11 @@ interface ProxyServer : Server {
      */
     fun unregisterProxiedServer(server: ProxiedServer)
 }
+
+/**
+ * A shortcut to get a [ProxiedServer] by its name
+ *
+ * @param name the name of this proxied server
+ */
+@WithApplication
+fun getProxiedServer(name: String) = (currentApplication().server as ProxyServer).getProxiedServer(name)

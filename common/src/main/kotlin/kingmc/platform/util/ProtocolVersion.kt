@@ -1,6 +1,6 @@
 package kingmc.platform.util
 
-import java.util.EnumSet
+import java.util.*
 
 private const val SNAPSHOT_BIT: Int = 30
 
@@ -57,7 +57,14 @@ enum class ProtocolVersion(protocol: Int, snapshotProtocol: Int, vararg names: S
 
     MINECRAFT_1_17(755, "1.17"),
     MINECRAFT_1_17_1(756, "1.17.1"),
-    MINECRAFT_1_18(757, "1.18");
+
+    MINECRAFT_1_18(757, "1.18", "1.18.1"),
+    MINECRAFT_1_18_2(758, "1.18.2"),
+
+    MINECRAFT_1_19(759, "1.19"),
+    MINECRAFT_1_19_1(760, "1.19.1", "1.19.2"),
+    MINECRAFT_1_19_3(761, "1.19.3"),
+    MINECRAFT_1_19_4(762, "1.19.4");
 
     companion object {
         /**
