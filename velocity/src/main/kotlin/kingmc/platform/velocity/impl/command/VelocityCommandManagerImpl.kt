@@ -8,6 +8,7 @@ import com.velocitypowered.api.command.CommandSource
 import kingmc.common.application.Application
 import kingmc.common.application.application
 import kingmc.common.application.withApplication
+import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Bean
 import kingmc.common.context.annotation.Configuration
 import kingmc.common.context.annotation.Scope
@@ -31,12 +32,16 @@ import kingmc.platform.velocity.VelocityProxyServer
 @Scope(BeanScope.SINGLETON)
 @VelocityImplementation
 class VelocityCommandManagerConfiguration {
+    @Autowired
+    lateinit var velocityProxyServer: VelocityProxyServer
+
+    private val _velocityCommandManagerImpl by lazy { VelocityCommandManagerImpl(application, velocityProxyServer) }
+
     /**
      * Instantiate [VelocityCommandManagerImpl] into context
      */
     @Bean
-    fun velocityCommandManagerImpl(proxyServer: VelocityProxyServer): VelocityCommandManagerImpl =
-        VelocityCommandManagerImpl(application, proxyServer)
+    fun velocityCommandManagerImpl(): VelocityCommandManagerImpl = _velocityCommandManagerImpl
 }
 
 @VelocityImplementation
