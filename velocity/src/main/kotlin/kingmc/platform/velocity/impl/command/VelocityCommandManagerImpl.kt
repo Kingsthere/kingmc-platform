@@ -1,101 +1,108 @@
-package kingmc.platform.bukkit.nms.v1_19_2
+package kingmc.platform.velocity.impl.command
 
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.*
 import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
+import com.velocitypowered.api.command.BrigadierCommand
+import com.velocitypowered.api.command.CommandSource
 import kingmc.common.application.Application
 import kingmc.common.application.application
 import kingmc.common.application.withApplication
-import kingmc.common.context.annotation.Autowired
-import kingmc.common.context.annotation.Component
-import kingmc.common.context.condition.ConditionalOnBean
+import kingmc.common.context.annotation.Bean
+import kingmc.common.context.annotation.Configuration
+import kingmc.common.context.annotation.Scope
+import kingmc.common.context.beans.BeanScope
 import kingmc.common.logging.error
-import kingmc.common.logging.info
-import kingmc.platform.audience.AudienceFactory
-import kingmc.platform.bukkit.audience.BukkitAudienceFactory
-import kingmc.platform.bukkit.brigadier.*
-import kingmc.platform.bukkit.entity.player._BukkitCommandSender
-import kingmc.platform.command.CommandContext
-import kingmc.platform.command.CommandSender
+import kingmc.platform.Releasable
+import kingmc.platform.command.*
 import kingmc.platform.command.exceptions.CommandExecutionException
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Header
 import kingmc.platform.command.model.Node
 import kingmc.platform.command.parameter.*
-import kingmc.platform.command.requiredParameters
-import kingmc.platform.command.rootHandler
-import kingmc.platform.version.ConditionalOnVersion
-import net.minecraft.commands.CommandListenerWrapper
-import org.bukkit.Location
-import org.bukkit.World
+import kingmc.platform.facet.command.FacetCommandManager
+import kingmc.platform.velocity.VelocityImplementation
+import kingmc.platform.velocity.VelocityProxyServer
 
-@Suppress("ClassName")
-@Component("brigadierNMS_1_19_2")
-@ConditionalOnVersion("1.19.2")
-@ConditionalOnBean(BrigadierNMS::class)
-class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
-    @Autowired
-    lateinit var audienceFactory: AudienceFactory
+/**
+ * Configuration class responsible for instantiating [VelocityCommandManagerImpl]
+ */
+@Configuration
+@Scope(BeanScope.SINGLETON)
+@VelocityImplementation
+class VelocityCommandManagerConfiguration {
+    /**
+     * Instantiate [VelocityCommandManagerImpl] into context
+     */
+    @Bean
+    fun velocityCommandManagerImpl(proxyServer: VelocityProxyServer): VelocityCommandManagerImpl =
+        VelocityCommandManagerImpl(application, proxyServer)
+}
 
-    @Autowired
-    lateinit var minecraftServer: MinecraftServerNMS_1_19_2
+@VelocityImplementation
+class VelocityCommandManagerImpl(val application: Application, val proxyServer: VelocityProxyServer) : FacetCommandManager(), Releasable {
+    /**
+     * The default namespace for commands to the commands that
+     * registered into this command manager
+     */
+    override val defaultCommandNamespace: String
+        get() = application.name
+
+    private val _velocityCommandManager = proxyServer.asVelocityProxyServer().commandManager
 
     init {
-        withApplication {
-            info("Using ${this@BrigadierNMS_1_19_2::class.qualifiedName} as brigadier support...")
+        register.before { command ->
+            val commandNode = command.data
+            if (commandNode is Header) {
+                try {
+                    val commandHeader = deserializeBrigadierCommandFromCommandHeader(commandNode)
+                    val builtCommandHeader = commandHeader.build()
+                    // Register command with names without namespace
+                    _velocityCommandManager.register(BrigadierCommand(builtCommandHeader))
+                    // Register command aliases
+                    commandHeader.aliases.forEach {
+                        _velocityCommandManager.register(BrigadierCommand(AliasesCommandNode(it, builtCommandHeader)))
+                    }
+
+                    // Register command with names with namespace
+                    val namespace = commandNode.namespace
+                    _velocityCommandManager.register(BrigadierCommand(AliasesCommandNode("$namespace$NAMESPACE_SEPARATOR${commandHeader.literal}", builtCommandHeader)))
+                    // Register command aliases
+                    commandHeader.aliases.forEach {
+                        _velocityCommandManager.register(BrigadierCommand(AliasesCommandNode("$namespace$NAMESPACE_SEPARATOR$it", builtCommandHeader)))
+                    }
+                } catch (e: Exception) {
+                    throw RuntimeException("An error occurred while registering command $commandNode", e)
+                }
+            } else {
+                throw IllegalArgumentException("BrigadierCommandManager can only register header command nodes")
+            }
+        }
+
+        unregister.before { command ->
+            val commandNode = command.data
+            if (commandNode is Header) {
+                _velocityCommandManager.unregister(commandNode.name)
+                commandNode.aliases.forEach { alias ->
+                    _velocityCommandManager.unregister(alias)
+                }
+                _velocityCommandManager.unregister("${commandNode.namespace}$NAMESPACE_SEPARATOR${commandNode.name}")
+                commandNode.aliases.forEach { alias ->
+                    _velocityCommandManager.unregister("${commandNode.namespace}$NAMESPACE_SEPARATOR${alias}")
+                }
+            } else {
+                throw IllegalArgumentException("BrigadierCommandManager can only register header command nodes")
+            }
         }
     }
 
-    override fun syncCommands() {
-        minecraftServer.getMinecraftServer().ac().k.forEach {
-            minecraftServer.getMinecraftServer().at.b().d.a(it)
-        }
-    }
-
-    /**
-     * Gets the command dispatcher
-     */
-    override fun getBrigadierDispatcher(): CommandDispatcher<CommandListenerWrapper> {
-        return minecraftServer.getMinecraftServer().at.b().d.a()
-    }
-
-    /**
-     * Gets the command sender of a command as a [CommandSender]
-     */
-    override fun getCommandSender(cmdCtx: BrigadierCommandContext<CommandListenerWrapper>): CommandSender {
-        val css = cmdCtx.source as CommandListenerWrapper
-        val sender = css.bukkitSender
-        val position = css.e()
-        val rotation = css.l()
-        val world: World = this.getWorldForCSS(css)
-        val location = Location(world, position.a(), position.b(), position.c(), rotation.i, rotation.j)
-        val proxyEntity = css.g()
-        val proxy: _BukkitCommandSender? = proxyEntity?.bukkitEntity
-        return if (proxy == null || proxy == sender) {
-            (audienceFactory as BukkitAudienceFactory).commandSender(sender)
-        } else {
-            // TODO
-            // ProxiedLocatableCommandSender(
-            //     caller = (audienceFactory as BukkitAudienceFactory).commandSender(sender),
-            //     callee = (audienceFactory as BukkitAudienceFactory).commandSender(proxy),
-            //     proxiedLocation = location.asKingMC()
-            // )
-            (audienceFactory as BukkitAudienceFactory).commandSender(sender)
-        }
-    }
-
-    override fun getWorldForCSS(css: CommandListenerWrapper): World {
-        return css.f().world
-    }
-
-    override fun deserializeBrigadierCommandFromCommandHeader(commandHeader: Header): HeaderArgumentBuilder<CommandListenerWrapper> {
-        return HeaderArgumentBuilder<CommandListenerWrapper>(commandHeader).apply {
+    fun deserializeBrigadierCommandFromCommandHeader(commandHeader: Header): HeaderArgumentBuilder<CommandSource> {
+        return HeaderArgumentBuilder<CommandSource>(commandHeader).apply {
             node.children.forEach {
                 val deserializedCommandNode = deserializeBrigadierCommandFromCommandNode(it).build()
                 then(deserializedCommandNode)
                 it.aliases.forEach { alias ->
-                    then(AliasesCommandNode<CommandListenerWrapper>(alias, deserializedCommandNode))
+                    then(AliasesCommandNode<CommandSource>(alias, deserializedCommandNode))
                 }
             }
             node.rootHandler?.let { handler ->
@@ -137,15 +144,15 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
                     val deserializedCommandNode = deserializeBrigadierCommandForCommandHandler(it, node).build()
                     then(deserializedCommandNode)
                     it.aliases.forEach { alias ->
-                        then(AliasesCommandNode<CommandListenerWrapper>(alias, deserializedCommandNode))
+                        then(AliasesCommandNode<CommandSource>(alias, deserializedCommandNode))
                     }
                 }
             }
         }
     }
 
-    private fun deserializeBrigadierCommandFromCommandNode(commandNode: Node): NodeArgumentBuilder<CommandListenerWrapper> {
-        return NodeArgumentBuilder<CommandListenerWrapper>(commandNode).apply {
+    private fun deserializeBrigadierCommandFromCommandNode(commandNode: Node): NodeArgumentBuilder<CommandSource> {
+        return NodeArgumentBuilder<CommandSource>(commandNode).apply {
             node.children.forEach {
                 val deserializedCommandNode = deserializeBrigadierCommandFromCommandNode(it).build()
                 then(deserializedCommandNode)
@@ -199,8 +206,8 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
         }
     }
 
-    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler, owner: Node): HandlerArgumentBuilder<CommandListenerWrapper> {
-        return HandlerArgumentBuilder<CommandListenerWrapper>(commandHandler).apply {
+    private fun deserializeBrigadierCommandForCommandHandler(commandHandler: Handler, owner: Node): HandlerArgumentBuilder<CommandSource> {
+        return HandlerArgumentBuilder<CommandSource>(commandHandler).apply {
             if (handler.parameters.size == 0) {
                 // Insert empty root parameters executor
                 executes { css ->
@@ -226,39 +233,42 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
         listed: List<CommandParameter<*>>,
         deserializing: CommandParameter<*>,
         index: Int
-    ): ArgumentBuilder<CommandListenerWrapper, *> {
-        return deserializeCommandParameter(deserializing, this@BrigadierNMS_1_19_2.application).apply {
-                    executes { css ->
-                        return@executes withApplication(handler.application) {
-                            try {
-                                val parameters = BrigadierParameters_1_19_2(css, listed.subList(0, index + 1))
-                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
-                                handler.invoke(commandContext).asInt()
-                            } catch (e: Exception) {
-                                printCommandHandleException(e)
-                                0
-                            }
-                        }
+    ): ArgumentBuilder<CommandSource, *> {
+        return deserializeCommandParameter(deserializing, this.application).apply {
+            executes { css ->
+                return@executes withApplication(handler.application) {
+                    try {
+                        val parameters = BrigadierParameters(css, listed.subList(0, index + 1))
+                        val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                        handler.invoke(commandContext).asInt()
+                    } catch (e: Exception) {
+                        printCommandHandleException(e)
+                        0
                     }
-
-                    if (index + 1 < listed.size) {
-                        val newIndex = index + 1
-                        then(deserializeCommandHandlerParameters(handler, listed, listed[newIndex], newIndex))
-                    }
+                }
             }
+
+            if (index + 1 < listed.size) {
+                val newIndex = index + 1
+                then(deserializeCommandHandlerParameters(handler, listed, listed[newIndex], newIndex))
+            }
+        }
 
     }
 
     fun printCommandHandleException(exception: Exception) {
-        error("An error occurred while executing a command:", CommandExecutionException("An error occurred while executing a command", exception))
+        error(
+            "An error occurred while executing a command:",
+            CommandExecutionException("An error occurred while executing a command", exception)
+        )
     }
 
-    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application): RequiredArgumentBuilder<CommandListenerWrapper, TValue> {
+    private fun <TValue : Any> deserializeCommandParameter(parameter: CommandParameter<TValue>, application: Application): RequiredArgumentBuilder<CommandSource, TValue> {
         return RequiredArgumentBuilder
-            .argument<CommandListenerWrapper, TValue>(parameter.name, getArgumentType(parameter))
+            .argument<CommandSource, TValue>(parameter.name, getArgumentType(parameter))
             .apply {
                 if (parameter.suggestion != null) {
-                    suggests(WrappedSuggestionProvider_1_19_2(parameter.suggestion!!, this@BrigadierNMS_1_19_2, outerApplication = application))
+                    suggests(WrappedSuggestionProvider(parameter.suggestion!!, application = application))
                 }
             }
     }
@@ -294,4 +304,25 @@ class BrigadierNMS_1_19_2 : BrigadierNMS<CommandListenerWrapper> {
             ?: WrappedArgumentType(parameter)
     }
 
+    /**
+     * Gets the command sender of a brigadier command context as a [CommandSender]
+     */
+    fun getCommandSender(cmdCtx: BrigadierCommandContext<CommandSource>): CommandSender {
+        val commandSource = cmdCtx.source as CommandSource
+        return proxyServer.getCommandSenderForVelocity(commandSource)
+    }
+
+    /**
+     * Release
+     */
+    override fun release() {
+        this.close()
+    }
+
+    /**
+     * Returns a string representation of the object.
+     */
+    override fun toString(): String {
+        return "BrigadierCommandManager_1_19_2(application=$application)"
+    }
 }

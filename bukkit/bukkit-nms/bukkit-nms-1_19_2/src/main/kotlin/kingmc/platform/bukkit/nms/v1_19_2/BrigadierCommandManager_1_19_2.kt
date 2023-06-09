@@ -14,7 +14,6 @@ import kingmc.platform.bukkit.brigadier.BrigadierCommandManager
 import kingmc.platform.bukkit.brigadier.BrigadierNMS
 import kingmc.platform.bukkit.brigadier.removeCommand
 import kingmc.platform.command.NAMESPACE_SEPARATOR
-import kingmc.platform.command.model.Command
 import kingmc.platform.command.model.Header
 import kingmc.platform.facet.command.FacetCommandManager
 import kingmc.platform.version.ConditionalOnVersion
@@ -28,11 +27,6 @@ class BrigadierCommandManager_1_19_2 : FacetCommandManager(), BrigadierCommandMa
     @Autowired
     @Qualifier("brigadierNMS_1_19_2")
     lateinit var brigadierNMS: BrigadierNMS_1_19_2
-
-    /**
-     * Registered commands
-     */
-    private val _registeredCommands: MutableList<Command<*>> = mutableListOf()
 
     /**
      * The default namespace for commands to the commands that
@@ -70,7 +64,6 @@ class BrigadierCommandManager_1_19_2 : FacetCommandManager(), BrigadierCommandMa
                 throw IllegalArgumentException("BrigadierCommandManager can only register header command nodes")
             }
             brigadierNMS.syncCommands()
-            _registeredCommands.add(command)
         }
 
         unregister.before { command ->
@@ -90,7 +83,6 @@ class BrigadierCommandManager_1_19_2 : FacetCommandManager(), BrigadierCommandMa
                 throw IllegalArgumentException("BrigadierCommandManager can only register header command nodes")
             }
             brigadierNMS.syncCommands()
-            _registeredCommands.remove(command)
         }
     }
 

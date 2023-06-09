@@ -2,6 +2,8 @@ package kingmc.platform.command.suggestion
 
 import kingmc.common.application.WithApplication
 import kingmc.platform.command.CommandContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 /**
  * An interface for a command handler to suggest completion of
@@ -21,4 +23,7 @@ open class BlockingSuggestionProvider(val function: @WithApplication Suggestions
 /**
  * A `SuggestionProvider` implementation provide suggestions in **suspend function**
  */
-open class SuspendSuggestionProvider(val function: @WithApplication suspend SuggestionsBuilder.(CommandContext) -> Unit): SuggestionProvider
+open class SuspendSuggestionProvider(
+    val function: @WithApplication suspend SuggestionsBuilder.(CommandContext) -> Unit,
+    val dispatcher: CoroutineDispatcher = Dispatchers.IO
+): SuggestionProvider

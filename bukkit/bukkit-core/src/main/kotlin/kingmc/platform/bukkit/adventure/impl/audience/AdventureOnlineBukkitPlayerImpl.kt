@@ -232,7 +232,7 @@ open class AdventureOnlineBukkitPlayerImpl(
             _bukkitPlayer.velocity = value.asBukkit()
         }
 
-    private fun ensurePlayerOnline() {
+    protected fun ensurePlayerOnline() {
         if (Bukkit.getPlayer(uuid) == null) {
             throw AudienceOfflineException("This player is not online")
         }
