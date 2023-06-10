@@ -5,6 +5,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import kingmc.common.OpenAPI;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * The main class for boot up kingmc in velocity server, main-class in Plugin.yml pointed here
@@ -43,7 +45,7 @@ public class VelocityJavaPlugin {
     /**
      * Plugin file
      */
-    public final File file = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
+    public final File file;
 
     /**
      * Plugin data folder - {@code server_root/plugins/KingMC/}
@@ -86,13 +88,20 @@ public class VelocityJavaPlugin {
      * @param server ProxyServer
      * @param logger Logger
      * @param dataDirectory Path
+     * @param description description
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Inject
-    public VelocityJavaPlugin(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
+    public VelocityJavaPlugin(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory, PluginDescription description) {
         this.server = server;
         this.logger = logger;
         this.dataFolder = dataDirectory.toFile();
+        Optional<Path> source = description.getSource();
+        if (source.isPresent()) {
+            this.file = source.get().toFile();
+        } else {
+            throw new IllegalStateException("Unable to fetch source that boots kingmc framework");
+        }
 
         this.serverRoot = dataFolder.getParentFile().getParentFile();
         this.kingmcRoot = new File(serverRoot, "kingmc");

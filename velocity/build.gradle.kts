@@ -33,6 +33,7 @@ dependencies {
     api(project(":proxy"))
     api(project(":facet"))
     api("com.velocitypowered:velocity-api:3.1.1")
+    // implementation(files("resources/velocity-3.2.0-SNAPSHOT-258.jar")) velocity jar implementation
     kapt("com.velocitypowered:velocity-api:3.1.1")
 }
 
@@ -86,9 +87,6 @@ tasks {
             val ktil = "0.1"
             include(dependency("com.kingsthere.ktil:common:$ktil"))
             include(dependency("com.kingsthere.ktil:annotation:$ktil"))
-            include(dependency("org.ow2.asm:asm:9.3"))
-            include(dependency("org.ow2.asm:asm-util:9.3"))
-            include(dependency("org.ow2.asm:asm-commons:9.3"))
         }
         relocate("me.lucko", "kingmc.library")
         relocate("org.objectweb.asm", "kingmc.library.asm")
