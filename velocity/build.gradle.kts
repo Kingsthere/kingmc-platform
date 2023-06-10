@@ -78,6 +78,8 @@ tasks {
             include(dependency("net.kingmc.common:structure:$kingmc_version"))
             include(dependency("net.kingmc.common:script:$kingmc_version"))
             include(project(":common"))
+            include(project(":facet"))
+            include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
             include(dependency("me.lucko:jar-relocator:1.5"))
             val ktil = "0.1"
             include(dependency("com.kingsthere.ktil:common:$ktil"))
