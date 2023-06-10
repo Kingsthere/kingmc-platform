@@ -268,7 +268,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            _velocityJavaPlugin.server.shutdown(Text("Failed to load properties for kingmc framework ${e}"))
+            _velocityJavaPlugin.server.shutdown(Text("Failed to load properties for kingmc framework $e"))
         }
         this.properties = loadingProperties
     }
