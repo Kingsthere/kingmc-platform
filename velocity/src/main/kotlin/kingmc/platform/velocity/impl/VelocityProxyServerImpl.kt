@@ -1,16 +1,19 @@
 package kingmc.platform.velocity.impl
 
+import com.velocitypowered.api.proxy.ConsoleCommandSource
 import kingmc.common.application.application
 import kingmc.common.application.withApplication
 import kingmc.common.context.annotation.Component
 import kingmc.common.text.Text
 import kingmc.platform.audience.Console
+import kingmc.platform.command.CommandSender
 import kingmc.platform.entity.player.OfflinePlayer
 import kingmc.platform.entity.player.Player
 import kingmc.platform.messaging.OutputMessage
 import kingmc.platform.proxy.ProxiedServer
 import kingmc.platform.proxy.ServerInfo
 import kingmc.platform.velocity.*
+import kingmc.platform.velocity.command._VelocityCommandSender
 import kingmc.platform.velocity.driver.velocityServer
 import kingmc.platform.velocity.impl.audience.VelocityConsoleImpl
 import kingmc.platform.velocity.impl.entity.player.VelocityPlayerImpl
@@ -54,6 +57,14 @@ class VelocityProxyServerImpl : VelocityProxyServer {
     override fun getPlayerForVelocity(velocityPlayer: _VelocityPlayer): Player {
         return _players.computeIfAbsent(velocityPlayer) {
             VelocityPlayerImpl(this, it, application)
+        }
+    }
+
+    override fun getCommandSenderForVelocity(velocityCommandSource: _VelocityCommandSender): CommandSender {
+        return when (velocityCommandSource) {
+            is ConsoleCommandSource -> console
+            is _VelocityPlayer -> getPlayerForVelocity(velocityCommandSource)
+            else -> throw IllegalArgumentException("Unrecognized velocity command source type $velocityCommandSource")
         }
     }
 
