@@ -81,6 +81,8 @@ tasks {
             include(project(":facet"))
             include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
             include(dependency("me.lucko:jar-relocator:1.5"))
+            include(dependency("net.kyori:adventure-text-logger-slf4j:4.12.0"))
+            include(dependency("commons-io:commons-io:2.11.0"))
             val ktil = "0.1"
             include(dependency("com.kingsthere.ktil:common:$ktil"))
             include(dependency("com.kingsthere.ktil:annotation:$ktil"))
@@ -89,6 +91,7 @@ tasks {
             include(dependency("org.ow2.asm:asm-commons:9.3"))
         }
         relocate("me.lucko", "kingmc.library")
+        relocate("org.objectweb.asm", "kingmc.library.asm")
         from(sourceSets.main.get().output)
     }
     build {

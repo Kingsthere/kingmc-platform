@@ -120,7 +120,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
     }
 
     val formatContext = PropertiesFormatContext(properties)
-    val mavenRepository = repository("{ kingmc.environment.maven-repository }", formatContext)
+    val mavenRepository = repository("{kingmc.environment.maven-repository}", formatContext)
 
     @OptIn(ExperimentalTime::class)
     override fun load() {
@@ -201,7 +201,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
 
     protected open fun loadCoroutineEnvironment() {
         dependencyDispatcher.installDependency(
-            dependency(groupId = "org.jetbrains.kotlin", artifactId = "kotlin-reflect", version = "{ kingmc.environment.kotlin }", scope = DependencyScope.RUNTIME, formatContext),
+            dependency(groupId = "org.jetbrains.kotlin", artifactId = "kotlin-reflect", version = "{kingmc.environment.kotlin}", scope = DependencyScope.RUNTIME, formatContext),
             setOf(mavenRepository),
             emptySet(),
             DependencyScope.RUNTIME

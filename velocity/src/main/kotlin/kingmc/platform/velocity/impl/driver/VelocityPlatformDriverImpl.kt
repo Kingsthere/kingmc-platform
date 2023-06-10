@@ -105,11 +105,10 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
         loadConfigurationEnvironment()
         loadProperties()
         platform = loadPlatform()
-        println(properties)
     }
 
     val formatContext = PropertiesFormatContext(properties)
-    val mavenRepository = repository("{ kingmc.environment.maven-repository }", formatContext)
+    val mavenRepository = repository("{kingmc.environment.maven-repository}", formatContext)
 
     @OptIn(ExperimentalTime::class)
     override fun load() {
@@ -190,7 +189,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
 
     protected open fun loadCoroutineEnvironment() {
         dependencyDispatcher.installDependency(
-            dependency(groupId = "org.jetbrains.kotlin", artifactId = "kotlin-reflect", version = "{ kingmc.environment.kotlin }", scope = DependencyScope.RUNTIME, formatContext),
+            dependency(groupId = "org.jetbrains.kotlin", artifactId = "kotlin-reflect", version = "{kingmc.environment.kotlin}", scope = DependencyScope.RUNTIME, formatContext),
             setOf(mavenRepository),
             emptySet(),
             DependencyScope.RUNTIME
@@ -295,7 +294,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
     protected fun loadPropertiesFile(path: String, consumer: Consumer<File>) {
         // Jar builtin properties
         val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
-        builtinInputStream.use {
+        builtinInputStream?.use {
             // KingMC will create external config.xxx file instead
             // if (builtinInputStream != null) {
             //     val tempFile = File.createTempFile(path, ".tmp", _velocityJavaPlugin.tempFolder)
