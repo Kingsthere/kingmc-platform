@@ -80,6 +80,7 @@ tasks {
             include(dependency("net.kingmc.common:script:$kingmc_version"))
             include(project(":common"))
             include(project(":facet"))
+            include(project(":proxy"))
             include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
             include(dependency("me.lucko:jar-relocator:1.5"))
             include(dependency("net.kyori:adventure-text-logger-slf4j:4.12.0"))
