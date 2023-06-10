@@ -48,27 +48,27 @@ public class VelocityJavaPlugin {
     /**
      * Plugin data folder - {@code server_root/plugins/KingMC/}
      */
-    public File dataFolder;
+    public final File dataFolder;
 
     /**
      * Server root - {@code server_root/}
      */
-    public final File serverRoot = dataFolder.getParentFile().getParentFile();
+    public final File serverRoot;
 
     /**
      * KingMC root - server_root/kingmc/
      */
-    public final File kingmcRoot = new File(serverRoot, "kingmc");
+    public final File kingmcRoot;
 
     /**
      * Temp folder - server_root/kingmc/temp
      */
-    public final File tempFolder = new File(kingmcRoot, "temp");
+    public final File tempFolder;
 
     /**
      * The class loader that loads this class
      */
-    public final ClassLoader classLoader = this.getClass().getClassLoader();
+    public final ClassLoader classLoader;
 
     /**
      * Platform selector to adapt current velocity server environment
@@ -93,7 +93,11 @@ public class VelocityJavaPlugin {
         this.server = server;
         this.logger = logger;
         this.dataFolder = dataDirectory.toFile();
-        long stopwatch = System.currentTimeMillis();
+
+        this.serverRoot = dataFolder.getParentFile().getParentFile();
+        this.kingmcRoot = new File(serverRoot, "kingmc");
+        this.tempFolder = new File(kingmcRoot, "temp");
+        this.classLoader = this.getClass().getClassLoader();
 
         OpenAPI.supportClassLoader(this.getClass().getClassLoader());
 
