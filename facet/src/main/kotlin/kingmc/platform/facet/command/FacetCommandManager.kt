@@ -22,34 +22,34 @@ abstract class FacetCommandManager : CommandManager {
     /**
      * Registered commands
      */
-    protected val registeredCommands: MutableList<Command<*>> = mutableListOf()
+    protected val registeredCommandsList: MutableList<Command<*>> = mutableListOf()
 
     val register = Facet<Command<*>, Unit> { command ->
-        registeredCommands.add(command)
+        registeredCommandsList.add(command)
     }
 
     @FacetAvailable
     override fun register(command: Command<*>) = register.invoke(command)
 
     val unregister = Facet<Command<*>, Unit> { command ->
-        registeredCommands.remove(command)
+        registeredCommandsList.remove(command)
     }
 
     @FacetAvailable
     override fun unregister(command: Command<*>) {
-        registeredCommands.remove(command)
+        registeredCommandsList.remove(command)
     }
 
     override fun unregister(name: String) {
-        registeredCommands.removeIf { (it.data as Node).name.startsWith(name) }
+        registeredCommandsList.removeIf { (it.data as Node).name.startsWith(name) }
     }
 
-    override fun getRegisteredCommands(): List<Command<*>> = registeredCommands
+    override fun getRegisteredCommands(): List<Command<*>> = registeredCommandsList
 
     override fun close() {
-        registeredCommands.forEach {
+        registeredCommandsList.forEach {
             unregister(it)
         }
-        registeredCommands.clear()
+        registeredCommandsList.clear()
     }
 }
