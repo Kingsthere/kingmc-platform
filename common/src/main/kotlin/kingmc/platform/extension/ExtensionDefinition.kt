@@ -96,6 +96,11 @@ data class ExtensionDefinition(
         val id: String,
 
         /**
+         * The version of this dependency
+         */
+        val version: String,
+
+        /**
          * The url of the dependency, this url is used to specify the dependency to
          * download if the dependency is missing. You can leave it to default (`empty string`), but if
          * the dependency is missing then kingmc will download it by its [id] which

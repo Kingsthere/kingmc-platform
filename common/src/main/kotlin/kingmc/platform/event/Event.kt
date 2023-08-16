@@ -26,4 +26,9 @@ package kingmc.platform.event
 @MustBeDocumented
 @Retention
 @Target(AnnotationTarget.CLASS)
-annotation class Event
+annotation class Event (
+    /**
+     * `true` if this event should fired asynchronously
+     */
+    val async: Boolean = false
+)

@@ -14,7 +14,6 @@ import kingmc.platform.bukkit.adventure._AdventureKey
 import kingmc.platform.bukkit.asBukkit
 import kingmc.platform.bukkit.asKingMC
 import kingmc.platform.bukkit.entity.*
-import kingmc.platform.bukkit.entity.player._BukkitPlayer
 import kingmc.platform.bukkit.impl.permission.BukkitPermissibleImpl
 import kingmc.platform.bukkit.nbt.createMutableNBTCompound
 import kingmc.platform.entity.Entity
@@ -25,7 +24,7 @@ import net.kyori.adventure.text.event.HoverEvent
 import java.util.*
 
 /**
- * A simple implementation of [BukkitEntity]
+ * A bukkit side implementation of [BukkitEntity] implemented by calling bukkit api
  *
  * @since 0.0.7
  * @author kingsthere
@@ -37,14 +36,6 @@ open class BukkitEntityImpl(
 ) : BukkitEntity,
     Audience by Audience.EMPTY,
     Permissible by BukkitPermissibleImpl(_bukkitEntity, application) {
-    init {
-        // Remove entity when application shutdown
-        if (_bukkitEntity !is _BukkitPlayer) {
-            application.addShutdownHook {
-                this@BukkitEntityImpl.remove()
-            }
-        }
-    }
 
     protected val _nbt by lazy {
         _bukkitEntity.createMutableNBTCompound(application)
@@ -58,6 +49,9 @@ open class BukkitEntityImpl(
         }
     override val nbt: MutableNBTCompound
         get() = _nbt
+    @Deprecated("A BukkitEntityImpl always represents a spawned entity")
+    override val isSpawned: Boolean
+        get() = true
     override val entityId: Int
         get() = _bukkitEntity.entityId
     override var fireTicks: Int

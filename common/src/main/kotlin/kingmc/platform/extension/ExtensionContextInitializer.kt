@@ -1,10 +1,10 @@
 package kingmc.platform.extension
 
-import kingmc.util.annotation.getAnnotation
-import kingmc.util.annotation.hasAnnotation
 import kingmc.common.context.beans.beanClass
 import kingmc.platform.ConditionalOnPlatform
 import kingmc.platform.context.PlatformContextInitializer
+import kingmc.util.annotation.getAnnotation
+import kingmc.util.annotation.hasAnnotation
 
 /**
  * Initializer to initialize extension context

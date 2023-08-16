@@ -19,14 +19,29 @@ import org.bukkit.World
 @ConditionalOnBean(BrigadierEnvironment::class)
 interface BrigadierNMS<TCommandSourceStack : Any> {
     /**
-     * Sync commands(send registered brigadier commands to players)
+     * Setup vanilla commands into `CommandMap`
+     */
+    fun setVanillaCommands(first: Boolean)
+
+    /**
+     * Sync commands
      */
     fun syncCommands()
 
     /**
+     * Send registered brigadier commands to players
+     */
+    fun sendCommands()
+
+    /**
+     * Gets the vanilla command dispatcher
+     */
+    fun getVanillaCommandDispatcher(): CommandDispatcher<TCommandSourceStack>
+
+    /**
      * Gets the brigadier command dispatcher
      */
-    fun getBrigadierDispatcher(): CommandDispatcher<TCommandSourceStack>
+    fun getBrigadierCommandDispatcher(): CommandDispatcher<TCommandSourceStack>
 
     /**
      * Gets CommandSender from [CommandContext]

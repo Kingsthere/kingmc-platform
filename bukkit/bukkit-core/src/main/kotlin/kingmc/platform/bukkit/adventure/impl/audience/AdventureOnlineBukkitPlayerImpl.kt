@@ -5,12 +5,13 @@ import kingmc.common.text.Mark
 import kingmc.common.text.Text
 import kingmc.common.text.serializer.deserializeFromLegacyToText
 import kingmc.common.text.serializer.serializeFromTextToLegacy
-import kingmc.platform.*
+import kingmc.platform.Locatable
+import kingmc.platform.Location
 import kingmc.platform.Vector
 import kingmc.platform.audience.*
 import kingmc.platform.audience.bossbar.BossBar
 import kingmc.platform.audience.exception.AudienceOfflineException
-import kingmc.platform.audience.particle.*
+import kingmc.platform.audience.particle.Particle
 import kingmc.platform.audience.playerlist.PlayerList
 import kingmc.platform.audience.sound.Sound
 import kingmc.platform.audience.sound.SoundStop
@@ -19,7 +20,6 @@ import kingmc.platform.audience.title.TitlePartType
 import kingmc.platform.bukkit.Bukkit
 import kingmc.platform.bukkit.asBukkit
 import kingmc.platform.bukkit.asKingMC
-import kingmc.platform.bukkit.audience.particle.BukkitParticleAnimationTask
 import kingmc.platform.bukkit.audience.particle.bukkit
 import kingmc.platform.bukkit.driver.bukkitPlugin
 import kingmc.platform.bukkit.entity.player.BukkitPlayer
@@ -41,9 +41,11 @@ import java.util.stream.Collectors
 import kotlin.time.toJavaDuration
 
 /**
- * An implementation of [BukkitPlayer], to use this implementation of
- * player you have to ensure that the player is online, otherwise it will throw an
- * [AudienceOfflineException] instead of correct result
+ * A bukkit side implementation of [BukkitPlayer], it is implemented by calling bukkit api as a fallback
+ * solution for servers that have the bukkit api but cannot use the nms implementation
+ *
+ * All method in this implementation require player **online** to invoke, otherwise calling
+ * them when player is not online might cause an [AudienceOfflineException]
  *
  * @since 0.0.8
  * @author kingsthere
@@ -499,27 +501,36 @@ open class AdventureOnlineBukkitPlayerImpl(
         ))
     }
 
-    @Deprecated("_BukkitPlayer.spawnParticle() method is not supported by 1.8")
-    override fun sendParticle(particle: Particle<*>) {
+    /*
+        WARNING: _BukkitPlayer.spawnParticle() method is not supported by lower bukkit api
+        version, Use this method carefully
+     */
+    override fun sendParticle(
+        particle: Particle<*>,
+        x: Double,
+        y: Double,
+        z: Double,
+        longDistance: Boolean,
+        offsetX: Float,
+        offsetY: Float,
+        offsetZ: Float,
+        maxSpeed: Float,
+        count: Int
+    ) {
         this.ensurePlayerOnline()
-        this._bukkitPlayer.spawnParticle(particle.bukkit, particle.x, particle.y, particle.z, particle.count, particle.offsetX.toDouble(), particle.offsetY.toDouble(), particle.offsetZ.toDouble(), particle.maxSpeed.toDouble())
+        this._bukkitPlayer.spawnParticle(
+            particle.bukkit,
+            x,
+            y,
+            z,
+            count,
+            offsetX.toDouble(),
+            offsetY.toDouble(),
+            offsetZ.toDouble(),
+            maxSpeed.toDouble()
+        )
     }
 
-    @Deprecated("_BukkitPlayer.spawnParticle() method is not supported by 1.8")
-    override fun sendParticle(particleAnimation: ParticleAnimation): ParticleAnimationTask =
-        BukkitParticleAnimationTask(particleAnimation, this)
-
-    @Deprecated("_BukkitPlayer.spawnParticle() method is not supported by 1.8")
-    override fun sendParticle(particleAnimation: ParticleAnimation, speed: Int): AcceleratedParticleAnimationTask =
-        BukkitParticleAnimationTask(particleAnimation, this, speed)
-
-    @Suppress("DEPRECATION")
-    @Deprecated("_BukkitPlayer.spawnParticle() method is not supported by 1.8")
-    override fun sendParticle(particleGroup: ParticleGroup) {
-        particleGroup.particles.forEach { particle -> this.sendParticle(particle) }
-    }
-
-    @Deprecated("_BukkitPlayer.spawnParticle() method is not supported by 1.8")
     override fun resetTitle() {
         this.ensurePlayerOnline()
         this._adventureAudience.resetTitle()

@@ -1,6 +1,5 @@
 package kingmc.platform.facet.permission
 
-import kingmc.common.context.annotation.Autowired
 import kingmc.platform.facet.FacetImplementation
 import kingmc.platform.permission.Permission
 import kingmc.platform.permission.PermissionBuilder
@@ -11,9 +10,7 @@ import kingmc.platform.permission.PermissionRegistry
  * Facet `PermissionDispatcher` implementation
  */
 @FacetImplementation
-open class FacetPermissionDispatcher : PermissionDispatcher {
-    @Autowired
-    lateinit var permissionRegistry: PermissionRegistry
+open class FacetPermissionDispatcher(val permissionRegistry: PermissionRegistry) : PermissionDispatcher {
 
     /**
      * Permissions created by this factory

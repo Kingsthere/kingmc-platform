@@ -13,4 +13,9 @@ import kingmc.platform.context.PlatformApplication
  * @see Application
  * @see ExtensionContext
  */
-interface ExtensionApplication : FormatCapableApplication, PlatformApplication
+interface ExtensionApplication : FormatCapableApplication, PlatformApplication {
+    /**
+     * Reload properties for this application
+     */
+    fun reloadProperties()
+}

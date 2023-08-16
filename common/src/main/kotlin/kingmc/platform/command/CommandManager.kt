@@ -5,7 +5,6 @@ import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.command.model.Command
-import java.io.Closeable
 
 const val NAMESPACE_SEPARATOR = ":"
 
@@ -19,7 +18,7 @@ const val NAMESPACE_SEPARATOR = ":"
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated
-interface CommandManager : Closeable {
+interface CommandManager {
     /**
      * The default namespace for commands to the commands that
      * registered into this command manager
@@ -45,4 +44,9 @@ interface CommandManager : Closeable {
      * Get all registered commands in this command manager
      */
     fun getRegisteredCommands(): List<Command<*>>
+
+    /**
+     * Close this command manager and unregister all commands registered by this manager
+     */
+    fun close()
 }

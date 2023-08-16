@@ -6,6 +6,7 @@ class SuggestionsBuilder(val input: String, private val inputLowerCase: String, 
     private val remaining: String = input.substring(start)
     private val remainingLowerCase: String = inputLowerCase.substring(start)
     private val result: MutableList<Suggestion> = ArrayList()
+    var filter: (text: String, tooltip: String?) -> Boolean = { _, _ -> true }
 
     constructor(input: String, start: Int) : this(input, input.lowercase(), start)
 
@@ -18,6 +19,9 @@ class SuggestionsBuilder(val input: String, private val inputLowerCase: String, 
     }
 
     fun suggest(text: String): SuggestionsBuilder {
+        if (!filter(text, null)) {
+            return this
+        }
         if (text == remaining) {
             return this
         }
@@ -32,6 +36,9 @@ class SuggestionsBuilder(val input: String, private val inputLowerCase: String, 
     }
 
     fun suggest(text: String, tooltip: String): SuggestionsBuilder {
+        if (!filter(text, tooltip)) {
+            return this
+        }
         if (text == remaining) {
             return this
         }

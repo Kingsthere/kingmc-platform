@@ -8,6 +8,7 @@ import kingmc.common.OpenAPI
 import kingmc.common.application.withApplication
 import kingmc.common.context.LifecycleContext
 import kingmc.common.context.initializer.ContextInitializer
+import kingmc.common.context.process.insertAfterProcessBeanLifecycle
 import kingmc.common.context.process.insertProcessBeanLifecycle
 import kingmc.common.environment.KingMCEnvironment
 import kingmc.common.environment.KotlinCoroutineEnvironment
@@ -116,7 +117,6 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         loadConfigurationEnvironment()
         loadProperties()
         platform = loadPlatform()
-        println(properties)
     }
 
     val formatContext = PropertiesFormatContext(properties)
@@ -131,7 +131,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
                 loadFullEnvironmentSuspend()
             }
             application = loadPlatformApplication()
-            contextLifecycle = (application.context as LifecycleContext).lifecycle()
+            contextLifecycle = (application.context as LifecycleContext).getLifecycle()
 
             withApplication(this.application) {
                 // Log the current kingmc framework information
@@ -150,6 +150,8 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
                 infoColored("<yellow>Booting up by driver $this")
 
                 runBlocking {
+                    // Init extension dispatcher
+                    extensionDispatcher.init()
                     info("Loading extensions from $extensionDirectory...")
                     extensionDispatcher.loadExtensionsFromDirectory(extensionDirectory, contextLifecycle)
                 }
@@ -195,6 +197,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
         contextInitializer.invoke()
 
         context.insertProcessBeanLifecycle(5)
+        context.insertAfterProcessBeanLifecycle(5)
 
         return application
     }
@@ -329,7 +332,7 @@ open class BukkitPlatformDriverImpl(protected val _bukkitJavaPlugin: BukkitJavaP
     protected fun loadPropertiesFile(path: String, consumer: Consumer<File>) {
         // Jar builtin properties
         val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
-        builtinInputStream.use {
+        builtinInputStream?.use {
             // KingMC will create external config.xxx file instead
             // if (builtinInputStream != null) {
             //     val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)

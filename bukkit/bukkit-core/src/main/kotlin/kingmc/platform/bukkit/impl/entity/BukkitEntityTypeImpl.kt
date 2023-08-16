@@ -6,7 +6,7 @@ import kingmc.platform.bukkit.entity._BukkitEntityType
 import kingmc.util.key.Key
 
 /**
- * An official implementation of [BukkitEntityType]
+ * A simple implementation of [BukkitEntityType]
  */
 @BukkitImplementation
 class BukkitEntityTypeImpl(val bukkitEntityType: _BukkitEntityType) : BukkitEntityType {

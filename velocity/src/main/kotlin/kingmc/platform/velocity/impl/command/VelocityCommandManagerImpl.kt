@@ -35,7 +35,10 @@ class VelocityCommandManagerConfiguration {
     @Autowired
     lateinit var velocityProxyServer: VelocityProxyServer
 
-    private val _velocityCommandManagerImpl by lazy { VelocityCommandManagerImpl(application, velocityProxyServer) }
+    @Autowired
+    lateinit var commandContextFactory: CommandContextFactory
+
+    private val _velocityCommandManagerImpl by lazy { VelocityCommandManagerImpl(application, velocityProxyServer, commandContextFactory) }
 
     /**
      * Instantiate [VelocityCommandManagerImpl] into context
@@ -45,7 +48,7 @@ class VelocityCommandManagerConfiguration {
 }
 
 @VelocityImplementation
-class VelocityCommandManagerImpl(val application: Application, val proxyServer: VelocityProxyServer) : FacetCommandManager(), Releasable {
+class VelocityCommandManagerImpl(val application: Application, val proxyServer: VelocityProxyServer, val commandContextFactory: CommandContextFactory) : FacetCommandManager(), Releasable {
     /**
      * The default namespace for commands to the commands that
      * registered into this command manager
@@ -117,7 +120,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                         return@executes withApplication(handler.application) {
                             try {
                                 val parameters = Parameters.EMPTY
-                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                                 handler.invoke(commandContext).asInt()
                             } catch (e: Exception) {
                                 printCommandHandleException(e)
@@ -132,7 +135,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                             return@executes withApplication(handler.application) {
                                 try {
                                     val parameters = Parameters.EMPTY_WITH_DEFAULT
-                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                                     handler.invoke(commandContext).asInt()
                                 } catch (e: Exception) {
                                     printCommandHandleException(e)
@@ -172,7 +175,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                         return@executes withApplication(handler.application) {
                             try {
                                 val parameters = Parameters.EMPTY
-                                val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                                 handler.invoke(commandContext).asInt()
                             } catch (e: Exception) {
                                 printCommandHandleException(e)
@@ -187,7 +190,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                             return@executes withApplication(handler.application) {
                                 try {
                                     val parameters = Parameters.EMPTY_WITH_DEFAULT
-                                    val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                                    val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                                     handler.invoke(commandContext).asInt()
                                 } catch (e: Exception) {
                                     printCommandHandleException(e)
@@ -219,7 +222,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                     return@executes withApplication(owner.application) {
                         try {
                             val parameters = Parameters.EMPTY
-                            val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                            val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                             handler.invoke(commandContext).asInt()
                         } catch (e: Exception) {
                             printCommandHandleException(e)
@@ -228,6 +231,21 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                     }
                 }
             } else {
+                // Insert default root parameters executor
+                if (handler.requiredParameters == 0) {
+                    executes { css ->
+                        return@executes withApplication(handler.application) {
+                            try {
+                                val parameters = Parameters.EMPTY_WITH_DEFAULT
+                                val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
+                                handler.invoke(commandContext).asInt()
+                            } catch (e: Exception) {
+                                printCommandHandleException(e)
+                                0
+                            }
+                        }
+                    }
+                }
                 then(deserializeCommandHandlerParameters(handler, handler.parameters, handler.parameters.first(), 0))
             }
         }
@@ -244,7 +262,7 @@ class VelocityCommandManagerImpl(val application: Application, val proxyServer: 
                 return@executes withApplication(handler.application) {
                     try {
                         val parameters = BrigadierParameters(css, listed.subList(0, index + 1))
-                        val commandContext = CommandContext(getCommandSender(css), parameters, css.input)
+                        val commandContext = commandContextFactory.create(getCommandSender(css), parameters, css.input)
                         handler.invoke(commandContext).asInt()
                     } catch (e: Exception) {
                         printCommandHandleException(e)

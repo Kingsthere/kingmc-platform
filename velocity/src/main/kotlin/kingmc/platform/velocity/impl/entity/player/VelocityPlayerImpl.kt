@@ -6,7 +6,7 @@ import kingmc.common.text.serializer.deserializeFromLegacyToText
 import kingmc.platform.Location
 import kingmc.platform.Vector
 import kingmc.platform.audience.Audience
-import kingmc.platform.audience.particle.*
+import kingmc.platform.audience.particle.Particle
 import kingmc.platform.entity.Entity
 import kingmc.platform.entity.EntityType
 import kingmc.platform.entity.damage.DamageSource
@@ -130,6 +130,8 @@ class VelocityPlayerImpl(
         get() = TODO("Not yet implemented")
         set(value) {}
     override val nbt: MutableNBTCompound
+        get() = TODO("Not yet implemented")
+    override val isSpawned: Boolean
         get() = TODO("Not yet implemented")
     override val entityId: Int
         get() = TODO("Not yet implemented")
@@ -286,19 +288,18 @@ class VelocityPlayerImpl(
         TODO("Not yet implemented")
     }
 
-    override fun sendParticle(particle: Particle<*>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendParticle(particleGroup: ParticleGroup) {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation): ParticleAnimationTask {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation, speed: Int): AcceleratedParticleAnimationTask {
+    override fun sendParticle(
+        particle: Particle<*>,
+        x: Double,
+        y: Double,
+        z: Double,
+        longDistance: Boolean,
+        offsetX: Float,
+        offsetY: Float,
+        offsetZ: Float,
+        maxSpeed: Float,
+        count: Int
+    ) {
         TODO("Not yet implemented")
     }
 

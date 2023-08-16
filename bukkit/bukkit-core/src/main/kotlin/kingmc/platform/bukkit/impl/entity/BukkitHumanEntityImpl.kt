@@ -14,7 +14,7 @@ import kingmc.platform.inventory.PlayerInventory
 import org.bukkit.event.inventory.InventoryType
 
 /**
- * Bukkit [HumanEntity] implementation
+ * A bukkit side [HumanEntity] implementation implemented by calling bukkit api
  *
  * @since 0.0.8
  * @author kingsthere

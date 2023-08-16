@@ -4,7 +4,6 @@ import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
-import java.io.Closeable
 
 /**
  * The manager to manage listeners
@@ -15,7 +14,7 @@ import java.io.Closeable
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated
-interface ListenerManager : Closeable {
+interface ListenerManager {
     /**
      * Register a listener to this listener manager
      */
@@ -34,7 +33,8 @@ interface ListenerManager : Closeable {
     fun getRegisteredListeners(): Set<Listener>
 
     /**
-     * Close this listener manager
+     * Close this listener manager and release all listeners registered
+     * by this listener manager
      */
-    override fun close()
+    fun close()
 }

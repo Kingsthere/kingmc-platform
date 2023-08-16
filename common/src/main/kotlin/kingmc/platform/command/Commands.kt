@@ -5,7 +5,6 @@ import kingmc.common.application.currentApplication
 import kingmc.platform.command.coroutine.CoroutineContextHandler
 import kingmc.platform.command.model.*
 import kingmc.platform.commandFactory
-import kingmc.util.KingMCDsl
 
 /**
  * Run a statement with command manager of current application
@@ -15,9 +14,19 @@ import kingmc.util.KingMCDsl
  * @return the returning value for statement with command manager
  */
 @WithApplication
-@KingMCDsl
-fun commands(run: @WithApplication CommandManager.() -> Unit) =
+@KingMCCommandDSL
+inline fun commands(run: @WithApplication CommandManager.() -> Unit) =
     currentApplication().commandFactory.apply(run)
+
+/**
+ * Create & configure a new command node and register it to the receiver node 
+ *
+ * @since 0.1.1
+ * @author kingsthere
+ */
+@KingMCCommandDSL
+inline fun Node.node(name: String, block: @WithApplication Node.() -> Unit) =
+    Node(name, block).also { register(it) }
 
 /**
  * Create and configure a child node from current node
@@ -26,7 +35,7 @@ fun commands(run: @WithApplication CommandManager.() -> Unit) =
  * @return the node created
  */
 @WithApplication
-fun Node(name: String, config: @WithApplication Node.() -> Unit): Node {
+inline fun Node(name: String, config: @WithApplication Node.() -> Unit): Node {
     return SimpleNode(name, null, null, application = currentApplication()).apply(config)
 }
 
@@ -36,7 +45,7 @@ fun Node(name: String, config: @WithApplication Node.() -> Unit): Node {
  * @return the Header created
  */
 @WithApplication
-fun Header(name: String, namespace: String = currentApplication().commandFactory.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
+inline fun Header(name: String, namespace: String = currentApplication().commandFactory.defaultCommandNamespace, config: @WithApplication Node.() -> Unit = { }): Header {
     return SimpleHeader(name = name, namespace = namespace, application = currentApplication()).apply(config)
 }
 
@@ -46,12 +55,12 @@ fun Header(name: String, namespace: String = currentApplication().commandFactory
  * @return the BlockingHandler created
  */
 @WithApplication
-fun BlockingHandler(name: String = ".root", config: @WithApplication BlockingHandler.() -> Unit): BlockingHandler {
+inline fun BlockingHandler(name: String = ".root", config: @WithApplication BlockingHandler.() -> Unit): BlockingHandler {
     return BlockingHandler(name, application = currentApplication()).apply(config)
 }
 
 @WithApplication
-fun CoroutineContextHandler(name: String, config: @WithApplication CoroutineContextHandler.() -> Unit): CoroutineContextHandler {
+inline fun CoroutineContextHandler(name: String, config: @WithApplication CoroutineContextHandler.() -> Unit): CoroutineContextHandler {
     return CoroutineContextHandler(name = name, application = currentApplication()).apply(config)
 }
 

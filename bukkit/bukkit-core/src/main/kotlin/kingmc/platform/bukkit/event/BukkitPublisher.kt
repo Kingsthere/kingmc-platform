@@ -11,13 +11,6 @@ import kingmc.platform.event.AbstractPublisher
 import kingmc.platform.event.subscription.Subscription
 import kingmc.util.reflect.findFunction
 import org.bukkit.event.*
-import org.bukkit.event.block.*
-import org.bukkit.event.entity.*
-import org.bukkit.event.inventory.*
-import org.bukkit.event.player.*
-import org.bukkit.event.server.*
-import org.bukkit.event.vehicle.*
-import org.bukkit.event.world.*
 import org.bukkit.plugin.RegisteredListener
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
@@ -76,7 +69,7 @@ class BukkitPublisher : AbstractPublisher(), Listener, Releasable {
     fun registerBukkitHandle(eventClass: KClass<out Event>) {
         if (!(registeredHandledBukkitEvent.contains(eventClass)) && eventClass.isSubclassOf(Event::class)) {
             val bukkitRegisteredListener =
-                RegisteredListener(this@BukkitPublisher, { _, event -> this@BukkitPublisher.callEvent(event) }, EventPriority.MONITOR, bukkitPlugin, false)
+                RegisteredListener(this@BukkitPublisher, { _, event -> this@BukkitPublisher.fireEvent(event) }, EventPriority.MONITOR, bukkitPlugin, false)
             // Register listener to HandlerList
             (eventClass.findFunction("getHandlerList")!!.call() as HandlerList).register(bukkitRegisteredListener)
             registeredHandledBukkitEvent.put(eventClass, bukkitRegisteredListener)

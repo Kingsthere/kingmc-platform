@@ -1,8 +1,8 @@
 package kingmc.platform.velocity.impl.driver
 
+import kingmc.platform.VelocityJavaPlugin
 import kingmc.platform.driver.PlatformSelector
 import kingmc.platform.velocity.VelocityImplementation
-import kingmc.platform.velocity.VelocityJavaPlugin
 
 /**
  * velocity [PlatformSelector] implementation

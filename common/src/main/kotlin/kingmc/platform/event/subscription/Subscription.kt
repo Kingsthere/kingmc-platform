@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
 @Isolated
 sealed interface Subscription<TEvent : Any> : Comparable<Subscription<*>>, Closeable {
     /**
-     * The source application that involves this subscription
+     * The source application that creates this subscription
      */
     val application: Application
 

@@ -8,6 +8,7 @@ import kingmc.common.OpenAPI
 import kingmc.common.application.withApplication
 import kingmc.common.context.LifecycleContext
 import kingmc.common.context.initializer.ContextInitializer
+import kingmc.common.context.process.insertAfterProcessBeanLifecycle
 import kingmc.common.context.process.insertProcessBeanLifecycle
 import kingmc.common.environment.KingMCEnvironment
 import kingmc.common.environment.KotlinCoroutineEnvironment
@@ -28,11 +29,11 @@ import kingmc.common.structure.classloader.ExtensionClassLoader
 import kingmc.common.text.Text
 import kingmc.platform.ExperimentalPlatformApi
 import kingmc.platform.Platforms
+import kingmc.platform.VelocityJavaPlugin
 import kingmc.platform.context.*
 import kingmc.platform.logging.infoColored
 import kingmc.platform.util.loadConfigIntoProperties
 import kingmc.platform.velocity.VelocityImplementation
-import kingmc.platform.velocity.VelocityJavaPlugin
 import kingmc.platform.velocity.driver.VelocityPlatformDriver
 import kingmc.platform.velocity.impl.VelocityPlatform
 import kingmc.platform.velocity.impl.extension.VelocityExtensionDispatcherImpl
@@ -119,7 +120,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
                 loadFullEnvironmentSuspend()
             }
             application = loadPlatformApplication()
-            contextLifecycle = (application.context as LifecycleContext).lifecycle()
+            contextLifecycle = (application.context as LifecycleContext).getLifecycle()
 
             withApplication(this.application) {
                 // Log the current kingmc framework information
@@ -138,6 +139,8 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
                 infoColored("<yellow>Booting up by driver $this")
 
                 runBlocking {
+                    // Init extension dispatcher
+                    extensionDispatcher.init()
                     info("Loading extensions from $extensionDirectory...")
                     extensionDispatcher.loadExtensionsFromDirectory(extensionDirectory, contextLifecycle)
                 }
@@ -183,6 +186,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
         contextInitializer.invoke()
 
         context.insertProcessBeanLifecycle(5)
+        context.insertAfterProcessBeanLifecycle(5)
 
         return application
     }

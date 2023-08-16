@@ -43,11 +43,14 @@ allprojects {
         maven {
             url = uri("https://repo.papermc.io/repository/maven-public/")
         }
+        maven {
+            url = uri("https://repo.dmulloy2.net/repository/public/")
+        }
     }
 
     dependencies {
-        implementation("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
-        // implementation("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+        implementation("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
+        implementation("com.comphenix.protocol:ProtocolLib:5.1.0")
         implementation("net.kyori:adventure-platform-bukkit:4.2.0")
         implementation("com.mojang:brigadier:1.0.18")
         implementation("de.tr7zw:item-nbt-api:2.11.1")
@@ -129,7 +132,7 @@ tasks {
             include(dependency("org.ow2.asm:asm:9.3"))
             include(dependency("org.ow2.asm:asm-util:9.3"))
             include(dependency("org.ow2.asm:asm-commons:9.3"))
-            include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.8.10"))
+            include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.9.0"))
 
             // include(project(":bukkit:bukkit-nms:bukkit-nms-1_19_2"))
             include(project(":bukkit:bukkit-brigadier"))

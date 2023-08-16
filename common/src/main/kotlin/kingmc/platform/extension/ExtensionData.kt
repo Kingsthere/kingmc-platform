@@ -33,4 +33,8 @@ data class ExtensionData(
      * The project this extension loaded from
      */
     val source: ExtensionClassSource
-)
+) {
+    override fun toString(): String {
+        return "ExtensionData(definition=$definition, source=$source)"
+    }
+}

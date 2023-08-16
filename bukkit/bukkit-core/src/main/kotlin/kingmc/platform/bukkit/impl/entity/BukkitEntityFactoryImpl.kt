@@ -5,6 +5,7 @@ import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
+import kingmc.platform.Location
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.BukkitServer
 import kingmc.platform.bukkit.entity.*
@@ -15,7 +16,7 @@ import kingmc.platform.entity.EntityType
 import kingmc.util.key.Key
 
 /**
- * An official implementation of [BukkitEntityFactory]
+ * A bukkit side implementation of [BukkitEntityFactory] implemented by calling bukkit api
  *
  * @since 0.0.7
  * @author kingsthere
@@ -23,13 +24,10 @@ import kingmc.util.key.Key
 @BukkitImplementation
 @Component
 @Scope(BeanScope.SINGLETON)
-open class BukkitEntityFactoryImpl : BukkitEntityFactory {
-    @Autowired
-    lateinit var server: BukkitServer
-
+open class BukkitEntityFactoryImpl @Autowired constructor(val server: BukkitServer) : BukkitEntityFactory {
      private val _bukkitEntityTypes: Map<_BukkitEntityType, EntityType> by lazy {
          buildMap {
-             _BukkitEntityType.values().forEach {
+             _BukkitEntityType.entries.forEach {
                  put(it, BukkitEntityTypeImpl(it))
              }
          }
@@ -56,6 +54,17 @@ open class BukkitEntityFactoryImpl : BukkitEntityFactory {
 
     override fun getEntityTypeForBukkit(bukkitEntityType: _BukkitEntityType): EntityType {
         return _bukkitEntityTypes[bukkitEntityType]!!
+    }
+
+    /**
+     * Create an `Entity` at the given [location]
+     *
+     * @param location the location to create the entity
+     * @param type the type of entity to create
+     * @return `Entity` instance created
+     */
+    override fun createEntity(location: Location, type: EntityType): Entity {
+        TODO("Not yet implemented")
     }
 
     override fun getEntityType(key: Key): EntityType {

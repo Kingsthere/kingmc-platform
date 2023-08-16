@@ -1,6 +1,5 @@
 package kingmc.platform.item
 
-import kingmc.common.text.HoverEventDisplayable
 import kingmc.platform.material.Material
 import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.NBTCompoundHolder
@@ -8,6 +7,7 @@ import kingmc.util.Tagged
 import kingmc.util.builder.Buildable
 import kingmc.util.errorprone.Immutable
 import kingmc.util.key.Keyed
+import kingmc.util.text.HoverEventDisplayable
 import kingmc.util.text.TextDisplayable
 
 /**

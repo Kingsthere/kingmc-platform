@@ -75,7 +75,7 @@ enum class ProtocolVersion(protocol: Int, snapshotProtocol: Int, vararg names: S
         /**
          * Represents the highest supported version
          */
-        val MAXIMUM_VERSION = values()[values().size - 1]
+        val MAXIMUM_VERSION = entries.last()
 
         /**
          * The user-friendly representation of the lowest and highest supported versions.
@@ -89,7 +89,7 @@ enum class ProtocolVersion(protocol: Int, snapshotProtocol: Int, vararg names: S
          * A map linking the protocol version number to its [ProtocolVersion] representation.
          */
         val ID_TO_PROTOCOL_CONSTANT: Map<Int, ProtocolVersion> = buildMap {
-            for (version in values()) {
+            for (version in ProtocolVersion.entries) {
                 // For versions where the snapshot is compatible with the prior release version, Mojang will
                 // default to that. Follow that behavior since there is precedent (all the Minecraft 1.8
                 // minor releases use the same protocol version).
@@ -105,7 +105,7 @@ enum class ProtocolVersion(protocol: Int, snapshotProtocol: Int, vararg names: S
          * "versions" like [.LEGACY] and [.UNKNOWN].
          */
         val SUPPORTED_VERSIONS: Set<ProtocolVersion>? = EnumSet.noneOf(ProtocolVersion::class.java).apply {
-            for (value in values()) {
+            for (value in entries) {
                 if (!value.isUnknown && !value.isLegacy) {
                     add(value)
                 }

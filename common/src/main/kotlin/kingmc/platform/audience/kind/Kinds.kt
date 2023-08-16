@@ -188,15 +188,15 @@ interface SoundCapable {
 }
 
 /**
- * Represents a receiver that could view an `gui(s)`, such as inventory, books
+ * Represents a receiver that could view `inventories`
  *
  * @since 0.0.6
  * @author kingsthere
  */
 @AudienceKind
-interface GUICapable {
+interface InventoryCapable {
     /**
-     * Open a [inventory] for this audience
+     * Open the given [inventory] for this audience
      *
      * @since 0.0.6
      * @return the `InventoryView` refer to the opened [inventory]

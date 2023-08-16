@@ -6,7 +6,10 @@ import kingmc.platform.bukkit.entity.player._BukkitOfflinePlayer
 import java.util.*
 
 /**
- * A simple implementation of [BukkitOfflinePlayer]
+ * A bukkit side implementation of [BukkitOfflinePlayer]
+ *
+ * @since 0.1.0
+ * @author kingsthere
  */
 @BukkitImplementation
 open class BukkitOfflinePlayerImpl(private val _bukkitOfflinePlayer: _BukkitOfflinePlayer) : BukkitOfflinePlayer {

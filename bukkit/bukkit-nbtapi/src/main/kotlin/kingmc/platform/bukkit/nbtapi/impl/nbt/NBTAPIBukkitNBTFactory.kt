@@ -1,7 +1,6 @@
 package kingmc.platform.bukkit.nbtapi.impl.nbt
 
 import kingmc.common.context.annotation.Component
-import kingmc.platform.util.Versioned
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit._BukkitChunk
 import kingmc.platform.bukkit.block._BukkitBlock
@@ -16,6 +15,7 @@ import kingmc.platform.bukkit.nbtapi.nbt.NBTAPINBTCompound
 import kingmc.platform.nbt.MutableNBTCompound
 import kingmc.platform.nbt.NBTCompound
 import kingmc.platform.nbt.NBTType
+import kingmc.platform.util.Versioned
 
 /**
  * nbt-api `BukkitNBTFactory` implementation
@@ -23,7 +23,7 @@ import kingmc.platform.nbt.NBTType
  * @since 0.0.8
  * @author kingsthere
  */
-@Component
+@Component("nbtapiBukkitNBTFactory")
 @BukkitImplementation
 class NBTAPIBukkitNBTFactory : BukkitNBTFactory {
     /**

@@ -1,9 +1,6 @@
 package kingmc.platform
 
 import kingmc.common.application.WithApplication
-import kingmc.common.context.annotation.Component
-import kingmc.util.annotation.Extendable
-import kingmc.util.annotation.Extended
 
 /**
  * A common annotation for the components
@@ -16,10 +13,8 @@ import kingmc.util.annotation.Extended
  * @since 0.0.2
  * @author kingsthere
  */
-@Extendable
-@Extended(Component::class)
 @Retention
-@Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.ANNOTATION_CLASS)
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
 @WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
 annotation class Awake (
     /**
@@ -28,21 +23,88 @@ annotation class Awake (
      *
      * @since 0.0.2
      */
-    val lifecycle: Int = -1,
+    val lifecycle: Int = Lifecycles.CONST,
 
     /**
      * The priority to call the function
      *
      * @since 0.0.5
      */
-    val priority: Byte = 0,
+    val priority: Byte = 0
+)
 
+/**
+ * An extended annotation of [Awake] runs the function at [Lifecycles.INITIALIZE]
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+@Awake(Lifecycles.INITIALIZE)
+@Retention
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
+@WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
+annotation class Initialize (
     /**
-     * The bean name of this component to inject to
-     * the ioc container, this property can only use
-     * when use this annotation to annotate a **class**
+     * The priority to call the function
      *
-     * @since 0.0.2
+     * @since 0.0.9
      */
-    val name: String = ""
+    val priority: Byte = 0
+)
+
+/**
+ * An extended annotation of [Awake] runs the function at [Lifecycles.LOAD]
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+@Awake(Lifecycles.LOAD)
+@Retention
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
+@WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
+annotation class Load (
+    /**
+     * The priority to call the function
+     *
+     * @since 0.0.9
+     */
+    val priority: Byte = 0
+)
+
+/**
+ * An extended annotation of [Awake] runs the function at [Lifecycles.ACTIVE]
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+@Awake(Lifecycles.ACTIVE)
+@Retention
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
+@WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
+annotation class Active (
+    /**
+     * The priority to call the function
+     *
+     * @since 0.0.9
+     */
+    val priority: Byte = 0
+)
+
+/**
+ * An extended annotation of [Awake] runs the function at [Lifecycles.SHUTDOWN]
+ *
+ * @since 0.0.9
+ * @author kingsthere
+ */
+@Awake(Lifecycles.SHUTDOWN)
+@Retention
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.ANNOTATION_CLASS)
+@WithApplication // When @Awake function called by processor it auto surrounded with withApplication {  }
+annotation class Shutdown (
+    /**
+     * The priority to call the function
+     *
+     * @since 0.0.9
+     */
+    val priority: Byte = 0
 )

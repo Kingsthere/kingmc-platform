@@ -6,7 +6,7 @@ import kingmc.platform.command.model.BlockingHandler
 import kingmc.platform.command.model.CommandExecutor
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Node
-import kingmc.platform.command.parameter.Parameters
+import kingmc.platform.command.parameter.CommandParameter
 
 /**
  * A shortcut to set the name of this handler
@@ -42,14 +42,14 @@ var Node.rootHandler: Handler?
     }
 
 /**
- * Configure & create the root handler of current command
- * node
+ * Configure the root handler to the receiver command node 
  *
- * @since 0.0.3
+ * @since 0.1.1
  * @author kingsthere
  */
+@KingMCCommandDSL
 @WithApplication
-fun Node.root(configurer: @WithApplication Handler.() -> Unit): Handler {
+inline fun Node.root(configurer: @WithApplication Handler.() -> Unit): Handler {
     val handler: Handler =
         rootHandler ?: run {
             rootHandler = BlockingHandler(".root", application = currentApplication())
@@ -60,12 +60,14 @@ fun Node.root(configurer: @WithApplication Handler.() -> Unit): Handler {
 }
 
 /**
- * Register and configure a command handler
+ * Create & configure a new blocking command handler and register it to the receiver
+ * command node
  *
- * @since 0.0.3
+ * @since 0.1.1
  * @author kingsthere
  */
-fun Node.handler(name: String, configurer: @WithApplication Handler.() -> Unit = {  }): Handler {
+@KingMCCommandDSL
+inline fun Node.handler(name: String, configurer: @WithApplication Handler.() -> Unit = {  }): Handler {
     val handler: Handler = BlockingHandler(name, application = currentApplication())
     configurer.invoke(handler)
     this.handlers.add(handler)
@@ -82,13 +84,11 @@ fun <THandler : Handler> THandler.executes(executor: @WithApplication CommandExe
     }
 
 /**
- * Set the executor of current handler
+ * Check if this command parameter is required
+ *
+ * @return `true` if this command parameter is required
  */
-@WithApplication
-fun <THandler : Handler> THandler.executes(executor: @WithApplication (CommandSender, Parameters) -> CommandResult) =
-    this.apply {
-        this.executor = { executor(invoker, parameters) }
-    }
+fun CommandParameter<*>.isRequired() = !nullable || default != null
 
 /**
  * Get parameters of this handler that is required to execute this command

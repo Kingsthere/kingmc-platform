@@ -1,9 +1,7 @@
 package kingmc.platform.entity
 
 import kingmc.common.application.Application
-import kingmc.common.application.Isolated
 import kingmc.common.application.WithApplication
-import kingmc.common.text.HoverEventDisplayable
 import kingmc.common.text.Text
 import kingmc.platform.MutableLocatable
 import kingmc.platform.Vector
@@ -14,22 +12,26 @@ import kingmc.platform.nbt.MutableNBTCompoundHolder
 import kingmc.platform.util.Nameable
 import kingmc.platform.util.Versioned
 import kingmc.util.errorprone.CanIgnoreReturnValue
+import kingmc.util.text.HoverEventDisplayable
 import kingmc.util.text.TextDisplayable
 import java.util.*
 
 /**
- * An interface represent an in-game entity that could display
- * on a player's client
+ * An interface represent an in-game entity that could be spawned to a world
  *
- * @since 0.0.1
+ * @since 0.1.0
  * @author kingsthere
  */
-@Isolated // Remove entity when application dispose
 interface Entity : Nameable, CommandSender, MutableLocatable, TextDisplayable, HoverEventDisplayable, MutableNBTCompoundHolder {
     /**
      * The name of this entity
      */
     val name: String
+
+    /**
+     * The application that created this entity
+     */
+    val application: Application
 
     /**
      * The custom name of this entity
@@ -42,11 +44,6 @@ interface Entity : Nameable, CommandSender, MutableLocatable, TextDisplayable, H
     val uuid: UUID
 
     /**
-     * The application that involve this entity
-     */
-    val application: Application
-
-    /**
      * The velocity of this entity
      */
     var velocity: Vector
@@ -55,6 +52,11 @@ interface Entity : Nameable, CommandSender, MutableLocatable, TextDisplayable, H
      * The nbt data of this entity
      */
     override val nbt: MutableNBTCompound
+
+    /**
+     * Returns `true` if this entity is spawned on any world
+     */
+    val isSpawned: Boolean
 
     /**
      * The entity id of this entity

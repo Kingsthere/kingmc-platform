@@ -1,14 +1,18 @@
 package kingmc.platform
 
+import kingmc.common.application.application
 import kingmc.common.application.withApplication
-import kingmc.common.context.*
+import kingmc.common.context.Context
+import kingmc.common.context.LifecycleContext
 import kingmc.common.context.annotation.Component
+import kingmc.common.context.callFunctionWithContext
+import kingmc.common.context.checkElementCondition
 import kingmc.common.context.process.BeanProcessor
 import kingmc.common.logging.error
 import kingmc.util.Utility
 import kingmc.util.annotation.getAnnotation
 import kingmc.util.reflect.findFunctionsByAnnotation
-import java.util.*
+import kotlin.reflect.KFunction
 
 /**
  * Call the functions that annotated with [Awake]
@@ -22,38 +26,19 @@ import java.util.*
  * @author kingsthere
  */
 @Utility
-@Component("awakeProcessor")
+@Component
 object AwakeProcessor : BeanProcessor {
-    private val _awakingFunctions: MutableMap<Byte, MutableList<Runnable>> = TreeMap(compareByDescending { it })
+    private val _awakingFunctions: MutableMap<Context, MutableMap<Int, MutableList<AwakeFunction>>> = HashMap()
 
     override fun process(context: Context, bean: Any): Boolean {
         val beanClass = bean::class
-        beanClass.findFunctionsByAnnotation<Awake>().forEach {
-            val awake = it.getAnnotation<Awake>()!!
-            val orderedFunctions = _awakingFunctions.computeIfAbsent(awake.priority) { ArrayList() }
-            orderedFunctions.add {
-                try {
-                    if (awake.lifecycle == 1) {
-                        bean.withApplication {
-                            if (context.checkElementCondition(it)) {
-                                context.callFunctionWithContext(it, bean)
-                            }
-                        }
-                    } else {
-                        bean.contextLifecycle.insertPlan(awake.lifecycle) {
-                            bean.withApplication {
-                                if (context.checkElementCondition(it)) {
-                                    context.callFunctionWithContext(it, bean)
-                                }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    bean.withApplication {
-                        error("An error occurred trying to invoke method $it")
-                        e.printStackTrace()
-                    }
+        beanClass.findFunctionsByAnnotation<Awake>().forEach { function ->
+            val awake = function.getAnnotation<Awake>()!!
+            withApplication(bean.application) {
+                val orderedFunctions = _awakingFunctions.computeIfAbsent(context) { HashMap() }.computeIfAbsent(awake.lifecycle) {
+                    ArrayList()
                 }
+                orderedFunctions.add(AwakeFunction(AwakeRunnable(bean, function), awake.priority))
             }
 
         }
@@ -61,13 +46,60 @@ object AwakeProcessor : BeanProcessor {
     }
 
     override fun afterProcess(context: Context) {
-        _awakingFunctions.values.forEach { orderedFunctions ->
-            orderedFunctions.forEach {
-                it.run()
+        val lifecycle = (context as LifecycleContext).getLifecycle()
+        _awakingFunctions[context]?.keys?.forEach { lifecycleStage ->
+            if (lifecycleStage == 1) {
+                val awakingFunctions = _awakingFunctions[context]!![lifecycleStage] ?: return@forEach
+                awakingFunctions.sortedByDescending { it.priority }.forEach {
+                    it.runnable.run()
+                }
+            } else {
+                lifecycle.insertPlan(lifecycleStage) {
+                    val awakingFunctions = _awakingFunctions[context]!![lifecycleStage] ?: return@insertPlan
+                    awakingFunctions.sortedByDescending { it.priority }.forEach {
+                        it.runnable.run()
+                    }
+                }
             }
         }
-        _awakingFunctions.clear()
     }
 
-    override val lifecycle: Int = 1
+    override val priority: Byte = 2
+    override val lifecycle: Int = 0
+
+    data class AwakeFunction(val runnable: Runnable, val priority: Byte)
+
+    class AwakeRunnable(val bean: Any, val function: KFunction<*>) : Runnable {
+        override fun run() {
+            bean.withApplication {
+                try {
+                    if (context.checkElementCondition(function)) {
+                        context.callFunctionWithContext(function, bean)
+                    }
+                } catch (e: IllegalStateException) {
+                    error("An error occurred trying to invoke @Awake method $function")
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        override fun toString(): String {
+            return function.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is AwakeRunnable) return false
+
+            if (bean != other.bean) return false
+            return function == other.function
+        }
+
+        override fun hashCode(): Int {
+            var result = bean.hashCode()
+            result = 31 * result + function.hashCode()
+            return result
+        }
+
+    }
 }

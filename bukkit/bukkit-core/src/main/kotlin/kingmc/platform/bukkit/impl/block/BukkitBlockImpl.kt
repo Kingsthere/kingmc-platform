@@ -16,7 +16,7 @@ import kingmc.platform.material.MaterialType
 import kingmc.platform.material.Materials
 
 /**
- * Bukkit [Block] implementation
+ * Bukkit side [Block] implementation implemented by calling bukkit api
  *
  * @since 0.0.5
  * @author kingsthere

@@ -3,7 +3,7 @@ package kingmc.platform.bukkit.paperlib
 import kingmc.common.environment.maven.MavenDependency
 
 /**
- * Configuration class for adding compatible to paperlib
+ * Configuration class for using paperlib under kingmc framework
  *
  * @since 0.0.8
  * @author kingsthere

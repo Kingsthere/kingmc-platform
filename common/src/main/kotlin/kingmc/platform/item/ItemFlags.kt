@@ -8,7 +8,7 @@ private fun getBitModifier(hideFlag: ItemFlag): Byte {
 
 fun obtainItemFlagsFromInt(value: Int): Set<ItemFlag> {
     val currentFlags: MutableSet<ItemFlag> = EnumSet.noneOf(ItemFlag::class.java)
-    ItemFlag.values().forEach {
+    ItemFlag.entries.forEach {
         if (hasItemFlag(value, it)) {
             currentFlags.add(it)
         }

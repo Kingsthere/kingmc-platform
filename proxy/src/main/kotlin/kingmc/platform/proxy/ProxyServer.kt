@@ -60,3 +60,9 @@ interface ProxyServer : Server {
  */
 @WithApplication
 fun getProxiedServer(name: String) = (currentApplication().server as ProxyServer).getProxiedServer(name)
+
+/**
+ * A shortcut to get all [ProxyServer.proxiedServers]
+ */
+val proxiedServers: Collection<ProxiedServer>
+    get() = (currentApplication().server as ProxyServer).proxiedServers

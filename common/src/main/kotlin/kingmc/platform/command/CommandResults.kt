@@ -2,7 +2,6 @@ package kingmc.platform.command
 
 import kingmc.platform.command.model.Handler
 import kingmc.platform.command.model.Node
-import kingmc.util.KingMCDsl
 
 
 /**
@@ -137,22 +136,22 @@ class FailedCauseSyntax(
     }
 }
 
-@KingMCDsl
+@KingMCCommandDSL
 fun success(): Success =
     SuccessSingleton
 
-@KingMCDsl
+@KingMCCommandDSL
 fun failed(): Failed =
     FailedSingleton
 
-@KingMCDsl
+@KingMCCommandDSL
 fun failed(cause: String) =
     FailedWithCause(cause)
 
-@KingMCDsl
+@KingMCCommandDSL
 fun failedSyntax(node: Node, handler: Handler?) =
     FailedCauseSyntax(node, handler)
 
-@KingMCDsl
+@KingMCCommandDSL
 fun resulted(node: Node, result: Int) =
     ResultedCommandResult(result)

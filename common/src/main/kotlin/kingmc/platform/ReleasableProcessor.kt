@@ -8,12 +8,12 @@ import kotlin.reflect.full.isSubclassOf
 
 /**
  * Call the classes that is inherited from [Releasable] that annotated with [Awake]
- * when the context dispose
+ * when the context disposes
  *
  * @since 0.0.1
  * @author kingsthere
  */
-@Component("releasableProcessor")
+@Component
 object ReleasableProcessor : BeanProcessor {
     override fun dispose(context: Context, bean: Any) {
         val beanClass = bean::class
@@ -24,5 +24,5 @@ object ReleasableProcessor : BeanProcessor {
         }
     }
 
-    override val lifecycle: Int = 1
+    override val lifecycle: Int = 0
 }

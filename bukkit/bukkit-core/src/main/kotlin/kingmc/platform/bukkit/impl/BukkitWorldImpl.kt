@@ -8,7 +8,7 @@ import kingmc.common.coroutine.ApplicationCoroutineScope
 import kingmc.common.coroutine.asyncMinecraftCoroutineDispatcher
 import kingmc.platform.*
 import kingmc.platform.audience.Audience
-import kingmc.platform.audience.particle.*
+import kingmc.platform.audience.particle.Particle
 import kingmc.platform.block.Block
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.BukkitServer
@@ -137,21 +137,20 @@ class BukkitWorldImpl(override val application: Application, private val _bukkit
 
     override fun audiences(): Iterable<Audience> = _players
 
-    override fun sendParticle(particle: Particle<*>) {
-        _players.forEach { it.sendParticle(particle) }
-    }
-
-    override fun sendParticle(particleGroup: ParticleGroup) {
-        _players.forEach { it.sendParticle(particleGroup) }
-    }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation): ParticleAnimationTask {
-        return sendParticle(particleAnimation, 1)
-    }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation, speed: Int): AcceleratedParticleAnimationTask {
-        return ParticleAnimationTask.createSupervisorParticleAnimationTask(*_players.map {
-            it.sendParticle(particleAnimation)
-        }.toTypedArray(), speed = speed)
+    override fun sendParticle(
+        particle: Particle<*>,
+        x: Double,
+        y: Double,
+        z: Double,
+        longDistance: Boolean,
+        offsetX: Float,
+        offsetY: Float,
+        offsetZ: Float,
+        maxSpeed: Float,
+        count: Int
+    ) {
+        _players.forEach {
+            it.sendParticle(particle, x, y, z, longDistance, offsetX, offsetY, offsetZ, maxSpeed, count)
+        }
     }
 }

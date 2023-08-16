@@ -1,7 +1,7 @@
 package kingmc.platform.extension
 
 import kingmc.common.application.ApplicationExposedContext
-import kingmc.common.context.GenericApplicationContext
+import kingmc.common.context.AbstractApplicationContext
 import kingmc.platform.context.PlatformApplication
 import java.util.*
 
@@ -12,7 +12,7 @@ import java.util.*
  * @author kingsthere
  */
 class ExtensionContextImpl(properties: Properties, name: String, override val extension: ExtensionDefinition
-) : GenericApplicationContext(properties, name), ExtensionContext, ApplicationExposedContext {
+) : AbstractApplicationContext(properties, name), ExtensionContext, ApplicationExposedContext {
     /**
      * The application of this extension context
      */
@@ -21,8 +21,7 @@ class ExtensionContextImpl(properties: Properties, name: String, override val ex
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-        return true
+        return super.equals(other)
     }
 
     override fun hashCode(): Int {

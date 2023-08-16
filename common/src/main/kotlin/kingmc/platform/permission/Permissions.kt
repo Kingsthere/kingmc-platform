@@ -33,7 +33,7 @@ fun createPermission(name: String, defaultState: Boolean = false, children: Set<
  * @param builderAction action to builder
  */
 @WithApplication
-fun createPermission(name: String, defaultState: Boolean = false, builderAction: PermissionBuilder.() -> Unit): Permission {
+inline fun createPermission(name: String, defaultState: Boolean = false, builderAction: PermissionBuilder.() -> Unit): Permission {
     val permissionDispatcher = currentApplication().permissionDispatcher
     return permissionDispatcher.createPermissionBuilder(name, defaultState).apply(builderAction).build()
 }

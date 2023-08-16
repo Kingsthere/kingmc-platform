@@ -17,8 +17,33 @@ import kingmc.platform.event.Event
  * @author kingsthere
  */
 @Event
-data class EntityDamageEvent(override val entity: DamageableEntity, val source: DamageSource, var damage: ModifiedDamage) : EntityEvent(entity), Cancellable {
+class EntityDamageEvent(
+    entity: DamageableEntity,
+    val source: DamageSource,
+    var damage: ModifiedDamage
+) : EntityEvent(entity), Cancellable {
     override var cancelled: Boolean = false
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is EntityDamageEvent) return false
+
+        if (source != other.source) return false
+        if (damage != other.damage) return false
+        return cancelled == other.cancelled
+    }
+
+    override fun hashCode(): Int {
+        var result = source.hashCode()
+        result = 31 * result + damage.hashCode()
+        result = 31 * result + cancelled.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "EntityDamageEvent(source=$source, damage=$damage, cancelled=$cancelled)"
+    }
+
 }
 
 /**

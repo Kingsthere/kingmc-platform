@@ -1,7 +1,7 @@
 package kingmc.platform.velocity.driver
 
+import kingmc.platform.VelocityJavaPlugin
 import kingmc.platform.driver.PlatformDriver
-import kingmc.platform.velocity.VelocityJavaPlugin
 import kingmc.platform.velocity.impl.VelocityPlatform
 import java.io.File
 

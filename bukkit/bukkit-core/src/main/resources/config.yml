@@ -19,7 +19,7 @@ kingmc:
     maven-repository: https://repo1.maven.org/maven2/
 
     # Kotlin version
-    kotlin: 1.8.10
+    kotlin: 1.9.0
 
     # Kotlin coroutine version
     kotlinx-coroutine: 1.6.4

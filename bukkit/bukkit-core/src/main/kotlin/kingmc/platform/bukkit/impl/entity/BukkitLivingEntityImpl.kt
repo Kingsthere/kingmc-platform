@@ -8,7 +8,7 @@ import kingmc.platform.entity.damage.DamageSource
 import kingmc.platform.entity.damage.ModifiedDamage
 
 /**
- * Bukkit [LivingEntity] implementation
+ * A bukkit side [LivingEntity] implementation implemented by calling bukkit api
  */
 @BukkitImplementation
 open class BukkitLivingEntityImpl(val _bukkitLivingEntity: _BukkitLivingEntity,

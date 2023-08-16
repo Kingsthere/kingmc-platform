@@ -11,7 +11,7 @@ import kingmc.platform.command.parameter.CommandParameter
  * @since 0.0.3
  * @author kingsthere
  */
-open class BlockingHandler internal constructor(
+open class BlockingHandler(
     override var name: String,
     override var description: String? = null,
     override val parameters: MutableList<CommandParameter<*>> = mutableListOf(),
@@ -21,5 +21,9 @@ open class BlockingHandler internal constructor(
 
     override fun invoke(commandContext: CommandContext): CommandResult {
         return this@BlockingHandler.executor.invoke(commandContext)
+    }
+
+    override fun toString(): String {
+        return "<$name>"
     }
 }

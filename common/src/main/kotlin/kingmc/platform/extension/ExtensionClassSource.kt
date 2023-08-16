@@ -12,6 +12,7 @@ import kingmc.common.context.resource.ResourceLoadException
 import kingmc.common.context.resource.ResourceSource
 import kingmc.common.environment.maven.DependencyDispatcher
 import kingmc.common.environment.maven.DependencyScope
+import kingmc.common.environment.maven.MavenDependency
 import kingmc.common.environment.maven.model.*
 import kingmc.common.structure.ExperimentalStructureApi
 import kingmc.common.structure.JarFileClassSource
@@ -51,7 +52,7 @@ open class ExtensionClassSource(
     @Throws(IOException::class)
     protected fun loadProperties(path: String, extension: ExtensionDefinition, consumer: Consumer<InputStream>) {
         // Jar builtin properties
-        val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
+        val builtinInputStream = extensionClassLoader.getResourceAsStream(path)
         builtinInputStream.use {
             if (builtinInputStream != null) {
                 consumer.accept(builtinInputStream)
@@ -68,8 +69,8 @@ open class ExtensionClassSource(
     @Throws(IOException::class)
     protected fun loadPropertiesFile(path: String, extension: ExtensionDefinition, consumer: Consumer<File>) {
         // Jar builtin properties
-        val builtinInputStream = this.javaClass.classLoader.getResourceAsStream(path)
-        builtinInputStream.use {
+        val builtinInputStream = extensionClassLoader.getResourceAsStream(path)
+        builtinInputStream?.use {
             // KingMC will create external config.xxx file instead
             // if (builtinInputStream != null) {
             //     val tempFile = File.createTempFile(path, ".tmp", _bukkitJavaPlugin.tempFolder)
@@ -81,6 +82,7 @@ open class ExtensionClassSource(
             if (externalFile.exists()) {
                 consumer.accept(externalFile)
             } else {
+                externalFile.parentFile.mkdirs()
                 if (externalFile.createNewFile()) {
                     FileUtils.copyInputStreamToFile(builtinInputStream, externalFile)
                     consumer.accept(externalFile)
@@ -94,24 +96,26 @@ open class ExtensionClassSource(
      */
     @Suppress("UNCHECKED_CAST")
     fun createExtension(annotation: AnnotationInfo): ExtensionDefinition {
-        val parameterValues = annotation.parameterValues
+        val parameterValues = annotation.getParameterValues(true)
         val descriptionValue = (parameterValues.getValue("description") as AnnotationInfo).parameterValues
-        val dependenciesValue = parameterValues.getValue("dependencies") as Array<AnnotationInfo>
+        val dependenciesValue: Array<AnnotationInfo> = (parameterValues.getValue("dependencies") as? Array<Any>)?.map { it as AnnotationInfo }?.toTypedArray() ?: emptyArray()
+        val contributors = descriptionValue.getValue("contributors") as? Array<Any>
         return ExtensionDefinition(
             parameterValues.getValue("id") as String,
-            parameterValues.getValue("displayName") as String,
-            parameterValues.getValue("tag") as String,
+            parameterValues.getValue("displayName") as? String ?: "",
+            parameterValues.getValue("tag") as? String ?: "0.0.1",
             ExtensionDefinition.Description(
-                descriptionValue.getValue("author") as Array<out String>,
-                descriptionValue.getValue("website") as String,
-                descriptionValue.getValue("introduction") as String
+                contributors?.map { it.toString() }?.toTypedArray() ?: emptyArray(),
+                descriptionValue.getValue("website") as? String ?: "https://www.example.com/",
+                descriptionValue.getValue("introduction") as? String ?: "No description"
             ),
             dependenciesValue.map {
                 val dependencyParameterValues = it.parameterValues
                 ExtensionDefinition.Dependency(
                     dependencyParameterValues.getValue("id") as String,
-                    dependencyParameterValues.getValue("url") as String,
-                    dependencyParameterValues.getValue("optional") as Boolean,
+                    dependencyParameterValues.getValue("url") as? String ?: "",
+                    dependencyParameterValues.getValue("version") as? String ?: "",
+                    dependencyParameterValues.getValue("optional") as? Boolean ?: false,
                 )
             }.toTypedArray())
     }
@@ -132,6 +136,7 @@ open class ExtensionClassSource(
             annotation.dependencies.map {
                 ExtensionDefinition.Dependency(
                     it.id,
+                    it.version,
                     it.url,
                     it.optional,
                 )
@@ -140,12 +145,44 @@ open class ExtensionClassSource(
 
     @Suppress("UNCHECKED_CAST")
     fun scanMavenDependencies(): List<Triple<Dependency, Repository, List<JarRelocation>>> = buildList {
-        val mavenDependencyContainerClass = "kingmc.common.environment.maven.MavenDependency.Container"
-        val relocateContainerClass = "kingmc.common.environment.maven.Relocate.Container"
+        val mavenDependencyContainerClass = "kingmc.common.environment.maven.MavenDependency\$Container"
+        val relocateContainerClass = "kingmc.common.environment.maven.Relocate\$Container"
+        scannedResult.getClassesWithAnnotation(MavenDependency::class.java).forEach {
+            val value = it.getAnnotationInfo(MavenDependency::class.java)
+            val relocations = (it.getAnnotationInfo(relocateContainerClass)?.parameterValues?.getValue("value") as? Array<Any>)
+                ?.map { obj -> obj as AnnotationInfo }?.toTypedArray() ?: emptyArray()
+            value.let { mavenDependency ->
+                val parameterValues = mavenDependency.parameterValues
+                add(Triple(
+                    dependency(
+                        groupId = parameterValues.getValue("groupId") as String,
+                        artifactId = parameterValues.getValue("artifactId") as String,
+                        version = parameterValues.getValue("version") as String,
+                        scope = DependencyScope.valueOf(
+                            (parameterValues.getValue("scope") as? AnnotationEnumValue)?.valueName ?: "RUNTIME"
+                        ),
+                        formatContext = formatContext
+                    ), repository(
+                        url = parameterValues.getValue("repository") as? String
+                            ?: "{kingmc.environment.maven-repository}",
+                        formatContext = formatContext
+                    ), relocations.map { relocation ->
+                        val relocationParameterValues = relocation.parameterValues
+                        return@map jarRelocation(
+                            pattern = relocationParameterValues.getValue("pattern") as String,
+                            relocatedPattern = relocationParameterValues.getValue("relocatedPattern") as String,
+                            formatContext = formatContext
+                        )
+                    }
+                ))
+            }
+        }
         scannedResult.getClassesWithAnnotation(mavenDependencyContainerClass).forEach {
             @Suppress("UNCHECKED_CAST")
-            val values = it.getAnnotationInfo(mavenDependencyContainerClass).parameterValues.getValue("value") as Array<AnnotationInfo>
-            val relocations = it.getAnnotationInfo(relocateContainerClass).parameterValues.getValue("value") as Array<AnnotationInfo>
+            val values = (it.getAnnotationInfo(mavenDependencyContainerClass).parameterValues.getValue("value") as Array<Any>)
+                .map { obj -> obj as AnnotationInfo }.toTypedArray()
+            val relocations = (it.getAnnotationInfo(relocateContainerClass)?.parameterValues?.getValue("value") as? Array<Any>)
+                ?.map { obj -> obj as AnnotationInfo }?.toTypedArray() ?: emptyArray()
             values.forEach { mavenDependency ->
                 val parameterValues = mavenDependency.parameterValues
                 add(Triple(
@@ -153,10 +190,10 @@ open class ExtensionClassSource(
                         groupId = parameterValues.getValue("groupId") as String,
                         artifactId = parameterValues.getValue("artifactId") as String,
                         version = parameterValues.getValue("version") as String,
-                        scope = DependencyScope.valueOf((parameterValues.getValue("scope") as AnnotationEnumValue).valueName),
+                        scope = DependencyScope.valueOf((parameterValues.getValue("scope") as? AnnotationEnumValue)?.valueName ?: "RUNTIME"),
                         formatContext = formatContext
                     ), repository(
-                        url = parameterValues.getValue("repository") as String,
+                        url = parameterValues.getValue("repository") as? String ?: "{kingmc.environment.maven-repository}",
                         formatContext = formatContext
                     ), relocations.map { relocation ->
                         val relocationParameterValues = relocation.parameterValues
@@ -185,7 +222,7 @@ open class ExtensionClassSource(
                 properties.load(it)
             }
             loadPropertiesFile("config.toml", extension) {
-                FileConfig.of(file, TomlFormat.instance()).use { fileConfig ->
+                FileConfig.of(it, TomlFormat.instance())?.use { fileConfig ->
                     fileConfig.load()
                     loadConfigIntoProperties(
                         fileConfig,
@@ -194,7 +231,7 @@ open class ExtensionClassSource(
                 }
             }
             loadPropertiesFile("config.yml", extension) {
-                FileConfig.of(file, YamlFormat.defaultInstance()).use { fileConfig ->
+                FileConfig.of(it, YamlFormat.defaultInstance())?.use { fileConfig ->
                     fileConfig.load()
                     loadConfigIntoProperties(
                         fileConfig,
@@ -213,10 +250,13 @@ open class ExtensionClassSource(
         extensions = scanExtensions()
     }
 
+    fun scanByClassGraph() {
+        scannedResult = classGraph.scan()
+    }
+
     @Suppress("UNCHECKED_CAST")
     suspend fun loadMavenDependencies(dependencyDispatcher: DependencyDispatcher, repositories: Collection<Repository>) = coroutineScope {
         try {
-            scannedResult = classGraph.scan()
             val config = extension.getInputStream(classLoader)
 
             // Load maven dependencies from extension.yml
@@ -242,19 +282,21 @@ open class ExtensionClassSource(
                 }
             }
 
-            // Load maven dependencies scanned by classes annotated with @MavenDependency
-            scanMavenDependencies().forEach { dependency ->
-                launch {
-                    dependencyDispatcher.installDependency(
-                        dependency.first,
-                        listOf(dependency.second),
-                        dependency.third,
-                        DependencyScope.RUNTIME
-                    )
-                }
+        } catch (_: ResourceLoadException) {
+
+        }
+
+        // Load maven dependencies scanned by classes annotated with @MavenDependency
+        val scannedMavenDependencies = scanMavenDependencies()
+        scannedMavenDependencies.forEach { dependency ->
+            launch {
+                dependencyDispatcher.installDependency(
+                    dependency.first,
+                    listOf(dependency.second),
+                    dependency.third,
+                    DependencyScope.RUNTIME
+                )
             }
-        } catch (e: ResourceLoadException) {
-            return@coroutineScope
         }
     }
 

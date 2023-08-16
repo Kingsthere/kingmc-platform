@@ -10,4 +10,4 @@ import kingmc.platform.event.Event
  * @author kingsthere
  */
 @Event
-abstract class EntityEvent(open val entity: Entity)
+abstract class EntityEvent(val entity: Entity)

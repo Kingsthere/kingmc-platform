@@ -4,8 +4,8 @@ import kingmc.common.application.Isolated
 import kingmc.common.context.annotation.Component
 import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
+import kingmc.platform.Location
 import kingmc.util.key.Key
-import java.io.Closeable
 
 /**
  * A factory responsible for registering entity types & provide entities
@@ -16,7 +16,16 @@ import java.io.Closeable
 @Component
 @Scope(BeanScope.SINGLETON)
 @Isolated
-interface EntityFactory : Closeable {
+interface EntityFactory {
+    /**
+     * Create an `Entity` at the given [location]
+     *
+     * @param location the location to create the entity
+     * @param type the type of entity to create
+     * @return `Entity` instance created
+     */
+    fun createEntity(location: Location, type: EntityType): Entity
+
     /**
      * Gets a type of entity registered in this entity factory
      */
@@ -26,4 +35,9 @@ interface EntityFactory : Closeable {
      * Gets all entity types registered in this factory
      */
     fun getEntityTypes(): Set<EntityType>
+
+    /**
+     * Close this entity factory
+     */
+    fun close()
 }

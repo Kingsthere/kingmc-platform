@@ -17,4 +17,8 @@ class SimpleHeader(override var name: String, override var description: String? 
      * The parent node that owning this node
      */
     override var parent: Node? = null
+
+    override fun toString(): String {
+        return "/$name"
+    }
 }

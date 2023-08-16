@@ -10,8 +10,6 @@ import kingmc.platform.bukkit._BukkitServer
 import kingmc.platform.bukkit.adventure.Adventure
 import kingmc.platform.bukkit.adventure.impl.audience.AdventureBukkitConsoleImpl
 import kingmc.platform.bukkit.adventure.impl.audience.AdventureOnlineBukkitPlayerImpl
-import kingmc.platform.bukkit.driver.bukkitPlugin
-import kingmc.platform.bukkit.driver.bukkitServer
 import kingmc.platform.bukkit.entity.player._BukkitCommandSender
 import kingmc.platform.bukkit.entity.player._BukkitOfflinePlayer
 import kingmc.platform.bukkit.entity.player._BukkitPlayer
@@ -23,32 +21,33 @@ import kingmc.platform.messaging.OutputMessage
 import java.util.*
 
 /**
- * A bukkit `Server` implementation
+ * A bukkit side `Server` implementation, it is implemented by calling bukkit api & adventure api as a fallback
+ * solution for servers that have the bukkit api but cannot use the nms implementation
  *
- * @since 0.0.7
+ * @since 0.1.0
  * @author kingsthere
  */
 @Component
-class AdventureBukkitServerImpl : BukkitServer {
+open class AdventureBukkitServerImpl : BukkitServer {
     /**
-     * A `WeakHashMap` cache `Player` instances for [org.bukkit.entity.Player]
+     * A `WeakHashMap` caches `Player` instances for [org.bukkit.entity.Player]
      */
-    val _players: MutableMap<_BukkitPlayer, Player> = WeakHashMap()
+    protected val players: MutableMap<_BukkitPlayer, Player> = WeakHashMap()
 
     /**
-     * A `WeakHashMap` cache `Player` instances for [org.bukkit.OfflinePlayer]
+     * A `WeakHashMap` caches `Player` instances for [org.bukkit.OfflinePlayer]
      */
-    val _offlinePlayers: MutableMap<_BukkitOfflinePlayer, OfflinePlayer> = WeakHashMap()
+    protected val offlinePlayers: MutableMap<_BukkitOfflinePlayer, OfflinePlayer> = WeakHashMap()
 
     /**
      * [org.bukkit.Server] instance
      */
-    val _bukkitServer = withApplication { bukkitServer }
+    protected val bukkitServer = withApplication { kingmc.platform.bukkit.driver.bukkitServer }
 
     /**
      * [org.bukkit.plugin.Plugin] instance
      */
-    val _bukkitPlugin = withApplication { bukkitPlugin }
+    protected val bukkitPlugin = withApplication { kingmc.platform.bukkit.driver.bukkitPlugin }
 
     @Autowired
     lateinit var adventure: Adventure
@@ -63,14 +62,14 @@ class AdventureBukkitServerImpl : BukkitServer {
      * @return all players that online
      */
     override fun getOnlinePlayers(): Set<Player> {
-        return _bukkitServer.onlinePlayers.map { getPlayerForBukkit(it) }.toSet()
+        return bukkitServer.onlinePlayers.map { getPlayerForBukkit(it) }.toSet()
     }
 
     /**
      * Gets every player that has ever played on this server
      */
     override fun getOfflinePlayers(): List<OfflinePlayer> {
-        return _bukkitServer.offlinePlayers.map { getOfflinePlayerForBukkit(it) }
+        return bukkitServer.offlinePlayers.map { getOfflinePlayerForBukkit(it) }
     }
 
     /**
@@ -80,7 +79,7 @@ class AdventureBukkitServerImpl : BukkitServer {
      * @return player named [username], or `null` if the player named [username] isn't exists or offline
      */
     override fun getPlayer(username: String): Player? {
-        return _bukkitServer.getPlayerExact(username)?.let { player -> getPlayerForBukkit(player) }
+        return bukkitServer.getPlayerExact(username)?.let { player -> getPlayerForBukkit(player) }
     }
 
     /**
@@ -90,7 +89,7 @@ class AdventureBukkitServerImpl : BukkitServer {
      * @return player with [uuid], or `null` if the player with [uuid] isn't exists or offline
      */
     override fun getPlayer(uuid: UUID): Player? {
-        return _bukkitServer.getPlayer(uuid)?.let { player -> getPlayerForBukkit(player) }
+        return bukkitServer.getPlayer(uuid)?.let { player -> getPlayerForBukkit(player) }
     }
 
     /**
@@ -99,9 +98,11 @@ class AdventureBukkitServerImpl : BukkitServer {
      * @param username the username of the player
      * @return the offline player get
      */
-    @Deprecated("Persistent storage of users should be by UUID as names are no longer unique past a single session")
+    @Deprecated("Persistent storage of users should be by UUID as names are no longer unique past a single session",
+        ReplaceWith("getOfflinePlayerForBukkit(bukkitServer.getOfflinePlayer(username))")
+    )
     override fun getOfflinePlayer(username: String): OfflinePlayer {
-        return getOfflinePlayerForBukkit(_bukkitServer.getOfflinePlayer(username))
+        return getOfflinePlayerForBukkit(bukkitServer.getOfflinePlayer(username))
     }
 
     /**
@@ -111,50 +112,55 @@ class AdventureBukkitServerImpl : BukkitServer {
      * @return the offline player get
      */
     override fun getOfflinePlayer(uuid: UUID): OfflinePlayer {
-        return getOfflinePlayerForBukkit(_bukkitServer.getOfflinePlayer(uuid))
+        return getOfflinePlayerForBukkit(bukkitServer.getOfflinePlayer(uuid))
     }
 
     /**
      * Sends this recipient a Plugin Message on the specified outgoing
-     * channel.
+     * channel
      *
      *
      * The message may not be larger than 32766
      * bytes, and the plugin must be registered to send messages on the
-     * specified channel.
+     * specified channel
      *
-     * @param channel The channel to send this message on.
-     * @param message The raw message to send.
+     * @param channel The channel to send this message on
+     * @param message The raw message to send
      */
     override fun sendPluginMessage(channel: String, message: OutputMessage) {
-        _bukkitServer.sendPluginMessage(_bukkitPlugin, channel, message.toByteArray())
+        bukkitServer.sendPluginMessage(bukkitPlugin, channel, message.toByteArray())
     }
 
     /**
      * Gets a set containing all the Plugin Channels that this client is
-     * listening on.
+     * listening on
      *
-     * @return Set containing all the channels that this client may accept.
+     * @return Set containing all the channels that this client may accept
      */
     override val listeningPluginChannels: Set<String>
-        get() = _bukkitServer.listeningPluginChannels
+        get() = bukkitServer.listeningPluginChannels
 
     override fun asBukkitServer(): _BukkitServer {
-        return _bukkitServer
+        return bukkitServer
     }
 
     override fun getPlayerForBukkit(bukkitPlayer: _BukkitPlayer): Player {
-        return _players.computeIfAbsent(bukkitPlayer) {
-            AdventureOnlineBukkitPlayerImpl(it, adventure.getAudienceProvider().player(it), application)
+        return players.computeIfAbsent(bukkitPlayer) {
+            createPlayerForBukkit(bukkitPlayer)
         }
     }
+
+    protected open fun createPlayerForBukkit(bukkitPlayer: _BukkitPlayer): Player =
+        AdventureOnlineBukkitPlayerImpl(bukkitPlayer, adventure.getAudienceProvider().player(bukkitPlayer),
+            application
+        )
 
     override fun getCommandSenderForBukkit(bukkitCommandSender: _BukkitCommandSender): CommandSender {
         TODO("Not yet implemented")
     }
 
     override fun getOfflinePlayerForBukkit(bukkitOfflinePlayer: _BukkitOfflinePlayer): OfflinePlayer {
-        return _offlinePlayers.computeIfAbsent(bukkitOfflinePlayer) {
+        return offlinePlayers.computeIfAbsent(bukkitOfflinePlayer) {
             BukkitOfflinePlayerImpl(it)
         }
     }

@@ -10,7 +10,7 @@ import java.lang.annotation.Inherited
  * @author kingsthere
  */
 @Retention
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Inherited
 annotation class ConditionalSinceVersion (
     /**

@@ -2,7 +2,6 @@ package kingmc.platform.event
 
 import kingmc.common.context.annotation.Component
 import kingmc.platform.event.subscription.Subscription
-import java.io.Closeable
 
 /**
  * A `Publisher` is responsible for publishing specified events and
@@ -12,7 +11,7 @@ import java.io.Closeable
  * @author kingsthere
  */
 @Component
-interface Publisher : Closeable {
+interface Publisher {
     /**
      * Register a subscription to this publisher
      *
@@ -30,21 +29,21 @@ interface Publisher : Closeable {
     /**
      * Close this publisher
      */
-    override fun close()
+    fun close()
 
     /**
-     * Call an event and block current thread till every subscription proceed the event
+     * Fire an event and block current thread till every subscription proceed the event
      *
-     * @param event the event to call
-     * @return the event called
+     * @param event the event to fire
+     * @return the event fired
      */
-    fun <TEvent : Any> callEvent(event: TEvent) : TEvent
+    fun <TEvent : Any> fireEvent(event: TEvent) : TEvent
 
     /**
-     * Call an event suspend
+     * Fire an event in coroutine
      *
-     * @param event the event to call
-     * @return the event called
+     * @param event the event to fire
+     * @return the event fired
      */
-    suspend fun <TEvent : Any> callEventSuspend(event: TEvent) : TEvent
+    suspend fun <TEvent : Any> fireEventSuspend(event: TEvent) : TEvent
 }

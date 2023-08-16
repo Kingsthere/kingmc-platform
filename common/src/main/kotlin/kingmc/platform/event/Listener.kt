@@ -1,10 +1,12 @@
 package kingmc.platform.event
 
-import kingmc.common.application.*
+import kingmc.common.application.Application
+import kingmc.common.application.WithApplication
+import kingmc.common.application.application
+import kingmc.common.application.currentApplication
 import kingmc.platform.event.subscription.BlockingSubscription
 import kingmc.platform.event.subscription.Subscription
 import kingmc.platform.publisher
-import java.io.Closeable
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -14,7 +16,7 @@ import kotlin.reflect.KClass
  * @since 0.0.7
  * @author kingsthere
  */
-abstract class Listener(publisher: Publisher? = null) : Closeable {
+abstract class Listener(publisher: Publisher? = null) {
     init {
         this.application.addShutdownHook {
             this@Listener.close()
@@ -79,7 +81,7 @@ abstract class Listener(publisher: Publisher? = null) : Closeable {
     /**
      * Close this listener
      */
-    override fun close() {
+    fun close() {
         this.subscriptions.forEach {
             this.publisher.unsubscribe(it)
         }

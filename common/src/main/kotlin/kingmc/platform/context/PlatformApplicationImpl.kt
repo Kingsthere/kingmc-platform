@@ -1,10 +1,12 @@
 package kingmc.platform.context
 
 import kingmc.common.application.ApplicationEnvironment
+import kingmc.common.application.ApplicationLocalMap
 import kingmc.common.application.properties
 import kingmc.common.logging.LoggerCapableApplication
 import kingmc.common.logging.LoggerManager
 import kingmc.platform.Platform
+import kingmc.util.ReloadableManager
 import kingmc.util.format.FormatContext
 import kingmc.util.format.PropertiesFormatContext
 
@@ -23,9 +25,11 @@ open class PlatformApplicationImpl(override val platform: Platform,
      * Shutdown hooks to be executed when application [shutdown]
      */
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
+    override val applicationLocalMap: ApplicationLocalMap = ApplicationLocalMap()
 
     override val name: String
         get() = "platform"
+    override val reloadableManager: ReloadableManager = ReloadableManager()
 
     override fun addShutdownHook(shutdownHook: () -> Unit) {
         this.shutdownHooks.add(shutdownHook)

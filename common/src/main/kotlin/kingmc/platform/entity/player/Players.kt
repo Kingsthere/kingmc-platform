@@ -1,7 +1,8 @@
 package kingmc.platform.entity.player
 
 import kingmc.platform.audience.ForwardingAudience
-import kingmc.platform.audience.particle.*
+import kingmc.platform.audience.particle.Particle
+import kingmc.platform.audience.particle.ParticleRecipient
 import kingmc.platform.command.CommandSender
 import kingmc.platform.messaging.OutputMessage
 import kingmc.platform.messaging.PluginMessageSink
@@ -27,19 +28,22 @@ interface Players :
     override fun iterator(): Iterator<Player> =
         audiences().iterator()
 
-    override fun sendParticle(particle: Particle<*>) {
-        audiences().forEach { it.sendParticle(particle) }
+    override fun sendParticle(
+        particle: Particle<*>,
+        x: Double,
+        y: Double,
+        z: Double,
+        longDistance: Boolean,
+        offsetX: Float,
+        offsetY: Float,
+        offsetZ: Float,
+        maxSpeed: Float,
+        count: Int
+    ) {
+        audiences().forEach {
+            it.sendParticle(particle, x, y, z, longDistance, offsetX, offsetY, offsetZ, maxSpeed, count)
+        }
     }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation): ParticleAnimationTask =
-        ParticleAnimationTask.createSupervisorParticleAnimationTask(*audiences().map { it.sendParticle(particleAnimation) }.toTypedArray(), speed = 1)
-
-    override fun sendParticle(particleGroup: ParticleGroup) {
-        audiences().forEach { it.sendParticle(particleGroup) }
-    }
-
-    override fun sendParticle(particleAnimation: ParticleAnimation, speed: Int): AcceleratedParticleAnimationTask =
-        ParticleAnimationTask.createSupervisorParticleAnimationTask(*audiences().map { it.sendParticle(particleAnimation, speed) }.toTypedArray(), speed = speed)
 
     /**
      * To let this command sender send a

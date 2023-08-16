@@ -1,7 +1,5 @@
 package kingmc.platform.inventory
 
-import java.io.Closeable
-
 /**
  * Represents the state of what the audience that opened the inventory viewing, include
  *  + The base inventory of the audience
@@ -11,7 +9,7 @@ import java.io.Closeable
  * @author kingsthere
  * @see Inventory
  */
-interface InventoryView : Closeable {
+interface InventoryView {
     /**
      * The holder that opened this inventory view
      */
@@ -31,4 +29,9 @@ interface InventoryView : Closeable {
      * The title of this inventory view
      */
     var title: String
+
+    /**
+     * Close this inventory view
+     */
+    fun close()
 }

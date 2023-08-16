@@ -1,7 +1,7 @@
 package kingmc.platform.context
 
 import kingmc.common.context.beans.beanClass
-import kingmc.common.context.initializer.GenericContextInitializer
+import kingmc.common.context.initializer.ApplicationContextInitializer
 import kingmc.platform.ConditionalOnPlatform
 import kingmc.platform.version.ConditionalBeforeVersion
 import kingmc.platform.version.ConditionalOnVersion
@@ -18,20 +18,17 @@ import java.util.function.Predicate
  * @author kingsthere
  */
 open class PlatformContextInitializer(context: PlatformContext) :
-    GenericContextInitializer(context) {
+    ApplicationContextInitializer(context) {
         init {
             addBeanFilter(Predicate { bean ->
                 if (bean.beanClass.hasAnnotation<ConditionalOnPlatform>()) {
                     val annotation = bean.beanClass.getAnnotation<ConditionalOnPlatform>()!!
-                    var contained = false
                     annotation.value.forEach {
                         if (context.application.platform.id.contains(it)) {
-                            contained = true
+                            return@Predicate true
                         }
                     }
-                    if (!contained) {
-                        return@Predicate false
-                    }
+                    return@Predicate false
                 }
                 if (bean.beanClass.hasAnnotation<ConditionalOnVersion>()) {
                     val annotation = bean.beanClass.getAnnotation<ConditionalOnVersion>()!!
@@ -65,9 +62,7 @@ open class PlatformContextInitializer(context: PlatformContext) :
                             contained = true
                         }
                     }
-                    if (!contained) {
-                        return@Predicate false
-                    }
+                    return@Predicate contained
                 }
                 if (element.hasAnnotation<ConditionalOnVersion>()) {
                     val annotation = element.getAnnotation<ConditionalOnVersion>()!!

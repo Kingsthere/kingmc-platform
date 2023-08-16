@@ -1,10 +1,8 @@
 package kingmc.platform.bukkit.material
 
-import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.bukkit.block.BukkitMaterialData
-import kingmc.platform.bukkit.nms.RegistryNMS
 import kingmc.platform.bukkit.util.asKingMC
 import kingmc.platform.material.MaterialProvider
 import kingmc.platform.material.MaterialType
@@ -23,9 +21,6 @@ import java.util.*
 @Component
 @BukkitImplementation
 open class BukkitMaterialProvider : MaterialProvider {
-    @Autowired
-    lateinit var registryNMS: RegistryNMS<*>
-
     protected val _materialTypesByBukkit: MutableMap<_BukkitMaterial, MaterialType<*>> = EnumMap(org.bukkit.Material::class.java)
     protected val _materialTypesByName: MutableMap<String, MaterialType<*>> = HashMap()
     protected val _materialTypes: MutableMap<Key, MaterialType<*>> = initMaterialTypes()
@@ -33,7 +28,7 @@ open class BukkitMaterialProvider : MaterialProvider {
     @Suppress("DEPRECATION")
     protected open fun initMaterialTypes(): MutableMap<Key, MaterialType<*>> {
         val mutableMap: MutableMap<Key, MaterialType<*>> = LinkedHashMap(64)
-        _BukkitMaterial.values().forEach {
+        _BukkitMaterial.entries.forEach {
             if (it.data == MaterialData::class.java) {
                 val materialType = BukkitMaterialType(it, Unit::class)
                 mutableMap.put(it.key.asKingMC(), materialType)

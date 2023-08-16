@@ -1,7 +1,6 @@
 package kingmc.platform.extension
 
 import kingmc.common.context.annotation.Configuration
-import kingmc.util.annotation.Extended
 
 /**
  * Base annotation for declare an extension that could plug to a server that
@@ -10,7 +9,7 @@ import kingmc.util.annotation.Extended
  * @since 0.0.3
  * @author kingsthere
  */
-@Extended(Configuration::class)
+@Configuration
 @Target(AnnotationTarget.CLASS)
 @Retention
 annotation class Extension(
@@ -93,6 +92,11 @@ annotation class Extension(
          * The id of the dependency
          */
         val id: String,
+
+        /**
+         * The version of this dependency
+         */
+        val version: String = "",
 
         /**
          * The url of the dependency, this url is used to specify the dependency to

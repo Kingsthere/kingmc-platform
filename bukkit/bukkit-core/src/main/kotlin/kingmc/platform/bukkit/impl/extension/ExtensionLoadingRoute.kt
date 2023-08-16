@@ -2,31 +2,37 @@ package kingmc.platform.bukkit.impl.extension
 
 import kingmc.platform.extension.ExtensionData
 
-typealias ExtensionLoadingRoutes = List<ExtensionLoadingRoute>
-
 /**
  * A route designed to solve the priority to load extensions
  *
- * @since 0.0.8
+ * @since 0.1.0
  * @author kingsthere
  */
-class ExtensionLoadingRoute(val extension: ExtensionData, val next: MutableList<ExtensionLoadingRoute>) {
+sealed interface ExtensionLoadingRoute {
+    /**
+     * Next extensions to load
+     */
+    val next: MutableList<ExtensionLoadingNode>
+}
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is ExtensionLoadingRoute) return false
+/**
+ * Defined the root route to a [ExtensionLoadingRoute]
+ */
+data class RootExtensionLoadingRoute(
+    override val next: MutableList<ExtensionLoadingNode>
+) : ExtensionLoadingRoute
 
-        if (extension != other.extension) return false
-        return next == other.next
-    }
+/**
+ * A simple [ExtensionLoadingRoute] implementation
+ */
+data class ExtensionLoadingNode(
+    val extension: ExtensionData,
+    override val next: MutableList<ExtensionLoadingNode>
+) : ExtensionLoadingRoute
 
-    override fun hashCode(): Int {
-        var result = extension.hashCode()
-        result = 31 * result + next.hashCode()
-        return result
-    }
-
-    override fun toString(): String {
-        return "ExtensionLoadingRoute(extension=$extension, next=$next)"
+fun ExtensionLoadingRoute.forEach(consumer: (extension: ExtensionData) -> Unit) {
+    this.next.forEach { node ->
+        consumer(node.extension)
+        node.forEach(consumer)
     }
 }

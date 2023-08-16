@@ -37,19 +37,20 @@ abstract class FacetCommandManager : CommandManager {
 
     @FacetAvailable
     override fun unregister(command: Command<*>) {
-        registeredCommandsList.remove(command)
+        unregister.invoke(command)
     }
 
     override fun unregister(name: String) {
-        registeredCommandsList.removeIf { (it.data as Node).name.startsWith(name) }
+        registeredCommandsList.find { (it.data as Node).name == name }?.let {
+            unregister(it)
+        }
     }
 
     override fun getRegisteredCommands(): List<Command<*>> = registeredCommandsList
 
     override fun close() {
-        registeredCommandsList.forEach {
+        registeredCommandsList.toList().forEach {
             unregister(it)
         }
-        registeredCommandsList.clear()
     }
 }

@@ -50,9 +50,9 @@ interface Player : HumanEntity, OfflinePlayer, ParticleRecipient, PluginMessageS
     val clientBrand: String?
 
     /**
-     * Disconnects the player with the specified reason
+     * Disconnects the player by the given reason
      *
-     * @param reason reason the player disconnected
+     * @param reason reason to disconnect the player
      */
     fun disconnect(reason: Text)
 }

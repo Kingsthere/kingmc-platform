@@ -3,7 +3,6 @@ package kingmc.platform.bukkit.adventure.impl.audience
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import kingmc.common.application.application
-import kingmc.common.application.withApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.context.annotation.Autowired
 import kingmc.common.context.annotation.Component
@@ -36,13 +35,10 @@ import java.util.function.Predicate
 @Component
 @Scope(BeanScope.SINGLETON)
 @BukkitImplementation
-class AdventureAudienceFactoryImpl : BukkitAudienceFactory {
-    @Autowired
-    lateinit var server: Server
-
-    @Autowired
-    lateinit var adventure: Adventure
-
+class AdventureAudienceFactoryImpl @Autowired constructor(
+    val server: Server,
+    val adventure: Adventure
+) : BukkitAudienceFactory {
     /**
      * Cached players
      */
@@ -63,7 +59,7 @@ class AdventureAudienceFactoryImpl : BukkitAudienceFactory {
         AllBukkitAudiences(application.server)
     }
 
-    @Deprecated("CommandSenders are no longer supplied by the AudienceFactory, use World.getPlayer(uuid) instead")
+    @Deprecated("CommandSenders are no longer supplied by the AudienceFactory, use Server.getCommandSender(uuid) instead")
     @Throws(IllegalArgumentException::class)
     override fun commandSender(commandSender: _BukkitCommandSender): CommandSender {
         return when (commandSender) {

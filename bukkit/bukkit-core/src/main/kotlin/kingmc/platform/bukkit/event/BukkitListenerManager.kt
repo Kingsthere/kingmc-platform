@@ -5,7 +5,7 @@ import kingmc.common.context.annotation.Scope
 import kingmc.common.context.beans.BeanScope
 import kingmc.platform.bukkit.BukkitImplementation
 import kingmc.platform.event.ListenerManager
-import kingmc.platform.facet.FacetListenerManager
+import kingmc.platform.facet.event.FacetListenerManager
 
 /**
  * An implement of  [ListenerManager] for bukkit

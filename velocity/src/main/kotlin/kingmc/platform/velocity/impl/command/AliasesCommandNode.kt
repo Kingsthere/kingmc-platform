@@ -18,23 +18,17 @@ import java.util.concurrent.CompletableFuture
 class AliasesCommandNode<S>(private val alias: String, private val target: LiteralCommandNode<S>)
     : LiteralCommandNode<S>(alias, target.command, target.requirement, target.redirect, target.redirectModifier, target.isFork) {
     init {
-        val literalsField = CommandNode::class.java.getDeclaredField("literals")
         val childrenField = CommandNode::class.java.getDeclaredField("children")
         val argumentsField = CommandNode::class.java.getDeclaredField("arguments")
-        literalsField.isAccessible = true
         childrenField.isAccessible = true
         argumentsField.isAccessible = true
-        val targetLiterals = literalsField.get(target) as MutableMap<String, LiteralCommandNode<*>>
         val targetChildren = childrenField.get(target) as MutableMap<String, CommandNode<*>>
         val targetArguments = argumentsField.get(target) as MutableMap<String, ArgumentCommandNode<*, *>>
-        val thisLiterals = literalsField.get(this) as MutableMap<String, LiteralCommandNode<*>>
         val thisChildren = childrenField.get(this) as MutableMap<String, CommandNode<*>>
         val thisArguments = argumentsField.get(this) as MutableMap<String, ArgumentCommandNode<*, *>>
 
-        thisLiterals.putAll(targetLiterals)
         thisChildren.putAll(targetChildren)
         thisArguments.putAll(targetArguments)
-        literalsField.isAccessible = false
         childrenField.isAccessible = false
         argumentsField.isAccessible = false
     }

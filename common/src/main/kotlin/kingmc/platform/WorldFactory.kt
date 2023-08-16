@@ -14,8 +14,6 @@ import java.util.*
  * @author kingsthere
  */
 @Component
-@Scope(BeanScope.SINGLETON)
-@Isolated
 interface WorldFactory {
     /**
      * The main world, which players enter when they first join the server

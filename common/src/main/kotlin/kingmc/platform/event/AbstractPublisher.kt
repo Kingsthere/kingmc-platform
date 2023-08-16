@@ -1,7 +1,7 @@
 package kingmc.platform.event
 
 import kingmc.common.application.withApplication
-import kingmc.common.application.withApplicationSuspend
+import kingmc.common.application.withApplication
 import kingmc.platform.event.subscription.BlockingSubscription
 import kingmc.platform.event.subscription.Subscription
 import kingmc.platform.event.subscription.SuspendSubscription
@@ -44,10 +44,10 @@ abstract class AbstractPublisher : Publisher {
      * Call an event and block current thread till every subscription proceed the event, it
      * uses [runBlocking] to start coroutine so [SuspendSubscription] can handle events
      *
-     * @param event the event to call
-     * @return the event called
+     * @param event the event to fire
+     * @return the event fired
      */
-    override fun <TEvent : Any> callEvent(event: TEvent): TEvent {
+    override fun <TEvent : Any> fireEvent(event: TEvent): TEvent {
         this@AbstractPublisher.subscriptions[event::class]?.forEach {
             if (it.ignoreCancelled) {
                 if (!checkEventCancelled(it)) {
@@ -58,7 +58,7 @@ abstract class AbstractPublisher : Publisher {
                     }
                     if (it is SuspendSubscription<Any>) {
                         runBlocking {
-                            withApplicationSuspend(it.application) {
+                            withApplication(it.application) {
                                 it.handler.invoke(event)
                             }
                         }
@@ -72,7 +72,7 @@ abstract class AbstractPublisher : Publisher {
                 }
                 if (it is SuspendSubscription<Any>) {
                     runBlocking {
-                        withApplicationSuspend(it.application) {
+                        withApplication(it.application) {
                             it.handler.invoke(event)
                         }
                     }
@@ -83,12 +83,12 @@ abstract class AbstractPublisher : Publisher {
     }
 
     /**
-     * Call an event suspend
+     * Fire an event in coroutine
      *
-     * @param event the event to call
-     * @return the event called
+     * @param event the event to fire
+     * @return the event fired
      */
-    override suspend fun <TEvent : Any> callEventSuspend(event: TEvent): TEvent {
+    override suspend fun <TEvent : Any> fireEventSuspend(event: TEvent): TEvent {
         this@AbstractPublisher.subscriptions[event::class]?.forEach {
             if (it.ignoreCancelled) {
                 if (!checkEventCancelled(it)) {
@@ -98,7 +98,7 @@ abstract class AbstractPublisher : Publisher {
                         }
                     }
                     if (it is SuspendSubscription<Any>) {
-                        withApplicationSuspend(it.application) {
+                        withApplication(it.application) {
                             it.handler.invoke(event)
                         }
                     }
@@ -110,7 +110,7 @@ abstract class AbstractPublisher : Publisher {
                     }
                 }
                 if (it is SuspendSubscription<Any>) {
-                    withApplicationSuspend(it.application) {
+                    withApplication(it.application) {
                         it.handler.invoke(event)
                     }
                 }

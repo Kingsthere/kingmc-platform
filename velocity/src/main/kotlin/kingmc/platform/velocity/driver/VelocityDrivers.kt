@@ -3,8 +3,8 @@ package kingmc.platform.velocity.driver
 import kingmc.common.application.WithApplication
 import kingmc.common.application.currentApplication
 import kingmc.common.logging.slf4j.Slf4jLogger
+import kingmc.platform.VelocityJavaPlugin
 import kingmc.platform.platform
-import kingmc.platform.velocity.VelocityJavaPlugin
 import kingmc.platform.velocity._VelocityProxyServer
 import java.io.File
 

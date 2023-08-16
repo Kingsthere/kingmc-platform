@@ -7,6 +7,13 @@ import kingmc.platform.bukkit.asKingMC
 import kingmc.platform.material.Material
 
 class BukkitBlockState(override val block: Block, private val _bukkitBlockState: _BukkitBlockState) : BlockState {
+    override fun update(force: Boolean, applyPhysics: Boolean): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override val isPlaced: Boolean
+        get() = TODO("Not yet implemented")
+
     /**
      * The location of this locatable
      *

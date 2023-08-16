@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import com.velocitypowered.api.command.CommandSource
 import kingmc.common.application.Application
 import kingmc.common.application.withApplication
-import kingmc.common.application.withApplicationSuspend
+import kingmc.common.application.withApplication
 import kingmc.common.coroutine.ApplicationCoroutineScope
 import kingmc.common.coroutine.CoroutineDispatcherWithApplication
 import kingmc.platform.command.CommandContext
@@ -41,6 +41,8 @@ class WrappedSuggestionProvider(
                         wrappedSuggestionBuilder,
                         CommandContext(css.source.asKingMC(application), parameters, css.input)
                 )
+                val suggestions = wrappedSuggestionBuilder.build()
+                future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))
             }
         }
         if (suggestionProvider is SuspendSuggestionProvider) {
@@ -49,14 +51,20 @@ class WrappedSuggestionProvider(
             if (dispatcher is CoroutineDispatcherWithApplication) {
                 ApplicationCoroutineScope(context = dispatcher, application = application).launch {
                     suggestionProvider.function.invoke(wrappedSuggestionBuilder, CommandContext(css.source.asKingMC(application), parameters, css.input))
+                    wrappedSuggestionBuilder.buildFuture().thenAccept { suggestions ->
+                        future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))
+                    }
                 }
             } else {
                 ApplicationCoroutineScope(context = dispatcher, application = application).launch {
-                    withApplicationSuspend(application) {
+                    withApplication(application) {
                         suggestionProvider.function.invoke(
                                 wrappedSuggestionBuilder,
                                 CommandContext(css.source.asKingMC(application), parameters, css.input)
                         )
+                        wrappedSuggestionBuilder.buildFuture().thenAccept { suggestions ->
+                            future.complete(Suggestions(getStringRange(suggestions.range), suggestions.list.map { getSuggestion(it) }))
+                        }
                     }
                 }
             }

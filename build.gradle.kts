@@ -12,7 +12,7 @@ version = kingmc_platform_version
 plugins {
     `maven-publish`
     signing
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.9.0"
 }
 
 allprojects {
@@ -88,7 +88,7 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            // jvmTarget = "1.8"
+            jvmTarget = "1.8"
             // useK2 = true
         }
     }

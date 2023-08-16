@@ -14,6 +14,6 @@ class SimpleNode(override var name: String, override var parent: Node?, override
                  override val application: Application
 ) : Node {
     override fun toString(): String {
-        return "NodeImpl(name='$name', parent=$parent, description=$description, children=$children, handlers=$handlers)"
+        return "<$name>"
     }
 }

@@ -1,7 +1,6 @@
 package kingmc.platform.messaging
 
 import kingmc.common.context.annotation.Component
-import kingmc.util.annotation.Extended
 
 /**
  * Base annotation for declaring a [MessageHandler] to handle plugin messages
@@ -9,7 +8,7 @@ import kingmc.util.annotation.Extended
  * @since 0.0.4
  * @author kingsthere
  */
-@Extended(Component::class)
+@Component
 @Retention
 @Target(AnnotationTarget.CLASS)
 annotation class PluginMessageChannelHandler(

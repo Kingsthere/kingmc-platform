@@ -1,11 +1,13 @@
 package kingmc.platform.extension
 
 import kingmc.common.application.ApplicationEnvironment
+import kingmc.common.application.ApplicationLocalMap
 import kingmc.common.application.properties
 import kingmc.common.logging.LoggerCapableApplication
 import kingmc.common.logging.LoggerManager
 import kingmc.common.structure.ClassSource
 import kingmc.platform.Platform
+import kingmc.util.ReloadableManager
 import kingmc.util.format.FormatArgument
 import kingmc.util.format.FormatContext
 import kingmc.util.format.ListFormatArguments
@@ -29,9 +31,11 @@ class ExtensionApplicationImpl(
     override val loggers: LoggerManager
 ) : ExtensionApplication, LoggerCapableApplication {
     val shutdownHooks: MutableList<() -> Unit> = mutableListOf()
+    override val applicationLocalMap: ApplicationLocalMap = ApplicationLocalMap()
 
     override val name: String
         get() = (project as ExtensionClassSource).extensions.first().id
+    override val reloadableManager: ReloadableManager = ReloadableManager()
 
     override fun addShutdownHook(shutdownHook: () -> Unit) {
         this.shutdownHooks.add(shutdownHook)
@@ -42,6 +46,13 @@ class ExtensionApplicationImpl(
             it.invoke()
         }
         context.close()
+    }
+
+    /**
+     * Reload properties for this application
+     */
+    override fun reloadProperties() {
+        project.reload()
     }
 
     override fun equals(other: Any?): Boolean {

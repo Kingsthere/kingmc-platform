@@ -1,5 +1,26 @@
 package kingmc.platform.material
 
+import kingmc.common.application.WithApplication
+import kingmc.util.key.Key
+
+/**
+ * A shortcut to create an `Material` instance with no data
+ */
+fun Material(type: MaterialType<Unit>) = Material(type, Unit)
+
+/**
+ * A shortcut to create an `Material` instance with no data
+ */
+@WithApplication
+fun Material(type: Key) = Material(MaterialType<Unit>(type), Unit)
+
+/**
+ * A shortcut to create an `Material` instance with no data
+ */
+@WithApplication
+@Deprecated("Name is no longer the identifier for MaterialType(s)", replaceWith = ReplaceWith("Material(key, data)"))
+fun Material(type: String) = Material(MaterialType<Unit>(type), Unit)
+
 /**
  * A package class for a [MaterialType] and it's [data]
  *
@@ -9,7 +30,14 @@ package kingmc.platform.material
  * @since 0.0.6
  * @author kingsthere
  */
-open class Material<TData : Any>(val type: MaterialType<TData>, open val data: Any) {
+class Material<TData : Any>(val type: MaterialType<TData>, val data: Any) {
+    @WithApplication
+    constructor(type: Key, data: Any) : this(MaterialType(type), data)
+
+    @WithApplication
+    @Deprecated("Name is no longer the identifier for MaterialType(s)", replaceWith = ReplaceWith("Material(key, data)"))
+    constructor(type: String, data: Any) : this(MaterialType(type), data)
+
     operator fun component1(): MaterialType<TData> = type
     operator fun component2(): Any = data
     fun copy(type: MaterialType<TData> = this.type, data: Any = this.data) = Material(type, data)
