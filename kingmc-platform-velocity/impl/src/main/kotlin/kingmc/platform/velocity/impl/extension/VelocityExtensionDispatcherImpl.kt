@@ -5,19 +5,16 @@ import kingmc.common.application.*
 import kingmc.common.context.ContextDefiner
 import kingmc.common.logging.error
 import kingmc.platform.ExperimentalPlatformApi
-import kingmc.platform.extension.ExtensionBeanSourceImpl
+import kingmc.platform.velocity.impl.driver.VelocityPlatformDriverImpl
 import kingmc.platform.extension.*
 import kingmc.platform.logging.infoColored
-import kingmc.platform.velocity.impl.driver.VelocityPlatformDriverImpl
 import kingmc.util.lifecycle.Lifecycle
 import kotlinx.coroutines.*
 import java.io.File
-import java.util.LinkedList
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
+import java.util.*
 
 /**
- * Velocity side [ExtensionDispatcher] implementation
+ * Velocity [ExtensionDispatcher] implementation
  *
  * @author kingsthere
  * @since 0.1.2
@@ -26,7 +23,6 @@ class VelocityExtensionDispatcherImpl(val driver: VelocityPlatformDriverImpl) : 
     private lateinit var extensionSourceDirectory: File
     private lateinit var extractedExtensions: Set<ExtensionBeanSource>
     override lateinit var dispatchedExtensions: MutableList<ExtensionInstance>
-    private val extensionLoadLock = ReentrantLock()
 
     fun init() {
         ContextDefiner.getOrCreateBeanClassInstanceContexts(this::class.java).put(
@@ -66,7 +62,12 @@ class VelocityExtensionDispatcherImpl(val driver: VelocityPlatformDriverImpl) : 
             // Create class graph to read jar file
             val classGraph = ClassGraph()
                 .overrideClassLoaders(classLoader)
-                .ignoreParentClassLoaders()
+                // .ignoreParentClassLoaders()
+                .filterClasspathElements {
+                    it == driver.pluginFile.absolutePath
+                            || driver.driverPaths.contains(it)
+                            || it == extensionFile.absolutePath
+                }
                 .enableAnnotationInfo()
                 .enableMethodInfo()
                 .enableClassInfo()
@@ -117,92 +118,92 @@ class VelocityExtensionDispatcherImpl(val driver: VelocityPlatformDriverImpl) : 
      * @param directory the directory to load extensions for
      */
     @WithApplication
-    suspend fun loadExtensionsFromDirectory(directory: File) = coroutineScope {
-        extensionLoadLock.lock()
-        try {
-            extensionSourceDirectory = directory
-            val loadedExtensions = mutableListOf<ExtensionInstance>()
+    suspend fun loadExtensionsFromDirectory(directory: File, lifecycle: Lifecycle) = coroutineScope {
+        extensionSourceDirectory = directory
+        val application = currentApplication()
+        val loadedExtensions = mutableListOf<ExtensionInstance>()
 
-            fun finishLoadExtensionRecurves(extensions: List<ExtensionBeanSource>) {
-                // Create the `ExtensionLoadContext` instance to load the given extensions
-                val context = ExtensionLoadContext(driver, buildMap {
-                    extensions.forEach { extensionBeanSource ->
-                        put(extensionBeanSource.extension.id, extensionBeanSource)
-                    }
-                })
-
-                // Load extension bean sources in the given order
+        fun finishLoadExtensionRecurves(extensions: List<ExtensionBeanSource>) {
+            // Create the `ExtensionLoadContext` instance to load the given extensions
+            val context = ExtensionLoadContext(driver, lifecycle, buildMap {
                 extensions.forEach { extensionBeanSource ->
-                    // Load extension instance
-                    val extensionInstance = context.getOrLoadExtensionInstance(extensionBeanSource)
-                    val definition = extensionInstance.definition
-
-                    infoColored(StringBuilder().apply {
-                        append("<gradient:aqua:light_purple>Extension ${definition.displayName}(${definition.id}) v. ${definition.version}")
-                        if (definition.description.contributors.isNotEmpty()) {
-                            append(" by ${definition.description.contributors.joinToString(", ")}")
-                        }
-                        append(" has been loaded successfully</gradient>")
-                    }.toString())
-                    if (definition.description.website != "https://www.example.com/") {
-                        infoColored("<dark_grey>Check the website of this extensionBeanSource <blue>${definition.description.website}</blue> for more information")
-                    }
+                    put(extensionBeanSource.extension.id, extensionBeanSource)
                 }
-            }
+            })
 
+            // Load extension bean sources in the given order
+            extensions.forEach { extensionBeanSource ->
+                // Load extension instance
+                val extensionInstance = context.getOrLoadExtensionInstance(extensionBeanSource)
+                val definition = extensionInstance.definition
 
-            // Load extension classes
-            extractedExtensions = HashSet<ExtensionBeanSource>().apply {
-                (directory.listFiles()?.map { file ->
-                    async {
-                        if (validateExtension(file)) {
-                            return@async recognizeExtensionFromJarFile(file)
-                        }
-                        null
+                infoColored(StringBuilder().apply {
+                    append("<gradient:aqua:light_purple>Extension ${definition.displayName}(${definition.id}) v. ${definition.version}")
+                    if (definition.description.contributors.isNotEmpty()) {
+                        append(" by ${definition.description.contributors.joinToString(", ")}")
                     }
-                } ?: emptyList()).forEach { it.await()?.let { extensionBeanSource -> add(extensionBeanSource) } }
-            }
-
-            // Solve extension dependencies
-            extractedExtensions.forEach { source ->
-                try {
-                    val extension = source.extension
-                    val dependencies = extension.dependencies
-                    // Load extension dependencies
-                    if (dependencies.isEmpty()) {
-                        return@forEach
-                    }
-                    dependencies.forEach { dependency ->
-                        // Try to find the dependent extension
-                        val dependentExtension = extractedExtensions.find { it.extension.id == dependency.id }
-                            ?: throw RuntimeException("Could not find dependent extension for $source (required: $dependency)")
-                        source.addParent(dependentExtension)
-                    }
-                } catch (e: Exception) {
-                    error("Failed to load extension from $source", e)
-                    return@forEach // Skip the current extension if an exception was thrown
+                    append(" has been loaded successfully</gradient>")
+                }.toString())
+                if (definition.description.website != "https://www.example.com/") {
+                    infoColored("<dark_grey>Check the website of this extensionBeanSource <blue>${definition.description.website}</blue> for more information")
                 }
+                loadedExtensions.add(extensionInstance)
             }
-
-            // Load extracted extension bean sources
-            extractedExtensions.forEach { source ->
-                source.load()
-            }
-
-            // Load extension maven dependencies
-            withContext(Dispatchers.IO) {
-                extractedExtensions.forEach { source ->
-                    launch {
-                        source.loadMavenDependencies()
-                    }
-                }
-            }
-
-            finishLoadExtensionRecurves(solveExtensionDependencyOrder(extractedExtensions))
-            dispatchedExtensions = loadedExtensions
-        } finally {
-            extensionLoadLock.unlock()
         }
+
+        // Load extension classes
+        extractedExtensions = HashSet<ExtensionBeanSource>().apply {
+            (directory.listFiles()?.map { file ->
+                async {
+                    if (validateExtension(file)) {
+                        return@async withApplication(application) { recognizeExtensionFromJarFile(file) }
+                    }
+                    null
+                }
+            } ?: emptyList()).forEach {
+                it.await()?.let { extensionBeanSource -> add(extensionBeanSource) }
+            }
+        }
+
+        // Solve extension dependencies
+        extractedExtensions.forEach { source ->
+            try {
+                val extension = source.extension
+                val dependencies = extension.dependencies
+                // Load extension dependencies
+                if (dependencies.isEmpty()) {
+                    return@forEach
+                }
+                dependencies.forEach { dependency ->
+                    // Try to find the dependent extension
+                    val dependentExtension = extractedExtensions.find { it.extension.id == dependency.id }
+                        ?: throw RuntimeException("Could not find dependent extension for $source (required: $dependency)")
+                    source.addParent(dependentExtension)
+                }
+            } catch (e: Exception) {
+                error("Failed to load extension from $source", e)
+                return@forEach // Skip the current extension if an exception was thrown
+            }
+        }
+
+        // Load extracted extension bean sources
+        extractedExtensions.forEach { source ->
+            source.load()
+        }
+
+        // Load extension maven dependencies
+        withContext(Dispatchers.IO) {
+            extractedExtensions.forEach { source ->
+                launch {
+                    source.loadMavenDependencies()
+                }
+            }
+        }
+
+        withApplication(application) {
+            finishLoadExtensionRecurves(solveExtensionDependencyOrder(extractedExtensions))
+        }
+        dispatchedExtensions = loadedExtensions
     }
 
     @WithApplication
@@ -214,24 +215,27 @@ class VelocityExtensionDispatcherImpl(val driver: VelocityPlatformDriverImpl) : 
     }
 
     @WithApplication
+    @Synchronized
     fun disableExtensions() {
-        extensionLoadLock.withLock {
-            val disablingExtensions = this.dispatchedExtensions.toList()
-            disablingExtensions.forEach {
-                disableExtension(it)
-            }
+        val disablingExtensions = this.dispatchedExtensions.toList()
+        disablingExtensions.forEach {
+            disableExtension(it)
         }
     }
 
-    @WithApplication
     @ExperimentalPlatformApi
+    @Synchronized
     override fun reload() {
-        disableExtensions()
-        val reloadLifecycle = Lifecycle()
-        runBlocking(Dispatchers.Default) {
-            loadExtensionsFromDirectory(extensionSourceDirectory)
-            repeat(4) {
-                reloadLifecycle.next()
+        withApplication(driver.application) {
+            disableExtensions()
+            val reloadLifecycle = Lifecycle()
+            runBlocking(Dispatchers.Default) {
+                withApplication(driver.application) {
+                    loadExtensionsFromDirectory(extensionSourceDirectory, reloadLifecycle)
+                    repeat(4) {
+                        reloadLifecycle.next()
+                    }
+                }
             }
         }
     }

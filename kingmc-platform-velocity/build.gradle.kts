@@ -51,13 +51,8 @@ publishing {
 tasks {
     withType<ShadowJar> {
         dependencies {
-            include(project(":${rootProject.name}-bukkit:adventure"))
             include(project(":${rootProject.name}-bukkit:api"))
-            include(project(":${rootProject.name}-bukkit:brigadier"))
             include(project(":${rootProject.name}-bukkit:impl"))
-            include(project(":${rootProject.name}-bukkit:nbtapi"))
-            include(project(":${rootProject.name}-bukkit:paperlib"))
-            include(project(":${rootProject.name}-bukkit:protocollib"))
             include(dependency("net.kingmc:kingmc-common-api:$KINGMC_VERSION"))
             include(dependency("net.kingmc:kingmc-common-application:$KINGMC_VERSION"))
             include(dependency("net.kingmc:kingmc-common-context:$KINGMC_VERSION"))
@@ -68,6 +63,7 @@ tasks {
             include(dependency("net.kingmc:kingmc-common-logging:$KINGMC_VERSION"))
             include(project(":${rootProject.name}-common"))
             include(project(":${rootProject.name}-facet"))
+            include(project(":${rootProject.name}-proxy"))
             include(dependency("me.lucko:jar-relocator:1.5"))
             include(dependency("org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"))
         }

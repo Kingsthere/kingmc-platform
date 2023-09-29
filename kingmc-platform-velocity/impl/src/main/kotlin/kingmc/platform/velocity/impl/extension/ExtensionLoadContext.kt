@@ -1,8 +1,8 @@
 package kingmc.platform.velocity.impl.extension
 
 import kingmc.common.application.WithApplication
-import kingmc.common.application.lifecycle
-import kingmc.common.context.process.processBeans
+import kingmc.common.context.process.insertAfterProcessBeanLifecycle
+import kingmc.common.context.process.insertProcessBeanLifecycle
 import kingmc.common.context.source.ClassGraphBeanSource
 import kingmc.common.logging.slf4j.Slf4jLoggerManager
 import kingmc.common.logging.slf4j.Slf4jLoggerWrapper
@@ -10,7 +10,7 @@ import kingmc.common.logging.trace
 import kingmc.platform.extension.*
 import kingmc.platform.velocity.driver.VelocityPlatformDriver
 import kingmc.util.InternalAPI
-import kingmc.util.lifecycle.Execution
+import kingmc.util.lifecycle.Lifecycle
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 
 /**
@@ -20,7 +20,8 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger
  * @since 0.1.2
  */
 class ExtensionLoadContext(
-    val driver: VelocityPlatformDriver,
+    private val driver: VelocityPlatformDriver,
+    private val lifecycle: Lifecycle,
     // Extracted extension bean sources by id
     private val extracted: Map<String, ExtensionBeanSource>
 ) {
@@ -65,16 +66,8 @@ class ExtensionLoadContext(
 
         extensionContext.load()
 
-        // Schedule execution to launch extension lifecycle when platform lifecycle changes
-        (0..5).forEach { index ->
-            extensionContext.getLifecycle().scheduleExecution(index, Execution(0, "launch_extension_lifecycle") {
-                try {
-                    extensionContext.processBeans(index)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            })
-        }
+        extensionContext.insertProcessBeanLifecycle(4)
+        extensionContext.insertAfterProcessBeanLifecycle(4)
 
         trace("Preparing application instance for $source")
         val extensionApplication = ExtensionApplicationImpl(
@@ -88,8 +81,8 @@ class ExtensionLoadContext(
         extensionContext.application = extensionApplication
 
         // Schedule execution to launch extension lifecycle when platform lifecycle changes
-        for (index in 0..5) {
-            driver.application.lifecycle.scheduleExecution(index) {
+        for (index in 0..4) {
+            lifecycle.scheduleExecution(index) {
                 extensionContext.getLifecycle().next()
             }
         }

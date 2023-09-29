@@ -1,8 +1,7 @@
 package kingmc.platform.velocity.driver
 
-import kingmc.platform.velocity.VelocityJavaPlugin
 import kingmc.platform.driver.PlatformDriver
-import kingmc.platform.velocity.impl.VelocityPlatform
+import kingmc.platform.velocity.VelocityPlatform
 import java.io.File
 
 /**
@@ -14,9 +13,9 @@ import java.io.File
  */
 interface VelocityPlatformDriver : PlatformDriver {
     /**
-     * The [VelocityJavaPlugin] instance to velocity api
+     * The plugin instance for velocity
      */
-    val velocityPluginInstance: VelocityJavaPlugin
+    val velocityPluginInstance: Any
 
     /**
      * The `Platform` instance indicates which this driver running on

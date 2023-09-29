@@ -1,4 +1,4 @@
-package kingmc.platform.velocity
+package kingmc.platform.velocity.impl
 
 import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe

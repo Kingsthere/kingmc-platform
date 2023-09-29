@@ -3,17 +3,13 @@ package kingmc.platform.velocity.impl.driver
 import com.electronwill.nightconfig.core.file.FileConfig
 import com.electronwill.nightconfig.toml.TomlFormat
 import com.electronwill.nightconfig.yaml.YamlFormat
+import io.github.classgraph.ClassGraph
 import kingmc.common.KingMC
-import kingmc.common.OpenAPI
+import kingmc.common.application.lifecycle
 import kingmc.common.application.withApplication
-import kingmc.common.context.LifecycleContext
-import kingmc.common.context.initializer.ContextInitializer
 import kingmc.common.context.process.insertAfterProcessBeanLifecycle
 import kingmc.common.context.process.insertProcessBeanLifecycle
-import kingmc.common.environment.KingMCEnvironment
-import kingmc.common.environment.KotlinCoroutineEnvironment
-import kingmc.common.environment.loadDependencies
-import kingmc.common.environment.loadDependenciesSuspend
+import kingmc.common.environment.*
 import kingmc.common.environment.maven.DependencyDispatcher
 import kingmc.common.environment.maven.DependencyScope
 import kingmc.common.environment.maven.model.Dependency
@@ -24,25 +20,23 @@ import kingmc.common.logging.info
 import kingmc.common.logging.slf4j.Slf4jLogger
 import kingmc.common.logging.slf4j.Slf4jLoggerManager
 import kingmc.common.logging.slf4j.Slf4jLoggerWrapper
-import kingmc.common.structure.JarFileClassSource
-import kingmc.common.structure.classloader.ExtensionClassLoader
-import kingmc.common.text.Text
 import kingmc.platform.ExperimentalPlatformApi
 import kingmc.platform.Platforms
-import kingmc.platform.velocity.VelocityJavaPlugin
 import kingmc.platform.context.*
+import kingmc.platform.context.source.PlatformBeanSource
+import kingmc.platform.context.source.PlatformBeanSourceImpl
 import kingmc.platform.logging.infoColored
 import kingmc.platform.util.loadConfigIntoProperties
 import kingmc.platform.velocity.VelocityImplementation
 import kingmc.platform.velocity.driver.VelocityPlatformDriver
-import kingmc.platform.velocity.impl.VelocityPlatform
-import kingmc.util.Lifecycle
+import kingmc.platform.velocity.VelocityPlatform
+import kingmc.platform.velocity.impl.VelocityJavaPlugin
+import kingmc.platform.velocity.impl.extension.VelocityExtensionDispatcherImpl
+import kingmc.util.InternalAPI
 import kingmc.util.Version
-import kingmc.util.format.PropertiesFormatContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kingmc.util.format.FormatContext
+import kingmc.util.lifecycle.Lifecycle
+import kotlinx.coroutines.*
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -52,8 +46,7 @@ import java.io.InputStream
 import java.util.*
 import java.util.function.Consumer
 import java.util.regex.Pattern
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
+import kotlin.system.measureTimeMillis
 
 val VERSION_REGEX = Pattern.compile("(?i)\\(MC: (\\d\\.\\d+\\.?\\d+?)?(?: Pre-Release )?(\\d)?\\)")!!
 
@@ -62,21 +55,76 @@ const val FILENAME_CONFIG_TOML = "config.toml"
 const val FILENAME_CONFIG_YAML = "config.yml"
 
 /**
- * `PlatformDriver` implementation for velocity
+ * `PlatformDriver` implementation for velocity, it also supports spigot and paper
  *
  * @author kingsthere
- * @since 0.0.7
+ * @since 0.1.2
  */
 @VelocityImplementation
-open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: VelocityJavaPlugin) : VelocityPlatformDriver {
-    override val platform: kingmc.platform.velocity.impl.VelocityPlatform
+open class VelocityPlatformDriverImpl(private val _velocityJavaPlugin: VelocityJavaPlugin) : VelocityPlatformDriver {
+    override val platform: VelocityPlatform = loadPlatform()
+
+    /**
+     * The slf4j logger instance
+     */
     private val _rawLogger: Slf4jLogger = ComponentLogger.logger("KingMC")
+
+    /**
+     * The [kingmc.common.logging.Logger] instance for this platform
+     */
     override val logger: Slf4jLoggerWrapper = Slf4jLoggerWrapper(_rawLogger)
+
+    /**
+     * Class loader that loaded the velocity-side kingmc driver plugin
+     */
+    override val classLoader: ClassLoader get() = _velocityJavaPlugin.classLoader
+
+    /**
+     * Class appender used for dependency dispatcher
+     */
+    private val _classAppender: ClassAppender = ClassAppender(classLoader, logger)
+
+    /**
+     * `Properties` of this platform
+     */
     override lateinit var properties: Properties
+
+    /**
+     * The bean source of this driver
+     */
+    override lateinit var beanSource: PlatformBeanSource
+
+    /**
+     * KingMC directory files
+     */
+    final override val baseDirectory: File = _velocityJavaPlugin.kingmcRoot
+    private val extensionDirectory: File = File("$baseDirectory/extensions").apply {
+        // Create directory if not exists
+        if (!exists()) {
+            mkdirs()
+        }
+    }
+    private val driverDirectory: File = File("$baseDirectory/drivers").apply {
+        // Create directory if not exists
+        if (!exists()) {
+            mkdirs()
+        }
+    }
+
+    /**
+     * The dependency dispatcher of this platform driver
+     */
     override val dependencyDispatcher: DependencyDispatcher = DependencyDispatcher(
-        root = File("${_velocityJavaPlugin.kingmcRoot}/libraries"),
-        logger = logger
+        root = File("${this.baseDirectory}/libraries"),
+        logger = logger,
+        classAppender = _classAppender
     )
+
+    /**
+     * The path of drivers
+     */
+    val driverPaths: MutableList<String> = LinkedList()
+
 
     override val velocityPluginInstance: VelocityJavaPlugin = _velocityJavaPlugin
     override val pluginFile: File = _velocityJavaPlugin.file
@@ -84,42 +132,33 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
     override val extensionDispatcher: VelocityExtensionDispatcherImpl = VelocityExtensionDispatcherImpl(this)
 
     override lateinit var application: PlatformApplication
-    lateinit var contextInitializer: ContextInitializer
-    lateinit var contextLifecycle: Lifecycle<Runnable>
+    private lateinit var lifecycle: Lifecycle
 
-    override val baseDirectory: File = _velocityJavaPlugin.kingmcRoot
-    val extensionDirectory: File = File("$baseDirectory/extensions").apply {
-        if (!exists()) {
-            mkdirs()
-        }
-    }
-    val driverDirectory: File = File("$baseDirectory/drivers").apply {
-        if (!exists()) {
-            mkdirs()
-        }
-    }
+    private val mavenRepositoryDefault = Repository("https://repo1.maven.org/maven2/")
 
+    /**
+     * Initialize environment for configuration files
+     */
     init {
-        OpenAPI.supportClassLoader(_velocityJavaPlugin.classLoader)
-
         loadConfigurationEnvironment()
         loadProperties()
-        platform = loadPlatform()
     }
 
-    val formatContext = PropertiesFormatContext(properties)
-    val mavenRepository = repository("{kingmc.environment.maven-repository}", formatContext)
+    private val formatContext = FormatContext(properties)
+    private val mavenRepository = repository("{kingmc.environment.maven-repository}", formatContext)
+    private val extensionCoroutineDispatcher by lazy {
+        Dispatchers.Default
+    }
 
-    @OptIn(ExperimentalTime::class)
     override fun load() {
-        val time = measureTime {
+        val time = measureTimeMillis {
             disposeTempFilesOnExit()
             loadCoroutineEnvironment()
             runBlocking {
                 loadFullEnvironmentSuspend()
             }
             application = loadPlatformApplication()
-            contextLifecycle = (application.context as LifecycleContext).getLifecycle()
+            lifecycle = application.lifecycle
 
             withApplication(this.application) {
                 // Log the current kingmc framework information
@@ -137,104 +176,165 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
 
                 infoColored("<yellow>Booting up by driver $this")
 
-                runBlocking {
-                    // Init extension dispatcher
-                    extensionDispatcher.init()
-                    info("Loading extensions from $extensionDirectory...")
-                    extensionDispatcher.loadExtensionsFromDirectory(extensionDirectory, contextLifecycle)
+                runBlocking(extensionCoroutineDispatcher) {
+                    withApplication(this@VelocityPlatformDriverImpl.application) {
+                        // Init extension dispatcher
+                        extensionDispatcher.init()
+                        info("Loading extensions from $extensionDirectory...")
+                        extensionDispatcher.loadExtensionsFromDirectory(
+                            directory = extensionDirectory,
+                            lifecycle = this@VelocityPlatformDriverImpl.lifecycle
+                        )
+                    }
                 }
 
             }
         }
 
         withApplication(this.application) {
-            infoColored("<green>KingMC framework launched successfully on platform $platform in $time")
+            infoColored("<green>KingMC framework launched successfully on platform $platform in $time(ms)")
         }
 
         // Lifecycle.const (stage 0)
+        lifecycle.next()
         // Lifecycle.initialize (stage 1)
+        lifecycle.next()
         // Lifecycle.load (stage 2)
-        contextLifecycle.jump(3)
+        lifecycle.next()
     }
 
+    @OptIn(InternalAPI::class)
     override fun loadPlatformApplication(): PlatformApplication {
         val classLoader = _velocityJavaPlugin.classLoader
-        val source = JarFileClassSource(pluginFile, classLoader)
-        source.load()
+        this.beanSource = loadBeanSource()
         val environment = PlatformApplicationEnvironment(classLoader)
         val loggers = Slf4jLoggerManager(logger)
 
-        val context = PlatformContextImpl(properties, "kingmc")
-        contextInitializer = PlatformContextInitializer(context).apply {
-            addSource(source)
-            driverDirectory.listFiles()?.forEach {
-                if (it.extension == "jar") {
-                    _rawLogger.info("Loading driver from $it")
-                    val driverClassLoader = ExtensionClassLoader(it, OpenAPI.classLoader()!!)
-                    driverClassLoader.addToClassloaders()
-                    addSource(JarFileClassSource(it, driverClassLoader).apply { load() })
-                }
-            }
-        }
+        // Create context
+        val context = PlatformContextImpl(properties, "platform", beanSource, emptySet())
 
-        val application: PlatformApplication = PlatformApplicationImpl(platform, context, environment, loggers)
+        // Create application instance
+        val application: PlatformApplication = PlatformApplicationImpl("platform", context, environment, platform, loggers)
         context.application = application
 
+        context.load()
+
+        // Register platform
         Platforms.registerPlatform(application.platform, application.context)
 
-        contextInitializer.invoke()
-
-        context.insertProcessBeanLifecycle(5)
-        context.insertAfterProcessBeanLifecycle(5)
+        // Insert process lifecycle
+        context.insertProcessBeanLifecycle(4)
+        context.insertAfterProcessBeanLifecycle(4)
 
         return application
     }
 
+    protected open fun loadBeanSource(): PlatformBeanSource {
+        driverDirectory.listFiles()?.mapNotNull {
+            if (it.extension != "jar") {
+                return@mapNotNull null
+            }
+
+            logger.logInfo("Loading driver from $it")
+
+            driverPaths.add(it.absolutePath)
+            _classAppender.addPath(it.toPath())
+        }
+
+        val classGraph = ClassGraph()
+            .overrideClassLoaders(classLoader)
+            .ignoreParentClassLoaders()
+            .enableAnnotationInfo()
+            .enableMethodInfo()
+            .enableClassInfo()
+            .filterClasspathElements {
+                it == pluginFile.absolutePath || driverPaths.contains(it)
+            }
+        return PlatformBeanSourceImpl(
+            classGraph,
+            classLoader,
+            properties,
+            platform,
+            emptyList()
+        ).also { it.load() }
+    }
+
     protected open fun loadCoroutineEnvironment() {
-        dependencyDispatcher.installDependency(
-            dependency(groupId = "org.jetbrains.kotlin", artifactId = "kotlin-reflect", version = "{kingmc.environment.kotlin}", scope = DependencyScope.RUNTIME, formatContext),
-            setOf(mavenRepository),
+        val kotlinReflect = dependencyDispatcher.installDependencyAsync(
+            dependency(
+                groupId = "org.jetbrains.kotlin",
+                artifactId = "kotlin-reflect",
+                version = "{kingmc.environment.kotlin}",
+                scope = DependencyScope.RUNTIME,
+                formatContext
+            ),
+            mavenRepository,
             emptySet(),
             DependencyScope.RUNTIME
         )
-        dependencyDispatcher.installDependency(
+        val cglib = dependencyDispatcher.installDependencyAsync(
             Dependency("cglib", "cglib", "3.3.0", DependencyScope.RUNTIME),
-            setOf(mavenRepository),
+            mavenRepository,
             emptySet()
         )
+        // Join kotlin-reflect and cglib, because load dependencies from a class is required
+        // to use kotlin reflection and cglib proxy
+        cglib.get()
+        kotlinReflect.get()
+
         // Kotlin coroutine dependency
         KotlinCoroutineEnvironment::class.loadDependencies(dependencyDispatcher, formatContext)
     }
 
-    protected open fun loadConfigurationEnvironment() {
-        dependencyDispatcher.installDependency(
+    private fun loadConfigurationEnvironment() {
+        val core = dependencyDispatcher.installDependencyAsync(
             Dependency("com.electronwill.night-config", "core", "3.6.5", DependencyScope.RUNTIME),
-            setOf(Repository("https://maven.aliyun.com/repository/public/")),
+            mavenRepositoryDefault,
             emptySet()
         )
-        dependencyDispatcher.installDependency(
+        val yaml = dependencyDispatcher.installDependencyAsync(
             Dependency("com.electronwill.night-config", "yaml", "3.6.5", DependencyScope.RUNTIME),
-            setOf(Repository("https://maven.aliyun.com/repository/public/")),
+            mavenRepositoryDefault,
             emptySet()
         )
-        dependencyDispatcher.installDependency(
+        val toml = dependencyDispatcher.installDependencyAsync(
             Dependency("com.electronwill.night-config", "toml", "3.6.5", DependencyScope.RUNTIME),
-            setOf(Repository("https://maven.aliyun.com/repository/public/")),
+            mavenRepositoryDefault,
             emptySet()
         )
+        core.get()
+        yaml.get()
+        toml.get()
     }
+
     protected open suspend fun loadFullEnvironmentSuspend() = withContext(Dispatchers.IO) {
         launch {
             KingMCEnvironment::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
         }
-        // launch {
-        //     Adventure::class.loadDependenciesSuspend(dependencyDispatcher, formatContext)
-        // }
+        launch {
+            Class.forName("kingmc.platform.velocity.nbtapi.NBTAPIEnvironment").kotlin.loadDependenciesSuspend(
+                dependencyDispatcher,
+                formatContext
+            )
+        }
+        launch {
+            Class.forName("kingmc.platform.velocity.adventure.AdventureEnvironment").kotlin.loadDependenciesSuspend(
+                dependencyDispatcher,
+                formatContext
+            )
+        }
+        launch {
+            Class.forName("kingmc.platform.velocity.brigadier.BrigadierEnvironment").kotlin.loadDependenciesSuspend(
+                dependencyDispatcher,
+                formatContext
+            )
+        }
     }
-    protected open fun loadPlatform(): kingmc.platform.velocity.impl.VelocityPlatform {
-        val server = _velocityJavaPlugin.server
+
+    protected open fun loadPlatform(): VelocityPlatform {
+        val server = velocityPluginInstance.server
         val version = server.version
-        return kingmc.platform.velocity.impl.VelocityPlatform(
+        return VelocityPlatform(
             Version.LATEST,
             version.name,
             version.vendor,
@@ -242,6 +342,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
             this
         )
     }
+
     @Throws(IOException::class)
     protected fun loadProperties() {
         val loadingProperties = Properties()
@@ -277,7 +378,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            _velocityJavaPlugin.server.shutdown(Text("Failed to load properties for kingmc framework $e"))
+            _velocityJavaPlugin.server.shutdown()
         }
         this.properties = loadingProperties
     }
@@ -325,16 +426,14 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
 
     override fun enable() {
         // Lifecycle.enable (stage 3)
-        contextLifecycle.next()
+        lifecycle.next()
     }
 
     override fun disable() {
         // Lifecycle.disable (stage 4)
-        contextLifecycle.next()
-        contextInitializer.dispose()
+        lifecycle.next()
         application.shutdown()
         extensionDispatcher.getExtensions().forEach { extension ->
-            extension.contextInitializer.dispose()
             extension.application.shutdown()
         }
     }
@@ -345,7 +444,7 @@ open class VelocityPlatformDriverImpl(protected val _velocityJavaPlugin: Velocit
         extensionDispatcher.reload()
     }
 
-    protected fun disposeTempFilesOnExit() {
+    private fun disposeTempFilesOnExit() {
         _velocityJavaPlugin.tempFolder.deleteOnExit()
     }
 }

@@ -1,8 +1,7 @@
-package kingmc.platform.velocity.impl
+package kingmc.platform.velocity
 
 import kingmc.platform.driver.PlatformDriver
 import kingmc.platform.facet.AbstractPlatform
-import kingmc.platform.velocity.VelocityImplementation
 import kingmc.util.Version
 
 /**
