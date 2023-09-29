@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0e738a55-7d05-41e3-a44c-6f258d632e62" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buildSrc/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buildSrc/src/main/kotlin/BuildConstants.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buildSrc/src/main/kotlin/Dependencies.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/BukkitJavaPlugin.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/extension/BukkitExtensionDispatcherImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/extension/ExtensionLoadContext.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/common/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_8_8/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/paperlib/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/protocollib/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/viaversion/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionBeforeVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionOnPlatform.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionOnVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionSinceVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionalBeforeVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionalOnPlatform.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionalOnVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/ConditionalSinceVersion.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/PlatformApplicationImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/PlatformContextImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/source/PlatformBeanSource.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/source/PlatformBeanSourceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/driver/DriverClassLoader.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionBeanSource.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionBeanSourceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionClassLoader.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionInstance.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-facet/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-proxy/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/VelocityJavaPlugin.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/extension/ExtensionLoadContext.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/extension/VelocityExtensionDispatcherImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/AliasesCommandNode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/AliasesCommandNode.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierCommandContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierCommandContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierCommandManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierCommandManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierEnvironment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierNMS.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierNMS.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/BrigadierUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/EnhancedCommandDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/EnhancedCommandDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/HandlerArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/HandlerArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/HeaderArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/HeaderArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/NodeArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/NodeArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/WrappedArgumentType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/WrappedArgumentType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/WrappedStringReader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier/src/main/kotlin/kingmc/platform/bukkit/brigadier/WrappedStringReader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/out/production/resources/bundle/toolbox-latest.jar" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/resources/bundle/toolbox-latest.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/out/production/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/out/production/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/java/kingmc/platform/BukkitJavaPlugin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/BukkitChunkSnapshot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitChunkSnapshot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/BukkitImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/BukkitServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/BukkitWorld.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitWorld.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/BukkitWorldFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitWorldFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/Chunks.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/Chunks.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/Location.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/Location.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/Vector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/Vector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/World.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/World.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/Adventure.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/AdventureEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/AdventureBukkitServerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/AdventureBukkitServerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureAudienceFactoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureAudienceFactoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureBukkitConsoleImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureBukkitConsoleImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureOnlineBukkitPlayerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AdventureOnlineBukkitPlayerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AllBukkitAudiences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AllBukkitAudiences.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AllBukkitPlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/AllBukkitPlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/FilteredAllBukkitAudiences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/FilteredAllBukkitAudiences.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/FilteredAllBukkitPlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/adventure/src/main/kotlin/kingmc/platform/bukkit/adventure/impl/audience/FilteredAllBukkitPlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/audience/BukkitAudienceFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/audience/BukkitAudienceFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/audience/BukkitConsole.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/audience/BukkitConsole.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/audience/particle/OriginalBukkitParticle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/audience/particle/OriginalBukkitParticle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/audience/particle/Particles.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/audience/particle/Particles.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/block/BukkitBlock.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/block/BukkitBlock.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/block/BukkitBlockState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/block/BukkitBlockState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/block/BukkitMaterialData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/block/BukkitMaterialData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/block/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/block/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/block/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/block/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/command/BukkitCommandMapImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/command/BukkitCommandMapImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/command/BukkitCommandSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/command/BukkitCommandSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/command/CommandMap.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/command/CommandMap.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/command/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/command/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/coroutine/AsyncBukkitCoroutineDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/coroutine/AsyncBukkitCoroutineDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/coroutine/SyncBukkitCoroutineDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/coroutine/SyncBukkitCoroutineDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/coroutine/bukkitServerScheduler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/coroutine/bukkitServerScheduler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/driver/BukkitDrivers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/driver/BukkitDrivers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/driver/BukkitPlatformDriver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/driver/BukkitPlatformDriver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntityFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntityFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntityType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/BukkitEntityType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/player/BukkitOfflinePlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/player/BukkitOfflinePlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/player/BukkitPlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/player/BukkitPlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/player/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/player/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/entity/player/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/entity/player/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/event/BukkitEventWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/event/BukkitEventWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/event/BukkitEvents.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/event/BukkitEvents.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/event/BukkitListenerManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/event/BukkitListenerManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/event/BukkitPublisher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/event/BukkitPublisher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/event/wrapper/EntityDamageEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/event/wrapper/EntityDamageEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitChunkImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitChunkImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitPlatform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/BukkitPlatform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldBorderImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldBorderImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldFactoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldFactoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/BukkitWorldImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitBlockImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitBlockImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitBlockMaterialDataImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitBlockMaterialDataImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitChestImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/block/BukkitChestImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitBlockCommandSenderImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/command/AdventureBlockCommandSenderImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandContextFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandContextFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandContextImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandContextImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandSenderImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/command/BukkitCommandSenderImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformDriverImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformDriverImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformSelector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformSelectorImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/driver/BukkitPlatformSelectorImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityFactoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityFactoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityTypeImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitEntityTypeImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitHumanEntityImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitHumanEntityImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitLivingEntityImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/BukkitLivingEntityImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/entity/player/BukkitOfflinePlayerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/entity/player/BukkitOfflinePlayerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/extension/BukkitExtensionDispatcherImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/extension/ExtensionLoadingRoute.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryFactoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryFactoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryViewImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/BukkitInventoryViewImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/MutableBukkitInventoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/inventory/MutableBukkitInventoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/item/BukkitItemFactoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/item/BukkitItemFactoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/item/BukkitItemStackImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/item/BukkitItemStackImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/material/block/BukkitChestBlockImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/material/block/BukkitChestBlockImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/paper/PaperImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/paper/PaperImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/paper/PaperPlatform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/paper/PaperPlatform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/permission/BukkitPermissibleImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/permission/BukkitPermissibleImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/schedule/BukkitScheduledTask.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/schedule/BukkitScheduledTask.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/schedule/BukkitSchedulerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/schedule/BukkitSchedulerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/spigot/SpigotImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/spigot/SpigotImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/impl/spigot/SpigotPlatform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/impl/spigot/SpigotPlatform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitAnvilInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitAnvilInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitCraftingInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitCraftingInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventoryFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventoryFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventoryView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitInventoryView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitPlayerInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/BukkitPlayerInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/inventory/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/inventory/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItemStack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItems.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/BukkitItems.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/SimpleBukkitItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/SimpleBukkitItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/item/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/item/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/material/BukkitMaterialProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/material/BukkitMaterialProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/material/BukkitMaterialType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/material/BukkitMaterialType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/material/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/material/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/material/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/material/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/messaging/BukkitMessenger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/messaging/BukkitMessenger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/messaging/BukkitPluginMessagingChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/messaging/BukkitPluginMessagingChannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/messaging/Types.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/messaging/Types.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/nbt/BukkitNBT.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/nbt/BukkitNBT.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/nbt/BukkitNBTFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/nbt/BukkitNBTFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/paperlib/PaperLib.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/impl/src/main/kotlin/kingmc/platform/bukkit/paperlib/PaperLib.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/permission/BukkitPermissible.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/permission/BukkitPermissible.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/permission/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/permission/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/protocollib/ProtocolLib.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/protocollib/src/main/kotlin/kingmc/platform/bukkit/protocollib/ProtocolLib.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/protocollib/ProtocolLibEnvironment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/protocollib/src/main/kotlin/kingmc/platform/bukkit/protocollib/ProtocolLibEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/kotlin/kingmc/platform/bukkit/util/TypeConvert.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit/util/TypeConvert.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/resources/bundle/toolbox-latest.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/resources/config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-core/src/main/resources/plugin.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/NBTAPIEnvironment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/NBTAPIEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/TypeConverts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/TypeConverts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIBukkitNBTFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIBukkitNBTFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIMutableNBTCompoundImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIMutableNBTCompoundImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPINBTCompoundImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPINBTCompoundImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIVirtualNBTEntry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/impl/nbt/NBTAPIVirtualNBTEntry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/nbt/NBTAPINBTCompound.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi/src/main/kotlin/kingmc/platform/bukkit/nbtapi/nbt/NBTAPINBTCompound.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/NMS_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/NMS_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/NMSAdventureBukkitServerImpl_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/NMSAdventureBukkitServerImpl_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BlockingSuggestionProvider_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BlockingSuggestionProvider_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierCommandManager_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierCommandManager_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierNMS_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierNMS_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierParameters_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierParameters_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/EnhancedCommandDispatcher_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/EnhancedCommandDispatcher_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/SuspendSuggestionProvider_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/SuspendSuggestionProvider_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/entity/player/NMSAdventureOnlineBukkitPlayerImpl_1_19_2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/entity/player/NMSAdventureOnlineBukkitPlayerImpl_1_19_2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/NMS_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/NMS_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/NMSAdventureBukkitServerImpl_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/NMSAdventureBukkitServerImpl_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BlockingSuggestionProvider_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BlockingSuggestionProvider_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierCommandManager_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierCommandManager_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierNMS_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierNMS_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierParameters_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/BrigadierParameters_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/EnhancedCommandDispatcher_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/EnhancedCommandDispatcher_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/SuspendSuggestionProvider_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/brigadier/SuspendSuggestionProvider_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/entity/player/NMSAdventureOnlineBukkitPlayerImpl_1_20_1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1/src/main/kotlin/kingmc/platform/bukkit/nms/v1_20_1/impl/entity/player/NMSAdventureOnlineBukkitPlayerImpl_1_20_1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_8_8/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-1_8_8/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-nms/bukkit-nms-common/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bukkit/bukkit-viaversion/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Awake.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Awake.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/AwakeProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/AwakeProcessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Chunk.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Chunk.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/ChunkSnapshot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/ChunkSnapshot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Chunks.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Chunks.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/ConditionalOnPlatform.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Direction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Direction.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/ExperimentalPlatformApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/ExperimentalPlatformApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Files.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Files.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Levels.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Levels.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Lifecycles.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Locatable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Locatable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Locatable3D.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Locatable3D.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Location.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Location.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Location3D.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Location3D.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Locations.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Locations.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/MutableLocatable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/MutableLocatable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/MutableLocatable3D.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/MutableLocatable3D.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/NumberConversions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/NumberConversions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Platform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Platform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/PlatformImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/PlatformImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/PlatformSide.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Platforms.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Platforms.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Priorities.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Region.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Region.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/RelativeLocation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/RelativeLocation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/RelativeLocation3D.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/RelativeLocation3D.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Releasable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Releasable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/ReleasableProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/ReleasableProcessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Server.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Server.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Vector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Vector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Vectors.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Vectors.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/World.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/World.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/WorldBorder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/WorldBorder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/WorldFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/WorldFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/Worlds.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/Worlds.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/Audience.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/Audience.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/AudienceFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/AudienceFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/Audiences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/Audiences.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/Console.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/Console.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/ForwardingAudience.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/ForwardingAudience.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBarImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBarImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBarProvide.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/bossbar/BossBarProvide.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/exception/AudienceOfflineException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/exception/AudienceOfflineException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/kind/AudienceKind.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/kind/AudienceKind.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/kind/Kinds.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/kind/Kinds.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/particle/Particle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/particle/Particle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/particle/ParticleRecipient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/particle/ParticleRecipient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/particle/ParticleType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/particle/ParticleType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/particle/Particles.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/particle/Particles.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/playerlist/DynamicPlayerList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/playerlist/DynamicPlayerList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/playerlist/PlayerList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/playerlist/PlayerList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/playerlist/StaticPlayerList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/playerlist/StaticPlayerList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/sound/Sound.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/sound/Sound.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/sound/SoundImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/sound/SoundImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/sound/SoundStop.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/sound/SoundStop.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/sound/SoundStopImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/sound/SoundStopImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/sound/Sounds.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/sound/Sounds.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/Title.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/Title.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/TitleImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/TitleImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/TitlePart.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/TitlePart.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/TitlePartImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/TitlePartImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/TitlePartType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/TitlePartType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/audience/title/Titles.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/audience/title/Titles.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Block.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Block.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/BlockFace.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/BlockFace.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/BlockState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/BlockState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Chest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Chest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Container.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Container.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Lidded.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Lidded.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Lockable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Lockable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/Openable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/Openable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/block/PistonMoveReaction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/block/PistonMoveReaction.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/BlockCommandSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/BlockCommandSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandContextFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandContextFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandDisposer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandDisposer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandHandlers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandHandlers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandResults.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/CommandSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/CommandSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/Commands.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/HandlerParameters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/HandlerParameters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/ImmutableStringReader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/ImmutableStringReader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/KingMCCommandDSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/KingMCCommandDSL.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/ProxiedCommandSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/ProxiedCommandSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/alias/Aliases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/alias/Aliases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/coroutine/CoroutineContextHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/coroutine/CoroutineContextHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/coroutine/DeferredCommandResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/coroutine/DeferredCommandResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/coroutine/DeferredHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/coroutine/DeferredHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/coroutine/SuspendedHandlerExtension.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/coroutine/SuspendedHandlerExtension.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/exceptions/CommandExecutionException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/exceptions/CommandExecutionException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/exceptions/CommandSyntaxException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/exceptions/CommandSyntaxException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/BlockingHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/BlockingHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/CommandImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/CommandImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/Executors.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/Executors.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/Handler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/Handler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/Header.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/Header.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/Node.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/Node.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/NodeChildren.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/NodeChildren.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/SimpleHeader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/SimpleHeader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/model/SimpleNode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/model/SimpleNode.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/AbstractParameters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/AbstractParameters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/CommandParameter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/CommandParameter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/EmptyParameters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/EmptyParameters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/EmptyParametersWithDefault.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/EmptyParametersWithDefault.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/InvalidParameterException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/InvalidParameterException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/parameter/Parameters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/parameter/Parameters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/StringRange.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/StringRange.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/Suggestion.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/Suggestion.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/Suggestions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/Suggestions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionsBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionsBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionsBuilders.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/command/suggestion/SuggestionsBuilders.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/PlatformApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformApplicationEnvironment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/PlatformApplicationEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformApplicationImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/context/PlatformContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformContextImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/context/PlatformContextInitializer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/driver/PlatformDriver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/driver/PlatformDriver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/driver/PlatformSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/driver/PlatformSelector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Ageable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Ageable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/AnimalTamer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/AnimalTamer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Animals.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Animals.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Axolotl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Axolotl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Breedable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Breedable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Cat.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Cat.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Creature.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Creature.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/DamageableEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/DamageableEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Entities.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Entities.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Entity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/EntityFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/EntityFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/EntityProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/EntityProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/EntityType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/EntityType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/HumanEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/HumanEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/IsolatedEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/IsolatedEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/LivingEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/LivingEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Mob.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Mob.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Sittable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Sittable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/Tameable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/Tameable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/damage/DamageModifier.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/damage/DamageModifier.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/damage/DamageSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/damage/DamageSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/damage/GenericDamageSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/damage/GenericDamageSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/damage/ModifiedDamage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/damage/ModifiedDamage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/player/OfflinePlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/player/OfflinePlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/player/Player.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/player/Player.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/entity/player/Players.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/entity/player/Players.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/AbstractPublisher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/AbstractPublisher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Cancellable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Cancellable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Cancellables.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Cancellables.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Event.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Event.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Listener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Listener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/ListenerManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/ListenerManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/ListenerRegistrar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/ListenerRegistrar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Publisher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Publisher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/Publishers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/Publishers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/TemporaryListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/TemporaryListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/entity/EntityDamageEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/entity/EntityDamageEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/entity/EntityEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/entity/EntityEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/player/AsyncPlayerChatEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/player/AsyncPlayerChatEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/player/PlayerEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/player/PlayerEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/subscription/LambdaSubscription.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/subscription/LambdaSubscription.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/event/subscription/Subscription.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/event/subscription/Subscription.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/exception/TextCapableExceptionHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/AbstractExtensionDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/AbstractExtensionDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/Extension.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/Extension.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionApplicationImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionApplicationImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionClassSource.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionContextImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionContextImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionContextInitializer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionData.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionDefinition.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionDefinition.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionEnvironment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionEnvironment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/ExtensionInitializeException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/ExtensionInitializeException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/extension/Extensions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension/Extensions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/impl/Locations.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/impl/Locations.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/impl/Vectors.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/impl/Vectors.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/impl/adventure/AdventureAudience.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/impl/adventure/AdventureAudience.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/AnvilInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/AnvilInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/BeaconInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/BeaconInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/BrewerInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/BrewerInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/CraftingInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/CraftingInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/Delegates.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/Delegates.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/DoubleChestInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/DoubleChestInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/EnchantingInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/EnchantingInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/FurnaceInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/FurnaceInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/Inventories.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/Inventories.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/Inventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/Inventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventoryFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventoryFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventoryHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventoryHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventorySlot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventorySlot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventorySlots.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventorySlots.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventoryView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventoryView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/InventoryViewer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/InventoryViewer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/MainHand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/MainHand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/MutableInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/MutableInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/PlayerInventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/PlayerInventory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/inventory/UnsupportedInventorySlotException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/inventory/UnsupportedInventorySlotException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/AbstractItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/AbstractItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/AbstractItemStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/AbstractItemStack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/Item.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/Item.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/ItemBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/ItemBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/ItemFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/ItemFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/ItemFlag.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/ItemFlag.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/ItemFlags.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/ItemFlags.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/ItemStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/ItemStack.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/item/Items.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/item/Items.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/logging/LoggingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/logging/Logging.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/Colorable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/Colorable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/DyeColor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/DyeColor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/Material.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/Material.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/MaterialHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/MaterialHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/MaterialProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/MaterialProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/MaterialType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/MaterialType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/Materials.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/Materials.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/MutableMaterialHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/MutableMaterialHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/Ageable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/Ageable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/AnaloguePowerable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/AnaloguePowerable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/BlockMaterialType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/BlockMaterialType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/ChestBlock.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/ChestBlock.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/Directional.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/Directional.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/Powerable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/Powerable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/Redstone.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/Redstone.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/material/block/Waterlogged.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/material/block/Waterlogged.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/ByteArrayDataOutputMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/ByteArrayDataOutputMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/DataInputMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/DataInputMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/IncomingPluginMessagingChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/IncomingPluginMessagingChannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/InputMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/InputMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/MessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/MessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/MessageHandlerRegistration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/MessageHandlerRegistration.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/Messaging.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/Messaging.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/Messenger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/Messenger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/OpenPluginMessagingChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/OpenPluginMessagingChannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/OutputMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/OutputMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/PluginMessageChannelHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/PluginMessageChannelHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/PluginMessageListenerRegistrationException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/PluginMessageListenerRegistrationException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/PluginMessageSink.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/PluginMessageSink.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/PluginMessageSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/PluginMessageSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/SubChannelMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/SubChannelMessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/messaging/SubscribeSubchannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/messaging/SubscribeSubchannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/MutableNBTCompound.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/MutableNBTCompound.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/MutableNBTCompoundHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/MutableNBTCompoundHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBT.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBT.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTCompound.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTCompound.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTCompoundHolder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTCompoundHolder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTEntryTypeException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTEntryTypeException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTProperty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTProperty.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/nbt/NBTType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/nbt/NBTType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/Permissible.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/Permissible.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/PermissibleContainer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/PermissibleContainer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/Permission.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/Permission.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/PermissionBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/PermissionBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/PermissionDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/PermissionDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/PermissionRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/PermissionRegistry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/PermissionState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/PermissionState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/permission/Permissions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/permission/Permissions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/resource/Resources.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/schedule/Schedule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/schedule/Schedule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/schedule/ScheduleProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/schedule/ScheduleProcessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/schedule/ScheduledTask.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/schedule/ScheduledTask.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/schedule/Scheduler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/schedule/Scheduler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/schedule/Schedules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/schedule/Schedules.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/ChunkPosition.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/ChunkPosition.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Favicon.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Favicon.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Formats.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Formats.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/InboundConnection.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/InboundConnection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/IncompleteImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/IncompleteImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Materials.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Materials.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/ModInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/ModInfo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Nameable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Nameable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Preconditions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Preconditions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Properties.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Properties.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/ProtocolVersion.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/ProtocolVersion.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/TextSolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/TextSolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Texts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Texts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/util/Versioned.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/util/Versioned.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/version/ConditionalBeforeVersion.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/version/ConditionalOnVersion.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/version/ConditionalSinceVersion.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/kingmc/platform/version/Versions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/version/Versions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/AbstractPlatform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/AbstractPlatform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/Facet.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/Facet.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/FacetAvailable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/FacetAvailable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/FacetImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/FacetImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/command/FacetCommandManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/command/FacetCommandManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/event/FacetListenerManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/event/FacetListenerManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/messaging/ClassMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/messaging/ClassMessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetIncomingPluginMessagingChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetIncomingPluginMessagingChannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessageHandlerProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessageHandlerProcessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessageHandlerRegistration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessageHandlerRegistration.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessenger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/messaging/FacetMessenger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissibleContainer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissibleContainer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermission.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermission.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionRegistry.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/permission/FacetPermissionRegistry.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/text/FacetTextSolverFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/text/TextSolverFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/text/MiniMessageTextSolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/text/MiniMessageTextSolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/main/kotlin/kingmc/platform/facet/util/FacetTextSolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/main/kotlin/kingmc/platform/facet/util/FacetTextSolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/facet/src/test/kotlin/kingmc/platform/facet/FacetTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-facet/src/test/kotlin/kingmc/platform/facet/FacetTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ConnectionRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ConnectionRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ConnectionResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ConnectionResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ProxiedServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ProxiedServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ProxyServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ProxyServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ServerInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ServerInfo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/ServerPing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/ServerPing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/src/main/kotlin/kingmc/platform/proxy/entity/player/ProxiedPlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-proxy/src/main/kotlin/kingmc/platform/proxy/entity/player/ProxiedPlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/resources/velocity-3.2.0-SNAPSHOT-258.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/java/kingmc/platform/VelocityJavaPlugin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/VelocityImplementation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/VelocityImplementation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/VelocityProxiedServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/VelocityProxiedServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/VelocityProxyServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/VelocityProxyServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/audience/VelocityConsole.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/audience/VelocityConsole.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/command/Typealiases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/command/Typealiases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/command/VelocityCommandSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/command/VelocityCommandSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/driver/VelocityDrivers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/driver/VelocityDrivers.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/driver/VelocityPlatformDriver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/driver/VelocityPlatformDriver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/entity/player/VelocityPlayer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity/player/VelocityPlayer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/VelocityConnectionRequestImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/VelocityConnectionRequestImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/VelocityPlatform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/VelocityPlatform.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/VelocityProxiedServerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/VelocityProxiedServerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/VelocityProxyServerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/VelocityProxyServerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/audience/VelocityConsoleImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/audience/VelocityConsoleImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/AliasesCommandNode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/AliasesCommandNode.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/BrigadierCommandContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/BrigadierCommandContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/BrigadierParameters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/BrigadierParameters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/HandlerArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/HandlerArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/HeaderArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/HeaderArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/NodeArgumentBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/NodeArgumentBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandContextFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandContextFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandContextImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandContextImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandManagerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/VelocityCommandManagerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedArgumentType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedArgumentType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedStringReader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedStringReader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedSuggestionProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/command/WrappedSuggestionProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformDriverImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformDriverImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformSelector.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformSelectorImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/driver/VelocityPlatformSelectorImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/entity/player/VelocityPlayerImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity/impl/entity/player/VelocityPlayerImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/extension/ExtensionLoadingRoute.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/kotlin/kingmc/platform/velocity/impl/extension/VelocityExtensionDispatcherImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/velocity/src/main/resources/config.yml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/common">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/common">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/bukkit">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-common">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-bukkit">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-bukkit/api">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-facet">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-bukkit/impl">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/kingmc-platform-velocity/api">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+        <option value="Kotlin Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="tpqn5zzb" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2UYgXVrCHEvkKZPN8QyRtyZb2So" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "/Users/mac/Sync/github/kingmc-platform/kingmc-platform-velocity/impl",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kingmc-platform-velocity/impl" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-velocity/api" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-bukkit/adventure" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-bukkit/protocollib" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-bukkit/paperlib" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kingmc-platform-velocity/api/src/main/kotlin/kingmc/platform/velocity" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin/kingmc/platform/velocity" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-velocity/impl/src/main/kotlin" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-common/src/main/kotlin/kingmc/platform/extension" />
+      <recent name="$PROJECT_DIR$/kingmc-platform-bukkit/api/src/main/kotlin/kingmc/platform/bukkit" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="kingmc.platform" />
+      <recent name="kingmc.platform.bukkit" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="kingmc.platform.bukkit" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="gradle" />
+      <command value="gradle wrapper" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Gradle.kingmc-platform:kingmc-platform-velocity:api [build]">
+    <configuration name="kingmc-platform [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kingmc-platform:kingmc-platform-bukkit [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kingmc-platform-bukkit" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kingmc-platform:kingmc-platform-bukkit [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kingmc-platform-bukkit" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kingmc-platform:kingmc-platform-bukkit:nms:v1_20_1 [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kingmc-platform:kingmc-platform-velocity:api [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kingmc-platform-velocity/api" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.kingmc-platform:kingmc-platform-velocity:api [build]" />
+        <item itemvalue="Gradle.kingmc-platform:kingmc-platform-bukkit [build]" />
+        <item itemvalue="Gradle.kingmc-platform [clean]" />
+        <item itemvalue="Gradle.kingmc-platform:kingmc-platform-bukkit [clean]" />
+        <item itemvalue="Gradle.kingmc-platform:kingmc-platform-bukkit:nms:v1_20_1 [build]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0e738a55-7d05-41e3-a44c-6f258d632e62" name="Changes" comment="" />
+      <created>1693121968461</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1693121968461</updated>
+      <workItem from="1693121969756" duration="52000" />
+      <workItem from="1693122042838" duration="432000" />
+      <workItem from="1693125374743" duration="3044000" />
+      <workItem from="1693144727039" duration="202000" />
+      <workItem from="1693397901818" duration="10000" />
+      <workItem from="1693562499070" duration="9868000" />
+      <workItem from="1693644747084" duration="21369000" />
+      <workItem from="1693747451363" duration="622000" />
+      <workItem from="1694059685164" duration="58000" />
+      <workItem from="1694343337256" duration="360000" />
+      <workItem from="1694353728078" duration="421000" />
+      <workItem from="1694354298669" duration="229000" />
+      <workItem from="1694354691848" duration="528000" />
+      <workItem from="1694388850718" duration="1176000" />
+      <workItem from="1694411135467" duration="468000" />
+      <workItem from="1694412004036" duration="5998000" />
+      <workItem from="1694436763913" duration="426000" />
+      <workItem from="1694437475169" duration="2444000" />
+      <workItem from="1694842784764" duration="5283000" />
+      <workItem from="1694858450340" duration="4315000" />
+      <workItem from="1694956199182" duration="223000" />
+      <workItem from="1695042228935" duration="431000" />
+      <workItem from="1695042694299" duration="1845000" />
+      <workItem from="1695290417621" duration="161000" />
+      <workItem from="1695433837176" duration="20408000" />
+      <workItem from="1695511875637" duration="1623000" />
+      <workItem from="1695527821447" duration="12719000" />
+      <workItem from="1695650007879" duration="4830000" />
+      <workItem from="1695790949429" duration="17847000" />
+      <workItem from="1695902138566" duration="1254000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

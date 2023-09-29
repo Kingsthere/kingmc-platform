@@ -1,16 +1,42 @@
-rootProject.name = "platform"
+rootProject.name = "kingmc-platform"
 
-include("common")
-include("bukkit")
-include("bukkit:bukkit-core")
-include("bukkit:bukkit-nms")
-include("bukkit:bukkit-nms:bukkit-nms-common")
-include("bukkit:bukkit-nms:bukkit-nms-1_20_1")
-include("bukkit:bukkit-nms:bukkit-nms-1_19_2")
-include("bukkit:bukkit-nms:bukkit-nms-1_8_8")
-include("bukkit:bukkit-brigadier")
-include("bukkit:bukkit-nbtapi")
-include("bukkit:bukkit-viaversion")
-include("velocity")
-include("facet")
-include("proxy")
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+val prefix: String = rootProject.name
+
+// Common platform implementation
+include(":$prefix-common")
+
+// Facet implementation
+include(":$prefix-facet")
+
+// Proxy-like platform implementation, such as bungeecord, velocity
+include(":$prefix-proxy")
+
+// Single platform implementation
+include(
+    ":$prefix-bukkit",
+    ":$prefix-bukkit:adventure",
+    ":$prefix-bukkit:api",
+    ":$prefix-bukkit:brigadier",
+    ":$prefix-bukkit:impl",
+    ":$prefix-bukkit:nbtapi",
+    ":$prefix-bukkit:nms",
+    ":$prefix-bukkit:nms:common",
+    ":$prefix-bukkit:nms:v1_8_8",
+    ":$prefix-bukkit:nms:v1_19_2",
+    ":$prefix-bukkit:nms:v1_20_1",
+    ":$prefix-bukkit:protocollib",
+    ":$prefix-bukkit:paperlib",
+    ":$prefix-bukkit:viaversion",
+
+    ":$prefix-velocity",
+    ":$prefix-velocity:api",
+    ":$prefix-velocity:impl"
+)

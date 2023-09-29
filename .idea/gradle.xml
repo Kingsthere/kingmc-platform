@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/adventure" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/api" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/brigadier" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/impl" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nbtapi" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nms" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nms/common" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_19_2" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_20_1" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/nms/v1_8_8" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/paperlib" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/protocollib" />
+            <option value="$PROJECT_DIR$/kingmc-platform-bukkit/viaversion" />
+            <option value="$PROJECT_DIR$/kingmc-platform-common" />
+            <option value="$PROJECT_DIR$/kingmc-platform-facet" />
+            <option value="$PROJECT_DIR$/kingmc-platform-proxy" />
+            <option value="$PROJECT_DIR$/kingmc-platform-velocity" />
+            <option value="$PROJECT_DIR$/kingmc-platform-velocity/api" />
+            <option value="$PROJECT_DIR$/kingmc-platform-velocity/impl" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

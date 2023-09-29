@@ -1,24 +1,40 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val kingmc_platform_version: String by project
-val kingmc_common_version: String by project
 val ossrhUsername: String by project
 val ossrhPassword: String by project
-val kingmc_test_version: String by project
-
-group = "net.kingmc"
-version = kingmc_platform_version
 
 plugins {
     `maven-publish`
     signing
-    kotlin("jvm") version "1.9.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("org.jetbrains.dokka") version "1.9.0"
+    kotlin("jvm") version KOTLIN_VERSION
 }
 
 allprojects {
+    group = "net.kingmc"
+    version = KINGMC_VERSION
+
+    apply(plugin = "java")
     apply(plugin = "org.gradle.signing")
     apply(plugin = "org.gradle.maven-publish")
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "org.jetbrains.dokka")
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name = "papermc"
+            url = uri("https://papermc.io/repo/repository/maven-releases/")
+        }
+        maven {
+            name = "minecraft"
+            url = uri("https://libraries.minecraft.net")
+        }
+    }
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -28,39 +44,12 @@ allprojects {
         withJavadocJar()
     }
 
-    repositories {
-        // Central repository
-        mavenCentral()
-        // Maven local for dev
-        mavenLocal()
-        // Snapshot repository
-         maven {
-             url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-             name = "sonatype-snapshot"
-         }
-
-        maven {
-            url = uri("https://repo.codemc.org/repository/maven-public/")
-            name = "codemc-repo"
-        }
-    }
-
     dependencies {
         // KingMC Dependencies
-        api("net.kingmc.common:common:$kingmc_common_version")
-        api("net.kingmc.common:application:$kingmc_common_version")
-        api("net.kingmc.common:context:$kingmc_common_version")
-        api("net.kingmc.common:coroutine:$kingmc_common_version")
-        api("net.kingmc.common:configure:$kingmc_common_version")
-        api("net.kingmc.common:environment:$kingmc_common_version")
-        api("net.kingmc.common:file:$kingmc_common_version")
-        api("net.kingmc.common:logging:$kingmc_common_version")
-        api("net.kingmc.common:structure:$kingmc_common_version")
-        implementation("io.github.classgraph:classgraph:4.8.158")
-        api(kotlin("reflect"))
-        testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-        testApi("net.kingmc.common:common:$kingmc_test_version")
+        api("net.kingmc:kingmc-common:$KINGMC_VERSION")
+
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     }
 
     publishing {
@@ -84,29 +73,77 @@ allprojects {
             }
         }
 
-    }
+        publications {
+            create<MavenPublication>("kingmc") {
+                pom {
+                    name.set("KingMC Platform")
+                    packaging = "jar"
+                    description.set("A high performance minecraft plugin framework")
+                    url.set("https://www.kingmc.net")
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-            // useK2 = true
+                    scm {
+                        url.set("https://github.com/Kingsthere/kingmc-platform.git")
+                    }
+
+                    licenses {
+                        license {
+                            name.set("The MIT License")
+                            url.set("https://mit-license.org/")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id.set("kingsthere")
+                            name.set("Kingsthere")
+                            email.set("kingsthere0@hotmail.com")
+                        }
+                    }
+                }
+
+                from(components.getByName("java"))
+            }
+
         }
     }
 
-    tasks.withType<Javadoc> {
-        options {
-            encoding = "UTF-8"
-            isFailOnError = false
-            quiet()
+    signing {
+        sign(publishing.publications["kingmc"])
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs("src/main/kotlin", "src/main/java")
         }
     }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
+    tasks {
+        withType<KotlinCompile> {
+            kotlinOptions {
+                jvmTarget = "1.8"
+                // useK2 = true
+            }
+        }
+
+        withType<Javadoc> {
+            options {
+                encoding = "UTF-8"
+                isFailOnError = false
+                quiet()
+            }
+        }
+
+        withType<Test> {
+            useJUnitPlatform()
+        }
+
+        withType<ShadowJar> {
+            archiveClassifier.set("plugin")
+            relocate("me.lucko.jarrelocator", "kingmc.library.jarrelocator")
+            relocate("de.tr7zw.changeme.nbtapi", "kingmc.library.nbtapi")
+        }
     }
+
 }
 
-dependencies {
-    api(project(":bukkit"))
-    api(project(":common"))
-}
+extra["kotlin.code.style"] = "official"
